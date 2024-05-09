@@ -7,6 +7,8 @@ struct Point
 	Point& operator = (Point pos);
 
 	Point operator + (Point add);
+
+	Point operator - (Point minus);
 };
 
 Point& Point::operator = (Point pos)
@@ -19,4 +21,9 @@ Point& Point::operator = (Point pos)
 Point Point::operator + (Point add)
 {
 	return Point{ this->y + add.y , this->x + add.x };
+}
+
+Point Point::operator - (Point minus)
+{
+	return Point{ this->y - minus.y , this->x - minus.x };
 }
