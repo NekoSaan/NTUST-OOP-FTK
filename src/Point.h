@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _POINT_H_
+#define _POINT_H_
+
 struct Point
 {
 	int y = -1;
@@ -27,3 +29,5 @@ Point Point::operator - (Point minus)
 {
 	return Point{ this->y - minus.y , this->x - minus.x };
 }
+
+#endif // _POINT_H_

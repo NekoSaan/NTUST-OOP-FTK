@@ -1,11 +1,12 @@
-﻿#include "Main.h"
+#include "Main.h"
+#include "Backpack.h"
 using namespace std;
 
 vector<vector<Rect>> map(mapHeight, vector<Rect>(mapWidth));
 
 Object gObject;
 
-int main() {
+int main(void) {
     HWND hwndConsole = GetConsoleWindow();
     SetWindowLong(hwndConsole, GWL_STYLE, GetWindowLong(hwndConsole, GWL_STYLE) & ~WS_OVERLAPPEDWINDOW);
     ShowWindow(hwndConsole, SW_MAXIMIZE);
@@ -21,11 +22,10 @@ int main() {
 
 	setMap();
 
-	bool gKeyState[int(VALIDINPUT::INVALID) + 1] = { false };
 	double startT = clock();
 	double endT = clock();
 
-	do
+	do 
 	{
 		// Compute the time lap
 		double timeFrame = (endT - startT) / CLOCKS_PER_SEC;
@@ -90,6 +90,7 @@ void outputMap()
 	SetConsoleCursorPosition(handle, pos);
 
 	vector<vector<string>> showBoard(mapHeight, vector<string>(mapWidth, "."));
+
 	for (int row = 0; row < mapHeight; row += 1)
 	{
 		for (int col = 0; col < mapWidth; col += 1)
@@ -124,10 +125,12 @@ void outputInformation()
 		SetConsoleCursorPosition(handle, pos);
 
 		cout << "#";
+
 		for (int col = 0; col < cameraWidth / 3 - 2; col += 1)
 		{
 			cout << (row == 0 || row == cameraHeight - 2 ? "#" : " ");
 		}
+
 		cout << "#";
 	}
 }
@@ -165,6 +168,10 @@ void keyUpdate(bool key[])
 	case 'd':
 		key[int(VALIDINPUT::ED)] = true;
 		break;
+	case 'I':
+	case 'i':
+		key[int(VALIDINPUT::EI)] = true;
+		break;
 	case 27:
 		key[int(VALIDINPUT::EESC)] = true;
 		break;
@@ -178,9 +185,6 @@ void keyUpdate(bool key[])
 // Post: Output new inforamtion contain hero, creature move
 void update(bool key[])
 {
-	// Clear all ouput
-	system("CLS");
-
 	// Check input wasd
 	if (key[int(VALIDINPUT::EW)])
 	{
@@ -198,6 +202,9 @@ void update(bool key[])
 	{
 		gObject.ObjectMove(Point{ 0,1 });
 	}
+	else if (key[int(VALIDINPUT::EI)]) {
+		bag.invMode();
+	}
 	else
 	{
 		std::cout << "invalid input\n";
@@ -208,6 +215,7 @@ void informationShow(vector<string> information)
 {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD pos;
+
 	for (int row = 0; row < information.size(); row += 1)
 	{
 		pos.X = (cameraWidth / 3 + 1) * 2;

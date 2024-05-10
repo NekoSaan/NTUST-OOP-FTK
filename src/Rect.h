@@ -1,14 +1,16 @@
-#pragma once
+#ifndef _RECT_H_
+#define _RECT_H_
 #include "Point.h"
 
-class Rect
-{
+class Rect {
 public:
 	Rect();
 
 	void setStatus(char status);
 
 	char getStatus();
+
+	char getIcon();
 
 private:
 	bool isVisible;
@@ -34,3 +36,5 @@ char Rect::getStatus()
 {
 	return status;
 }
+
+#endif // _RECT_H_

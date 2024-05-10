@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _OBJECT_H_
+#define _OBJECT_H_
 #include <iostream>
 #include "GameManager.h"
 #include "Point.h"
@@ -91,6 +92,7 @@ void Object::ObjectMove(Point pos)
 		{
 			cameraY += 1;
 		}
+
 		this->pos = tempPos;
 		return void();
 	}
@@ -102,7 +104,10 @@ void Object::ObjectMove(Point pos)
 		{
 			cameraX += 1;
 		}
+
 		this->pos = tempPos;
 		return void();
 	}
 }
+
+#endif // _OBJECT_H_
