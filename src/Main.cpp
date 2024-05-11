@@ -1,9 +1,30 @@
-﻿#include "Main.h"
+﻿#include <Windows.h>
+#include <iostream>
+#include <vector>
+#include <conio.h>
+#include <string>
+#include "GameManager.h"
 using namespace std;
 
-vector<vector<Rect>> map(mapHeight, vector<Rect>(mapWidth));
+// Define input command
+enum class VALIDINPUT
+{
+	EW = 0,
+	ES = 1,
+	EA = 2,
+	ED = 3,
+	EESC = 4,
+	INVALID,
+};
 
-Object gObject;
+const double_t GTIMELOG = 0.03;
+
+Object player1, player2, player3;
+GameManager map;
+
+void keyUpdate(bool key[]);
+
+void update(bool key[]);
 
 int main() {
     HWND hwndConsole = GetConsoleWindow();
@@ -15,15 +36,18 @@ int main() {
 
 	cameraHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 	cameraWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-	
-	cameraX = 0;
-	cameraY = 0;
 
-	setMap();
+	map.setMap();
 
 	bool gKeyState[int(VALIDINPUT::INVALID) + 1] = { false };
+	bool player[int(PLAYER::INVALID)] = { false };
+
 	double startT = clock();
 	double endT = clock();
+
+	player1.setPos(int(cameraHeight * CAMERAHEIGHTRATE / 2), int(cameraWidth * CAMERAWIDTHRATE / 2));
+	player2.setPos(int(cameraHeight * CAMERAHEIGHTRATE / 2), int(cameraWidth * CAMERAWIDTHRATE / 2));
+	player3.setPos(int(cameraHeight * CAMERAHEIGHTRATE / 2), int(cameraWidth * CAMERAWIDTHRATE / 2));
 
 	do
 	{
@@ -37,21 +61,25 @@ int main() {
 			startT = clock();
 		}
 
-		outputMap();
-		outputInformation();
+		map.outputGameBoard(player1.getTag(), player1.getPos());
 
 		vector<string> information;
-		information.push_back("MapSize_Row: " + to_string(mapHeight));
-		information.push_back("MapSize_Col: " + to_string(mapWidth));
-		information.push_back("Camera Y: " + to_string(cameraY));
-		information.push_back("Camera X: " + to_string(cameraX));
-		information.push_back("Object Y: " + to_string(gObject.getPos().y));
-		information.push_back("Object X: " + to_string(gObject.getPos().x));
-
 		information.push_back("Camera height: " + to_string(cameraHeight));
 		information.push_back("Camera width: " + to_string(cameraWidth));
 
-		informationShow(information);
+		map.outputInformation(information);
+
+		player[int(PLAYER::PLAYER1)] = true;
+		map.outputPlayerBoard(information, player);
+		player[int(PLAYER::PLAYER1)] = false;
+
+		player[int(PLAYER::PLAYER2)] = true;
+		map.outputPlayerBoard(information, player);
+		player[int(PLAYER::PLAYER2)] = false;
+
+		player[int(PLAYER::PLAYER3)] = true;
+		map.outputPlayerBoard(information, player);
+		player[int(PLAYER::PLAYER3)] = false;
 
 		// Update the key
 		keyUpdate(gKeyState);
@@ -59,77 +87,6 @@ int main() {
 	} while (!gKeyState[int(VALIDINPUT::EESC)]);
 
     return 0;
-}
-
-void setColor(int color)
-{
-	HANDLE hConsole;
-	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hConsole, color);
-}
-
-void setMap()
-{
-	for (int row = 9; row < mapHeight; row += 10)
-	{
-		for (int col = 0; col < mapWidth; col += 1)
-		{
-			map[row][col].setStatus((col % 10 == 9) ? '.' : '#');
-		}
-	}
-
-	gObject.setPos(Point{ cameraHeight / 2, cameraWidth / 3 });
-}
-
-void outputMap()
-{
-	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD pos;
-	pos.X = 0;
-	pos.Y = 0;
-	SetConsoleCursorPosition(handle, pos);
-
-	vector<vector<string>> showBoard(mapHeight, vector<string>(mapWidth, "."));
-	for (int row = 0; row < mapHeight; row += 1)
-	{
-		for (int col = 0; col < mapWidth; col += 1)
-		{
-			showBoard[row][col] = map[row][col].getStatus();
-		}
-	}
-
-	Point charPos = gObject.getPos();
-	showBoard[charPos.y][charPos.x] = gObject.getTag();
-
-	for (int row = 0; row < cameraHeight - 1; row += 1)
-	{
-		for (int col = 0; col < cameraWidth / 3 * 2; col += 1)
-		{
-			setColor(showBoard[row + cameraY][col + cameraX] == "." ? 7 : 224);
-			cout << showBoard[row + cameraY][col + cameraX];
-			setColor();
-		}
-		cout << "\n";
-	}
-}
-
-void outputInformation()
-{
-	for (int row = 0; row < cameraHeight - 1; row += 1)
-	{
-		HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-		COORD pos;
-		pos.X = cameraWidth / 3 * 2;
-		pos.Y = row;
-		SetConsoleCursorPosition(handle, pos);
-
-		cout << "#";
-		for (int col = 0; col < cameraWidth / 3 - 2; col += 1)
-		{
-			cout << (row == 0 || row == cameraHeight - 2 ? "#" : " ");
-		}
-		cout << "#";
-	}
 }
 
 // Intent: Detect input value
@@ -178,46 +135,25 @@ void keyUpdate(bool key[])
 // Post: Output new inforamtion contain hero, creature move
 void update(bool key[])
 {
-	// Clear all ouput
-	system("CLS");
-
 	// Check input wasd
 	if (key[int(VALIDINPUT::EW)])
 	{
-		gObject.ObjectMove(Point{ -1,0 });
+		player1.ObjectMove(-1, 0);
 	}
 	else if (key[int(VALIDINPUT::ES)])
 	{
-		gObject.ObjectMove(Point{ 1,0 });
+		player1.ObjectMove( 1,0 );
 	}
 	else if (key[int(VALIDINPUT::EA)])
 	{
-		gObject.ObjectMove(Point{ 0,-1 });
+		player1.ObjectMove( 0,-1 );
 	}
 	else if (key[int(VALIDINPUT::ED)])
 	{
-		gObject.ObjectMove(Point{ 0,1 });
+		player1.ObjectMove( 0,1 );
 	}
 	else
 	{
 		std::cout << "invalid input\n";
 	}
-}
-
-void informationShow(vector<string> information)
-{
-	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD pos;
-	for (int row = 0; row < information.size(); row += 1)
-	{
-		pos.X = (cameraWidth / 3 + 1) * 2;
-		pos.Y = (1 + row);
-		SetConsoleCursorPosition(handle, pos);
-
-		cout << information[row];
-	}
-
-	pos.X = 0;
-	pos.Y = cameraHeight;
-	SetConsoleCursorPosition(handle, pos);
 }

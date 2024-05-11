@@ -1,5 +1,4 @@
 #pragma once
-#include "Point.h"
 
 class Rect
 {
@@ -16,21 +15,3 @@ private:
 
 	char status;
 };
-
-Rect::Rect()
-{
-	this->isVisible = true;
-	this->canPass = true;
-
-	this->status = '.';
-}
-
-void Rect::setStatus(char status)
-{
-	this->status = status;
-}
-
-char Rect::getStatus()
-{
-	return status;
-}

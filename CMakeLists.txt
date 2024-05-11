@@ -1,12 +1,15 @@
-project(Project2_Framework)
+project(Project2)
 
-set(Project2_SRC_LIST 
-	${PROJECT_SOURCE_DIR}/Project2/Main.cpp
-	${PROJECT_SOURCE_DIR}/Project2/Main.h
-	${PROJECT_SOURCE_DIR}/Project2/GameManager.h
-	${PROJECT_SOURCE_DIR}/Project2/Object.h
-	${PROJECT_SOURCE_DIR}/Project2/Point.h
-	${PROJECT_SOURCE_DIR}/Project2/Rect.h
+set(src_SRC_LIST 
+	${PROJECT_SOURCE_DIR}/src/Main.cpp
+	${PROJECT_SOURCE_DIR}/src/GameManager.cpp	
+	${PROJECT_SOURCE_DIR}/src/Object.cpp
+	${PROJECT_SOURCE_DIR}/src/Rect.cpp
+
+	${PROJECT_SOURCE_DIR}/src/GameManager.h
+	${PROJECT_SOURCE_DIR}/src/Object.h
+	${PROJECT_SOURCE_DIR}/src/Point.h
+	${PROJECT_SOURCE_DIR}/src/Rect.h
 )
 
-add_executable(Project2 ${Project2_SRC_LIST})
+add_executable(src ${src_SRC_LIST})

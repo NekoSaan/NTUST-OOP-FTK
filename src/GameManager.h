@@ -1,13 +1,45 @@
-#pragma once
+﻿#pragma once
+#include <windows.h>
 #include <vector>
 #include "Rect.h"
-using namespace std;
+#include "Object.h"
 
-static int mapHeight = 50;
-static int mapWidth = 140;
+extern const float CAMERAHEIGHTRATE;
+extern const float CAMERAWIDTHRATE;
 
-static int cameraHeight;
-static int cameraWidth;
+extern int mapHeight;
+extern int mapWidth;
 
-static int cameraX = 0;
-static int cameraY = 0;
+extern int cameraHeight;
+extern int cameraWidth;
+
+extern int cameraX;
+extern int cameraY;
+
+extern std::vector<std::vector<Rect>> gameBoard;
+
+enum class PLAYER
+{
+	PLAYER1 = 0,
+	PLAYER2 = 1,
+	PLAYER3 = 2,
+	INVALID,
+};
+
+class GameManager
+{
+public:
+	void setColor(int color = 7);
+
+	void setCursor(int y, int x);
+
+	void setMap();
+
+	void outputGameBoard(std::string icon, std::pair<int, int> pos);
+
+	void outputInformation(std::vector<std::string>& information);
+
+	void outputPlayerBoard(std::vector<std::string>& information, bool* playerList);
+
+	void GameManager::canSee(int currentY, int currentX, std::vector<std::vector<std::pair<std::string, int>>>& showBoard);
+};
