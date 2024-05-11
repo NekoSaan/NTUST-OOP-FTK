@@ -172,6 +172,12 @@ void keyUpdate(bool key[])
 	case 'i':
 		key[int(VALIDINPUT::EI)] = true;
 		break;
+	case 8:
+		key[int(VALIDINPUT::EBACKSPACE)] = true;
+		break;
+	case 13:
+		key[int(VALIDINPUT::EENTER)] = true;
+		break;
 	case 27:
 		key[int(VALIDINPUT::EESC)] = true;
 		break;

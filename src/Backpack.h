@@ -14,18 +14,21 @@ public:
 
 	void obtainItem(Item*);
 
+	int getMoney(void);
+
+	void earnMoney(int);
+
+	bool costMoney(int);
+
+	// void invMode(Role*); true
 	void invMode(void);
 };
 
 BackPack::BackPack(void) : money(600) {
 	// Initial Supplies or nothing
-	Item* godsBeard = new Item("cosumer", ITEMID::Godsbeard);
-	obtainItem(godsBeard);
-	obtainItem(godsBeard);
-
-	for (int i = 0; i < 8; i++) {
-		Item* dummyItem = new Item("dummyItem", ITEMID::Invalid);
-		obtainItem(dummyItem);
+	for (int i = 0; i < ITEMID::WoodenSword; i++) {
+		Item* newItem = new Item("Consumable", ITEMID(i));
+		obtainItem(newItem);
 	}
 }
 
@@ -37,7 +40,10 @@ void BackPack::obtainItem(Item* item) {
 
 	for (int i = 0; i < inventory.size(); i++) {
 		if (item->getId() == inventory[i]->getId()) {
-			inventory[i]->amount++;
+			inventory[i]->incAmount();
+
+			item = nullptr;
+			delete item;
 			return;
 		}
 	}
@@ -45,9 +51,32 @@ void BackPack::obtainItem(Item* item) {
 	inventory.push_back(item);
 }
 
+int BackPack::getMoney(void) {
+	return money;
+}
+
+void BackPack::earnMoney(int amt) {
+	if (amt < 0) {
+		// incMoney can't be negative
+		return;
+	}
+
+	money += amt;
+}
+
+bool BackPack::costMoney(int amt) {
+	if (amt < 0 || money < amt) {
+		// costMoney can't be negative, deposite can't less than costMoney.
+		return false; // money spent fail
+	}
+
+	money -= amt;
+	return true; // money spent success
+}
+
 void BackPack::invMode(void) {
 	int curIndex = 0;
-	int curPage = 1, maxPage = (inventory.size() - 1) / 8 + 1;
+	int curPage = 1, maxPage = ((int) inventory.size() - 1) / 8 + 1;
 
 	double startT = clock();
 	double endT = clock();
@@ -66,6 +95,18 @@ void BackPack::invMode(void) {
 			else if (gKeyState[int(VALIDINPUT::ES)]) {
 				curIndex += (curIndex < inventory.size() - 1) ? 1 : 0;
 			}
+			else if (gKeyState[int(VALIDINPUT::EENTER)] && !inventory.empty()) {
+				// inventory[curIndex]->use(curRole);
+				inventory[curIndex]->decAmount();
+
+				if (inventory[curIndex]->getAmount() == 0 && inventory[curIndex]->getTag() == "Consumable") {
+					inventory[curIndex] = nullptr;
+					delete inventory[curIndex];
+					inventory.erase(inventory.begin() + curIndex);
+
+					curIndex = max(0, curIndex - 1);
+				}
+			}
 
 			curPage = curIndex / 8 + 1;
 
@@ -76,14 +117,18 @@ void BackPack::invMode(void) {
 
 		vector<string> information;
 		information.push_back("Bag (Page:" + to_string(curPage) + "/" + to_string(maxPage) + ")");
-		int lastItem = min(inventory.size(), curPage * 8);
 
-		for (int i = (curPage - 1) * 8; i < lastItem; i++) {
+		for (int i = (curPage - 1) * 8; i < curPage * 8; i++) {
+			if (i >= inventory.size()) {
+				information.push_back(" ");
+				continue;
+			}
+
 			if (curIndex == i) {
-				information.push_back("-> " + inventory[i]->getName() + ": " + to_string(inventory[i]->amount));
+				information.push_back("-> " + inventory[i]->getName() + ": " + to_string(inventory[i]->getAmount()));
 			}
 			else {
-				information.push_back("   " + inventory[i]->getName() + ": " + to_string(inventory[i]->amount));
+				information.push_back("   " + inventory[i]->getName() + ": " + to_string(inventory[i]->getAmount()));
 			}
 		}
 
@@ -96,7 +141,7 @@ void BackPack::invMode(void) {
 		// Update the key
 		keyUpdate(gKeyState);
 		endT = clock();
-	} while (!gKeyState[int(VALIDINPUT::EESC)]);
+	} while (!gKeyState[int(VALIDINPUT::EBACKSPACE)]);
 }
 
 static BackPack bag;

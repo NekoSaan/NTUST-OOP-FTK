@@ -11,7 +11,7 @@ set(project_SRC_LIST
 
 	${PROJECT_SOURCE_DIR}/src/Backpack.h
 	${PROJECT_SOURCE_DIR}/src/Items.h
-    ${PROJECT_SOURCE_DIR}/src/Shop.h
+	${PROJECT_SOURCE_DIR}/src/Shop.h
 )
 
 add_executable(project ${project_SRC_LIST})
