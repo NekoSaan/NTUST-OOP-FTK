@@ -1,5 +1,6 @@
 #pragma once
 #include"Entity.h"
+
 class Role : public Entity {
 	Role() : Entity() {
 		srand(time(0));  // 初始化隨機種子
@@ -12,5 +13,4 @@ class Role : public Entity {
 		setPDefense(rand() % 21);  // [0, 20] 的隨機數
 		setMDefense(rand() % 21);  // [0, 20] 的隨機數
 	}
-
 };

@@ -2,6 +2,7 @@
 #define _ITEMS_H_
 #include <string>
 #include <vector>
+#include "Role.h"
 
 enum ITEMID {
 	// Consumables, stackable
@@ -35,8 +36,6 @@ std::vector<std::string> ItemList = {
 	"PlateArmor",
 	"Bracelet"
 };
-
-class Role;
 
 class Item {
 protected:

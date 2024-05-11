@@ -4,9 +4,9 @@
 #include <string>
 #include "GameManager.h"
 #include "Point.h"
-using namespace std;
+#include "Role.h"
 
-class Role;
+using namespace std;
 
 class Object {
 public:
