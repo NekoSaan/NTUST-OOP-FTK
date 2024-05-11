@@ -5,6 +5,7 @@
 #include <vector>
 #include "Object.h"
 #include "Items.h"
+#include "Role.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ public:
     Shop();
 
     void startActive(); //tell game need to display choose screen
-    //void active(Role* role);
+    void active(Role*);
     void chooseActiveUP();
     void chooseActiveDown();
     vector<string> getAllChoose();
@@ -57,7 +58,7 @@ void Shop::chooseActiveDown(){
     }
 }
 
-vector<string> getAllChoose(){
+vector<string> Shop::getAllChoose(){
     vector<string> itemNames;
     for(int i = 0; i < ITEMID::Invalid; i++){
         itemNames.push_back(ItemList[i]);

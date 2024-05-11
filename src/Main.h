@@ -7,7 +7,6 @@
 #include <string>
 #include "Object.h"
 #include "Rect.h"
-#include "GameManager.h"
 
 void setColor(int color = 7);
 
@@ -24,14 +23,15 @@ void update(bool key[]);
 void informationShow(vector<string> information);
 
 // Define input command
-enum class VALIDINPUT
-{
+enum class VALIDINPUT {
 	EW = 0,
 	ES = 1,
 	EA = 2,
 	ED = 3,
 	EI = 4,
-	EESC = 5,
+	EBACKSPACE = 5,
+	EENTER = 6,
+	EESC = 7,
 	INVALID,
 };
 
