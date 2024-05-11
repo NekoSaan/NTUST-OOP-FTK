@@ -6,6 +6,7 @@
 #include "Object.h"
 #include "Items.h"
 #include "Role.h"
+#include "Backpack.h"
 
 using namespace std;
 
@@ -32,6 +33,12 @@ Shop::Shop(){
     this->priceList[ITEMID::GoldenRoot] = 15;
     this->priceList[ITEMID::TeleportScroll] = 30;
     this->priceList[ITEMID::Tent] = 20;
+    this->priceList[ITEMID::WoodenSword] = 15;
+    this->priceList[ITEMID::Hammer] = 25;
+    this->priceList[ITEMID::MagicWand] = 15;
+    this->priceList[ITEMID::Shoes] = 18;
+    this->priceList[ITEMID::PlateArmor] = 23;
+    this->priceList[ITEMID::Bracelet] = 20;
 
     this->chosenItemId = 0;
 }
@@ -41,7 +48,9 @@ void Shop::startActive(){
 }
 
 void Shop::active(Role* role){
-    //not finish
+    if (bag.costMoney(priceList[chosenItemId])) {
+        bag.obtainItem(new Item(ItemList[chosenItemId], ITEMID(chosenItemId)));
+    }
 }
 
 void Shop::chooseActiveUP(){
@@ -61,7 +70,7 @@ void Shop::chooseActiveDown(){
 vector<string> Shop::getAllChoose(){
     vector<string> itemNames;
     for(int i = 0; i < ITEMID::Invalid; i++){
-        itemNames.push_back(ItemList[i]);
+        itemNames.push_back(ItemList[i] + " $" + to_string(priceList[i]));
     }
 
     return itemNames;
