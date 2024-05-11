@@ -1,6 +1,7 @@
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 #include <iostream>
+#include <string>
 #include "GameManager.h"
 #include "Point.h"
 using namespace std;
@@ -19,6 +20,12 @@ public:
 	string getTag();
 
 	void ObjectMove(Point pos);
+
+    virtual void startActive() = 0; //tell game need to display choose screen
+    virtual void active(Role* role) = 0;
+    virtual void chooseActiveUP() = 0; 
+    virtual void chooseActiveDown() = 0;
+    virtual vector<string> getAllChoose() = 0; //return all choose's name, you can use it to display
 
 private:
 	string tag;
