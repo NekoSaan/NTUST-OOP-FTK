@@ -4,11 +4,9 @@
 #include <string>
 #include <vector>
 #include "Object.h"
-#include "Backpack.h"
+#include "Items.h"
 
 using namespace std;
-
-class Role; // not finish
 
 class Shop : public Object {
 private:
@@ -16,18 +14,19 @@ private:
     int chosenItemId;
 
 public:
-    Shop(void);
+    Shop();
 
-    void startActive(); // Tell game need to display choose screen
-    void active(Role*);
+    void startActive(); //tell game need to display choose screen
+    //void active(Role* role);
     void chooseActiveUP();
     void chooseActiveDown();
     vector<string> getAllChoose();
 };
 
+
 //put into .cpp when everything done
-Shop::Shop(void){
-    // wonderful shop sell everything!
+Shop::Shop(){
+    //wonderful shop sell everything!
     this->priceList[ITEMID::Godsbeard] = 10;
     this->priceList[ITEMID::GoldenRoot] = 15;
     this->priceList[ITEMID::TeleportScroll] = 30;
@@ -46,23 +45,20 @@ void Shop::active(Role* role){
 
 void Shop::chooseActiveUP(){
     chosenItemId--;
-
-    if (chosenItemId < 0){
+    if(chosenItemId < 0){
         chosenItemId = ITEMID::Invalid - 1;
     }
 }
 
 void Shop::chooseActiveDown(){
     chosenItemId++;
-
-    if (chosenItemId == ITEMID::Invalid){
+    if(chosenItemId == ITEMID::Invalid){
         chosenItemId = 0;
     }
 }
 
 vector<string> getAllChoose(){
     vector<string> itemNames;
-
     for(int i = 0; i < ITEMID::Invalid; i++){
         itemNames.push_back(ItemList[i]);
     }
