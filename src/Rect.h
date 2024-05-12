@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _RECT_H_
+#define _RECT_H_
 
 class Rect
 {
@@ -15,3 +16,4 @@ private:
 
 	char status;
 };
+#endif // _RECT_H_

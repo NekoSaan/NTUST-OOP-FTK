@@ -1,9 +1,10 @@
-﻿#include <Windows.h>
+#include <Windows.h>
 #include <iostream>
 #include <vector>
 #include <conio.h>
 #include <string>
 #include "GameManager.h"
+#include "Backpack.h"
 using namespace std;
 
 // Define input command
@@ -122,6 +123,16 @@ void keyUpdate(bool key[])
 	case 'd':
 		key[int(VALIDINPUT::ED)] = true;
 		break;
+	case 'I':
+	case 'i':
+		key[int(VALIDINPUT::EI)] = true;
+		break;
+	case 8:
+		key[int(VALIDINPUT::EBACKSPACE)] = true;
+		break;
+	case 13:
+		key[int(VALIDINPUT::EENTER)] = true;
+		break;
 	case 27:
 		key[int(VALIDINPUT::EESC)] = true;
 		break;
@@ -138,19 +149,22 @@ void update(bool key[])
 	// Check input wasd
 	if (key[int(VALIDINPUT::EW)])
 	{
-		player1.ObjectMove(-1, 0);
+		gObject.ObjectMove(Point{ -1,0 });
 	}
 	else if (key[int(VALIDINPUT::ES)])
 	{
-		player1.ObjectMove( 1,0 );
+		gObject.ObjectMove(Point{ 1,0 });
 	}
 	else if (key[int(VALIDINPUT::EA)])
 	{
-		player1.ObjectMove( 0,-1 );
+		gObject.ObjectMove(Point{ 0,-1 });
 	}
 	else if (key[int(VALIDINPUT::ED)])
 	{
-		player1.ObjectMove( 0,1 );
+		gObject.ObjectMove(Point{ 0,1 });
+	}
+	else if (key[int(VALIDINPUT::EI)]) {
+		bag.invMode();
 	}
 	else
 	{

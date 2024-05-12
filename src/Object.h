@@ -1,27 +1,41 @@
-#pragma once
+#ifndef _OBJECT_H_
+#define _OBJECT_H_
 #include <iostream>
+#include <string>
 #include "GameManager.h"
+#include "Point.h"
+#include "Role.h"
+
+using namespace std;
 
 class Object
 {
 public:
 	Object();
 
-	Object(std::string icon, int y, int x);
+	Object(string, int, int);
 
-	void setPos(int y, int x);
+	void setPos(int, int);
 
-	std::pair<int, int> getPos();
+	pair<int, int> getPos();
 
-	std::string getTag();
+	string getTag();
 
-	void ObjectMove(int y, int x);
+	void ObjectMove(int, int);
 
-	bool isPositionValid(int y, int x);
+	bool isPositionValid(int, int);
+  
+  //virtual void startActive() = 0; //tell game need to display choose screen
+  //virtual void active(Role* role) = 0;
+  //virtual void chooseActiveUP() = 0; 
+  //virtual void chooseActiveDown() = 0;
+  //virtual vector<string> getAllChoose() = 0; // return all choose's name, you can use it to display
 
 private:
-	std::string tag;
+	string tag;
 
 	int y;
 	int x;
 };
+
+#endif // _OBJECT_H_
