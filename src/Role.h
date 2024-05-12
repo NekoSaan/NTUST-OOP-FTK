@@ -1,7 +1,12 @@
 #pragma once
-#include"Entity.h"
+#include "Entity.h"
+#include "Object.h"
 
-class Role : public Entity {
+class Object;
+class Entity;
+
+class Role : public Entity, public Object {
+public:
 	Role() : Entity() {
 		srand(time(0));  // 初始化隨機種子
 		setVitality(rand() % 15 + 30);  // [30, 45) 的隨機數
@@ -13,4 +18,7 @@ class Role : public Entity {
 		setPDefense(rand() % 21);  // [0, 20] 的隨機數
 		setMDefense(rand() % 21);  // [0, 20] 的隨機數
 	}
+
+	void move(int y, int x);
 };
+
