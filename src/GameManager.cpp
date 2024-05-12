@@ -1,18 +1,25 @@
 ﻿#include "GameManager.h"
 
-const float CAMERAHEIGHTRATE = 0.55;
-const float CAMERAWIDTHRATE = 0.66;
+const float GameManager::CAMERA_HEIGHT_RATE = 0.55;
+const float GameManager::CAMERA_WIDTH_RATE = 0.66;
 
-int mapHeight = 50;
-int mapWidth = 140;
+int GameManager::mapHeight = 50;
+int GameManager::mapWidth = 140;
 
-int cameraHeight = 0;
-int cameraWidth = 0;
+int GameManager::cameraHeight = 0;
+int GameManager::cameraWidth = 0;
 
-int cameraX = 0;
-int cameraY = 0;
+int GameManager::cameraX = 0;
+int GameManager::cameraY = 0;
 
-std::vector<std::vector<Rect>> gameBoard(mapHeight, std::vector<Rect>(mapWidth));
+std::vector<std::vector<Rect>> GameManager::gameBoard(mapHeight, std::vector<Rect>(mapWidth));
+std::vector<Role*> GameManager::roles;
+
+GameManager::GameManager() {
+	for (int i = 0; i < 3; i++) {
+		this->roles.push_back(new Role());
+	}
+}
 
 void GameManager::setColor(int color)
 {
@@ -41,7 +48,17 @@ void GameManager::setMap()
 		}
 	}
 
-	//character.setPos(std::pair<int,int>( int(cameraHeight * CAMERAHEIGHTRATE / 2), int(cameraWidth * CAMERAWIDTHRATE / 2) ));
+	//set 3 roles position
+	roles[0]->setPos(25, 70);
+	roles[1]->setPos(25, 72);
+	roles[2]->setPos(27, 70);
+
+	//set current role
+	currentRole = roles[0];
+
+	//set status
+	gameStatus = GAME_STATUS::MAP;
+	informationStatus = INFORMATION_STATUS::NORMAL;
 }
 
 void GameManager::outputGameBoard(std::string icon, std::pair<int, int> pos)
@@ -68,13 +85,13 @@ void GameManager::outputGameBoard(std::string icon, std::pair<int, int> pos)
 	showBoard[pos.first][pos.second].first = icon;
 	showBoard[pos.first][pos.second].second = 108;
 
-	for (int row = 0; row < std::floor(cameraHeight * CAMERAHEIGHTRATE); row += 1)
+	for (int row = 0; row < std::floor(cameraHeight * CAMERA_HEIGHT_RATE); row += 1)
 	{
 		setCursor(row, 0);
 		std::cout << "|";
-		for (int col = 0; col < std::floor(cameraWidth * CAMERAWIDTHRATE); col += 1)
+		for (int col = 0; col < std::floor(cameraWidth * CAMERA_WIDTH_RATE); col += 1)
 		{
-			if (row == 0 || row == std::floor(cameraHeight * CAMERAHEIGHTRATE) - 1)
+			if (row == 0 || row == std::floor(cameraHeight * CAMERA_HEIGHT_RATE) - 1)
 			{
 				std::cout << "-";
 			}

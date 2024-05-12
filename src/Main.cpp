@@ -8,20 +8,22 @@
 using namespace std;
 
 // Define input command
-enum class VALIDINPUT
+enum VALIDINPUT
 {
 	EW = 0,
-	ES = 1,
-	EA = 2,
-	ED = 3,
-	EESC = 4,
+	ES,
+	EA,
+	ED,
+	EI,
+	EBACKSPACE,
+	EENTER,
+	EESC,
 	INVALID,
 };
 
 const double_t GTIMELOG = 0.03;
 
-Object player1, player2, player3;
-GameManager map;
+GameManager gameManager;
 
 void keyUpdate(bool key[]);
 
@@ -35,20 +37,18 @@ int main() {
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
 
-	cameraHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-	cameraWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+	int windowWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+	GameManager::cameraHeight = windowHeight * GameManager::CAMERA_HEIGHT_RATE;
+	GameManager::cameraWidth = windowWidth * GameManager::CAMERA_WIDTH_RATE;
 
-	map.setMap();
+	gameManager.setMap();
 
 	bool gKeyState[int(VALIDINPUT::INVALID) + 1] = { false };
 	bool player[int(PLAYER::INVALID)] = { false };
 
 	double startT = clock();
 	double endT = clock();
-
-	player1.setPos(int(cameraHeight * CAMERAHEIGHTRATE / 2), int(cameraWidth * CAMERAWIDTHRATE / 2));
-	player2.setPos(int(cameraHeight * CAMERAHEIGHTRATE / 2), int(cameraWidth * CAMERAWIDTHRATE / 2));
-	player3.setPos(int(cameraHeight * CAMERAHEIGHTRATE / 2), int(cameraWidth * CAMERAWIDTHRATE / 2));
 
 	do
 	{
@@ -62,24 +62,24 @@ int main() {
 			startT = clock();
 		}
 
-		map.outputGameBoard(player1.getTag(), player1.getPos());
+		gameManager.outputGameBoard(player1.getTag(), player1.getPos());
 
 		vector<string> information;
 		information.push_back("Camera height: " + to_string(cameraHeight));
 		information.push_back("Camera width: " + to_string(cameraWidth));
 
-		map.outputInformation(information);
+		gameManager.outputInformation(information);
 
 		player[int(PLAYER::PLAYER1)] = true;
-		map.outputPlayerBoard(information, player);
+		gameManager.outputPlayerBoard(information, player);
 		player[int(PLAYER::PLAYER1)] = false;
 
 		player[int(PLAYER::PLAYER2)] = true;
-		map.outputPlayerBoard(information, player);
+		gameManager.outputPlayerBoard(information, player);
 		player[int(PLAYER::PLAYER2)] = false;
 
 		player[int(PLAYER::PLAYER3)] = true;
-		map.outputPlayerBoard(information, player);
+		gameManager.outputPlayerBoard(information, player);
 		player[int(PLAYER::PLAYER3)] = false;
 
 		// Update the key
@@ -149,19 +149,19 @@ void update(bool key[])
 	// Check input wasd
 	if (key[int(VALIDINPUT::EW)])
 	{
-		gObject.ObjectMove(Point{ -1,0 });
+		GameManager::currentRole->ObjectMove(-1, 0);
 	}
 	else if (key[int(VALIDINPUT::ES)])
 	{
-		gObject.ObjectMove(Point{ 1,0 });
+		GameManager::currentRole->ObjectMove(1, 0);
 	}
 	else if (key[int(VALIDINPUT::EA)])
 	{
-		gObject.ObjectMove(Point{ 0,-1 });
+		GameManager::currentRole->ObjectMove(0, -1);
 	}
 	else if (key[int(VALIDINPUT::ED)])
 	{
-		gObject.ObjectMove(Point{ 0,1 });
+		GameManager::currentRole->ObjectMove(0, 1);
 	}
 	else if (key[int(VALIDINPUT::EI)]) {
 		bag.invMode();

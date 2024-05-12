@@ -2,7 +2,6 @@
 #define _BACKPACK_H_
 #include "Items.h"
 #include "GameManager.h"
-#include "Main.h"
 
 class BackPack {
 private:

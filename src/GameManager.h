@@ -3,20 +3,7 @@
 #include <vector>
 #include "Rect.h"
 #include "Object.h"
-
-extern const float CAMERAHEIGHTRATE;
-extern const float CAMERAWIDTHRATE;
-
-extern int mapHeight;
-extern int mapWidth;
-
-extern int cameraHeight;
-extern int cameraWidth;
-
-extern int cameraX;
-extern int cameraY;
-
-extern std::vector<std::vector<Rect>> gameBoard;
+#include "Role.h"
 
 enum class PLAYER
 {
@@ -26,20 +13,47 @@ enum class PLAYER
 	INVALID,
 };
 
+enum GAME_STATUS {
+	MAP,
+	COMBAT
+};
+
+enum INFORMATION_STATUS {
+	NORMAL,
+	BAG,
+	SHOP
+};
+
 class GameManager
 {
 public:
-	void setColor(int color = 7);
+	static const float CAMERA_HEIGHT_RATE; //camera height in window height rate
+	static const float CAMERA_WIDTH_RATE; //camera width in window width rate
 
+	static int mapHeight;
+	static int mapWidth;
+	static int cameraHeight;
+	static int cameraWidth;
+	static int cameraX;
+	static int cameraY;
+
+	static int gameStatus;
+	static int informationStatus;
+
+	static std::vector<std::vector<Rect>> gameBoard;
+	static std::vector<Role*> roles;
+
+	static Role* currentRole;
+
+	GameManager(); //init roles
+
+	void setColor(int color = 7);
 	void setCursor(int y, int x);
 
 	void setMap();
 
 	void outputGameBoard(std::string icon, std::pair<int, int> pos);
-
 	void outputInformation(std::vector<std::string>& information);
-
 	void outputPlayerBoard(std::vector<std::string>& information, bool* playerList);
-
-	void GameManager::canSee(int currentY, int currentX, std::vector<std::vector<std::pair<std::string, int>>>& showBoard);
+	void canSee(int currentY, int currentX, std::vector<std::vector<std::pair<std::string, int>>>& showBoard);
 };

@@ -4,9 +4,10 @@
 #include <string>
 #include "GameManager.h"
 #include "Point.h"
-#include "Role.h"
 
 using namespace std;
+
+class Role;
 
 class Object
 {
@@ -15,6 +16,7 @@ public:
 
 	Object(string, int, int);
 
+	//(y, x)
 	void setPos(int, int);
 
 	pair<int, int> getPos();
@@ -31,7 +33,7 @@ public:
   //virtual void chooseActiveDown() = 0;
   //virtual vector<string> getAllChoose() = 0; // return all choose's name, you can use it to display
 
-private:
+protected:
 	string tag;
 
 	int y;
