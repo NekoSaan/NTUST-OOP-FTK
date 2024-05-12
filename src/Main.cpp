@@ -24,7 +24,7 @@ enum VALIDINPUT
 
 const double_t GTIMELOG = 0.03;
 
-GameManager gameManager;
+GameManager* gameManager;
 
 void keyUpdate(bool key[]);
 
@@ -40,10 +40,11 @@ int main() {
 
 	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 	int windowWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-	GameManager::cameraHeight = windowHeight * GameManager::CAMERA_HEIGHT_RATE;
-	GameManager::cameraWidth = windowWidth * GameManager::CAMERA_WIDTH_RATE;
+	GameManager::cameraHeight = min(windowHeight * GameManager::CAMERA_HEIGHT_RATE, GameManager::mapHeight);
+	GameManager::cameraWidth = min(windowWidth * GameManager::CAMERA_WIDTH_RATE, GameManager::mapWidth);
 
-	gameManager.setMap();
+	gameManager = GameManager::getInstance();
+	gameManager->setMap();
 
 	bool gKeyState[int(VALIDINPUT::INVALID) + 1] = { false };
 	bool player[int(PLAYER::INVALID)] = { false };
@@ -63,8 +64,8 @@ int main() {
 			startT = clock();
 		}
 
-		gameManager.outputGameBoard();
-		gameManager.setInformation();
+		gameManager->outputGameBoard();
+		gameManager->setInformation();
 
 		/*
 		player[int(PLAYER::PLAYER1)] = true;
@@ -149,7 +150,7 @@ void update(bool key[])
 		switch (GameManager::gameStatus) 
 		{
 		case GAME_STATUS::MAP:
-			gameManager.getCurrentRole()->move(-1, 0);
+			gameManager->getCurrentRole()->move(-1, 0);
 			break;
 		case GAME_STATUS::BACKPACK:
 			bag.chooseUp();
@@ -161,7 +162,7 @@ void update(bool key[])
 		switch (GameManager::gameStatus) 
 		{
 		case GAME_STATUS::MAP:
-			gameManager.getCurrentRole()->move(1, 0);
+			gameManager->getCurrentRole()->move(1, 0);
 			break;
 		case GAME_STATUS::BACKPACK:
 			bag.chooseDown();
@@ -173,7 +174,7 @@ void update(bool key[])
 		switch (GameManager::gameStatus) 
 		{
 		case GAME_STATUS::MAP:
-			gameManager.getCurrentRole()->move(0, -1);
+			gameManager->getCurrentRole()->move(0, -1);
 			break;
 		}
 	}
@@ -182,7 +183,7 @@ void update(bool key[])
 		switch (GameManager::gameStatus) 
 		{
 		case GAME_STATUS::MAP:
-			gameManager.getCurrentRole()->move(0, 1);
+			gameManager->getCurrentRole()->move(0, 1);
 			break;
 		}
 	}

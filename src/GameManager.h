@@ -32,10 +32,15 @@ private:
 	std::vector<std::string> normalInformation();
 	std::vector<std::string> backpackInformation();
 
-	std::vector<Role*> roles;
-	Role* currentRole;
+	static std::vector<Role*> roles;
+	static Role* currentRole;
+
+	static GameManager* instance;
+	GameManager(); //init roles 
 
 public:
+	static GameManager* getInstance();
+
 	static const float CAMERA_HEIGHT_RATE; //camera height in window height rate
 	static const float CAMERA_WIDTH_RATE; //camera width in window width rate
 
@@ -47,13 +52,9 @@ public:
 	static int cameraY;
 
 	static GAME_STATUS gameStatus;
-
 	static std::vector<std::vector<Rect>> gameBoard;
 	
-	
 	static bool isPositionValid(int y, int x);
-
-	GameManager(); //init roles 
 
 	Role* getRole(int i);
 	Role* getCurrentRole();
@@ -64,6 +65,7 @@ public:
 
 	//set information by informationStatus, then call outputInformation()
 	void setInformation();
+	//input string array, print information on screen left, I think it is useful, so I put it in public
 	void outputInformation(std::vector<std::string>& information);
 
 	void outputPlayerBoard(std::vector<std::string>& information, bool* playerList);

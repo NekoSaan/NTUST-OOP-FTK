@@ -3,7 +3,7 @@
 #include "Rect.h"
 #include "Object.h"
 #include "Backpack.h"
-
+#include "Role.h"
 const float GameManager::CAMERA_HEIGHT_RATE = 0.55;
 const float GameManager::CAMERA_WIDTH_RATE = 0.66;
 
@@ -18,10 +18,23 @@ GAME_STATUS GameManager::gameStatus;
 
 std::vector<std::vector<Rect>> GameManager::gameBoard(mapHeight, std::vector<Rect>(mapWidth));
 
+std::vector<Role*> GameManager::roles;
+Role* GameManager::currentRole;
+
+GameManager* GameManager::instance = NULL;
+
+GameManager* GameManager::getInstance() {
+	if (instance == NULL) {
+		instance = new GameManager();
+	}
+	return instance;
+}
+
 GameManager::GameManager() {
 	for (int i = 0; i < 3; i++) {
 		this->roles.push_back(new Role());
 	}
+	currentRole = roles[0];
 }
 
 void GameManager::setColor(int color)
@@ -100,20 +113,24 @@ void GameManager::outputGameBoard()
 	showBoard[pos.first][pos.second].second = 108;
 
 	//print out
-	for (int row = 0; row < std::floor(cameraHeight * CAMERA_HEIGHT_RATE); row += 1)
+	int marginUp = cameraY - cameraHeight / 2;
+	int marginDown = cameraY + cameraHeight / 2;
+	int marginLeft = cameraX - cameraWidth / 2;
+	int marginRight = cameraX + cameraWidth / 2;
+	for (int row = marginUp; row < marginDown; row += 1)
 	{
 		setCursor(row, 0);
 		std::cout << "|";
-		for (int col = 0; col < std::floor(cameraWidth * CAMERA_WIDTH_RATE); col += 1)
+		for (int col = marginLeft; col < marginRight; col += 1)
 		{
-			if (row == 0 || row == std::floor(cameraHeight * CAMERA_HEIGHT_RATE) - 1)
+			if (row == marginUp || row == marginDown - 1)
 			{
 				std::cout << "-";
 			}
 			else
 			{
-				setColor(showBoard[row + cameraY][col + cameraX].second);
-				std::cout << showBoard[row + cameraY][col + cameraX].first;
+				setColor(showBoard[row][col].second);
+				std::cout << showBoard[row][col].first;
 				setColor();
 			}
 		}
@@ -123,8 +140,8 @@ void GameManager::outputGameBoard()
 
 void GameManager::outputInformation(std::vector<std::string>& information)
 {
-	int height = std::floor(cameraHeight * CAMERA_HEIGHT_RATE);
-	int width = std::floor(cameraWidth * CAMERA_WIDTH_RATE);
+	int height = cameraHeight;
+	int width = cameraWidth;
 
 	for (int row = 0; row < height; row += 1)
 	{
@@ -231,10 +248,12 @@ void GameManager::canSee(int currentY, int currentX, std::vector<std::vector<std
 void GameManager::setCameraToCurrentRole() {
 	cameraX = currentRole->getPos().second;
 	cameraY = currentRole->getPos().first;
+
 	if (cameraX < cameraWidth / 2) cameraX = cameraWidth / 2;
 	if (cameraX > mapWidth - cameraWidth / 2) cameraX = mapWidth - cameraWidth / 2;
 	if (cameraY < cameraHeight / 2) cameraY = cameraHeight / 2;
-	if (cameraY > mapHeight - cameraWidth / 2) cameraY = mapHeight - cameraWidth / 2;
+	if (cameraY > mapHeight - cameraHeight / 2) cameraY = mapHeight - cameraHeight / 2;
+
 }
 
 void GameManager::setInformation() {

@@ -15,6 +15,8 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/Object.cpp
 
     ${PROJECT_SOURCE_DIR}/src/Backpack.h
+    ${PROJECT_SOURCE_DIR}/src/Backpack.cpp
+
     ${PROJECT_SOURCE_DIR}/src/Items.h
     ${PROJECT_SOURCE_DIR}/src/Shop.h
     
@@ -22,6 +24,7 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/Entity.cpp
     
     ${PROJECT_SOURCE_DIR}/src/Role.h
+    ${PROJECT_SOURCE_DIR}/src/Role.cpp
 )
 
 add_executable(project ${project_SRC_LIST})
