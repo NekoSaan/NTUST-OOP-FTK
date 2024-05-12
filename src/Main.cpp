@@ -5,6 +5,7 @@
 #include <string>
 #include "GameManager.h"
 #include "Backpack.h"
+
 using namespace std;
 
 // Define input command
@@ -62,14 +63,10 @@ int main() {
 			startT = clock();
 		}
 
-		gameManager.outputGameBoard(player1.getTag(), player1.getPos());
+		gameManager.outputGameBoard();
+		gameManager.setInformation();
 
-		vector<string> information;
-		information.push_back("Camera height: " + to_string(cameraHeight));
-		information.push_back("Camera width: " + to_string(cameraWidth));
-
-		gameManager.outputInformation(information);
-
+		/*
 		player[int(PLAYER::PLAYER1)] = true;
 		gameManager.outputPlayerBoard(information, player);
 		player[int(PLAYER::PLAYER1)] = false;
@@ -80,7 +77,7 @@ int main() {
 
 		player[int(PLAYER::PLAYER3)] = true;
 		gameManager.outputPlayerBoard(information, player);
-		player[int(PLAYER::PLAYER3)] = false;
+		player[int(PLAYER::PLAYER3)] = false;*/
 
 		// Update the key
 		keyUpdate(gKeyState);
@@ -149,22 +146,69 @@ void update(bool key[])
 	// Check input wasd
 	if (key[int(VALIDINPUT::EW)])
 	{
-		GameManager::currentRole->ObjectMove(-1, 0);
+		switch (GameManager::gameStatus) 
+		{
+		case GAME_STATUS::MAP:
+			gameManager.getCurrentRole()->move(-1, 0);
+			break;
+		case GAME_STATUS::BACKPACK:
+			bag.chooseUp();
+			break;
+		}
 	}
 	else if (key[int(VALIDINPUT::ES)])
 	{
-		GameManager::currentRole->ObjectMove(1, 0);
+		switch (GameManager::gameStatus) 
+		{
+		case GAME_STATUS::MAP:
+			gameManager.getCurrentRole()->move(1, 0);
+			break;
+		case GAME_STATUS::BACKPACK:
+			bag.chooseDown();
+			break;
+		}
 	}
 	else if (key[int(VALIDINPUT::EA)])
 	{
-		GameManager::currentRole->ObjectMove(0, -1);
+		switch (GameManager::gameStatus) 
+		{
+		case GAME_STATUS::MAP:
+			gameManager.getCurrentRole()->move(0, -1);
+			break;
+		}
 	}
 	else if (key[int(VALIDINPUT::ED)])
 	{
-		GameManager::currentRole->ObjectMove(0, 1);
+		switch (GameManager::gameStatus) 
+		{
+		case GAME_STATUS::MAP:
+			gameManager.getCurrentRole()->move(0, 1);
+			break;
+		}
 	}
 	else if (key[int(VALIDINPUT::EI)]) {
-		bag.invMode();
+		switch (GameManager::gameStatus) 
+		{
+		case GAME_STATUS::MAP:
+			bag.invMode();
+			break;
+		}
+	}
+	else if (key[int(VALIDINPUT::EENTER)]) {
+		switch (GameManager::gameStatus)
+		{
+		case GAME_STATUS::BACKPACK:
+			bag.useItem();
+			break;
+		}
+	}
+	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
+		switch (GameManager::gameStatus)
+		{
+		case GAME_STATUS::BACKPACK:
+			bag.closeBag();
+			break;
+		}
 	}
 	else
 	{

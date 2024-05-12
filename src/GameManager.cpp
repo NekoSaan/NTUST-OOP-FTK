@@ -1,19 +1,22 @@
 ﻿#include "GameManager.h"
+#include <iostream>
+#include "Rect.h"
+#include "Object.h"
+#include "Backpack.h"
 
 const float GameManager::CAMERA_HEIGHT_RATE = 0.55;
 const float GameManager::CAMERA_WIDTH_RATE = 0.66;
 
 int GameManager::mapHeight = 50;
 int GameManager::mapWidth = 140;
-
 int GameManager::cameraHeight = 0;
 int GameManager::cameraWidth = 0;
-
 int GameManager::cameraX = 0;
 int GameManager::cameraY = 0;
 
+GAME_STATUS GameManager::gameStatus;
+
 std::vector<std::vector<Rect>> GameManager::gameBoard(mapHeight, std::vector<Rect>(mapWidth));
-std::vector<Role*> GameManager::roles;
 
 GameManager::GameManager() {
 	for (int i = 0; i < 3; i++) {
@@ -37,14 +40,13 @@ void GameManager::setCursor(int y, int x)
 	SetConsoleCursorPosition(handle, pos);
 }
 
-
 void GameManager::setMap()
 {
 	for (int row = 9; row < mapHeight; row += 10)
 	{
 		for (int col = 0; col < mapWidth; col += 1)
 		{
-			gameBoard[row][col].setStatus((col % 10 == 9) ? '.' : '#');
+			gameBoard[row][col].setIcon((col % 10 == 9) ? '.' : '#');
 		}
 	}
 
@@ -58,11 +60,24 @@ void GameManager::setMap()
 
 	//set status
 	gameStatus = GAME_STATUS::MAP;
-	informationStatus = INFORMATION_STATUS::NORMAL;
 }
 
-void GameManager::outputGameBoard(std::string icon, std::pair<int, int> pos)
+Role* GameManager::getRole(int i) {
+	return roles[i];
+}
+
+Role* GameManager::getCurrentRole() {
+	return currentRole;
+}
+
+void GameManager::outputGameBoard()
 {
+	std::string icon = currentRole->getIcon();
+	std::pair<int, int> pos = currentRole->getPos();
+
+	setCameraToCurrentRole();
+
+	//set up show board, it has char and color
 	std::vector<std::vector<std::pair<std::string, int>>> showBoard(mapHeight, std::vector<std::pair<std::string, int>>(mapWidth, std::pair<std::string, int>(".", 96)));
 	for (int row = 0; row < mapHeight; row += 1)
 	{
@@ -70,7 +85,7 @@ void GameManager::outputGameBoard(std::string icon, std::pair<int, int> pos)
 		{
 			if (pow(pos.first - row, 2) + pow(pos.second - col, 2) < pow(10, 2))
 			{
-				showBoard[row][col].second = (gameBoard[row][col].getStatus() == '#' ? 136 : 96);
+				showBoard[row][col].second = (gameBoard[row][col].getIcon() == '#' ? 136 : 96);
 			}
 			else
 			{
@@ -81,10 +96,10 @@ void GameManager::outputGameBoard(std::string icon, std::pair<int, int> pos)
 
 	canSee(pos.first, pos.second, showBoard);
 
-
 	showBoard[pos.first][pos.second].first = icon;
 	showBoard[pos.first][pos.second].second = 108;
 
+	//print out
 	for (int row = 0; row < std::floor(cameraHeight * CAMERA_HEIGHT_RATE); row += 1)
 	{
 		setCursor(row, 0);
@@ -108,8 +123,8 @@ void GameManager::outputGameBoard(std::string icon, std::pair<int, int> pos)
 
 void GameManager::outputInformation(std::vector<std::string>& information)
 {
-	int height = std::floor(cameraHeight * CAMERAHEIGHTRATE);
-	int width = std::floor(cameraWidth * CAMERAWIDTHRATE);
+	int height = std::floor(cameraHeight * CAMERA_HEIGHT_RATE);
+	int width = std::floor(cameraWidth * CAMERA_WIDTH_RATE);
 
 	for (int row = 0; row < height; row += 1)
 	{
@@ -137,8 +152,8 @@ void GameManager::outputInformation(std::vector<std::string>& information)
 
 void GameManager::outputPlayerBoard(std::vector<std::string>& information, bool* playerList)
 {
-	int height = std::floor(cameraHeight * CAMERAHEIGHTRATE);
-	int width = std::floor(cameraWidth * CAMERAWIDTHRATE);
+	int height = std::floor(cameraHeight * CAMERA_HEIGHT_RATE);
+	int width = std::floor(cameraWidth * CAMERA_WIDTH_RATE);
 
 	int playerPointer = 0;
 	for (; !playerList[playerPointer] && playerPointer < int(PLAYER::INVALID); playerPointer += 1) {}
@@ -203,7 +218,7 @@ void GameManager::canSee(int currentY, int currentX, std::vector<std::vector<std
 					y -= 1;
 				}
 
-				if (gameBoard[y][x].getStatus() == '#')
+				if (gameBoard[y][x].getIcon() == '#')
 				{
 					showBoard[tempY][tempX].second = 119;
 					break;
@@ -212,3 +227,69 @@ void GameManager::canSee(int currentY, int currentX, std::vector<std::vector<std
 		}
 	}
 }
+
+void GameManager::setCameraToCurrentRole() {
+	cameraX = currentRole->getPos().second;
+	cameraY = currentRole->getPos().first;
+	if (cameraX < cameraWidth / 2) cameraX = cameraWidth / 2;
+	if (cameraX > mapWidth - cameraWidth / 2) cameraX = mapWidth - cameraWidth / 2;
+	if (cameraY < cameraHeight / 2) cameraY = cameraHeight / 2;
+	if (cameraY > mapHeight - cameraWidth / 2) cameraY = mapHeight - cameraWidth / 2;
+}
+
+void GameManager::setInformation() {
+	std::vector<std::string> information;
+
+	switch (gameStatus) {
+		case GAME_STATUS::MAP:
+			information = normalInformation();
+			break;
+		case GAME_STATUS::BACKPACK:
+			information = backpackInformation();
+			break;
+	}
+
+	outputInformation(information);
+}
+
+std::vector<std::string> GameManager::normalInformation() {
+	vector<string> information;
+	information.push_back("Camera height: " + to_string(GameManager::cameraHeight));
+	information.push_back("Camera width: " + to_string(GameManager::cameraWidth));
+	return information;
+}
+
+std::vector<std::string> GameManager::backpackInformation() {
+	vector<string> information;
+	information.push_back("Bag (Page:" + to_string(bag.getCurPage()) + "/" + to_string(bag.getMaxPage()) + ")");
+
+	for (int i = (bag.getCurPage() - 1) * 8; i < bag.getCurPage() * 8; i++) {
+		if (i >= bag.getInventorySize()) {
+			information.push_back(" ");
+			continue;
+		}
+
+		if (bag.getCurIndex() == i) {
+			information.push_back("-> " + bag.getItemName(i) + ": " + to_string(bag.getItemAmount(i)));
+		}
+		else {
+			information.push_back("   " + bag.getItemName(i) + ": " + to_string(bag.getItemAmount(i)));
+		}
+	}
+
+	information.push_back(" "); // seperate by 1 line
+	information.push_back("___________Item Description__________");
+	information.push_back("To be countinue");
+
+	return information;
+}
+
+bool GameManager::isPositionValid(int y, int x) {
+	if (y > (mapHeight - 1) || x > (mapWidth - 1) || y < 0 || x < 0)
+	{
+		return false;
+	}
+
+	return (gameBoard[y][x].getIcon() == '.');
+}
+
