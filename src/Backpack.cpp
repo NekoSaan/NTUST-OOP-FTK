@@ -83,9 +83,6 @@ void BackPack::invMode(void) {
 	curPage = 1;
 	maxPage = ((int)inventory.size() - 1) / 8 + 1;
 
-	double startT = clock();
-	double endT = clock();
-
 	GameManager::gameStatus = GAME_STATUS::BACKPACK;
 }
 
@@ -97,6 +94,10 @@ void BackPack::chooseDown() {
 }
 
 void BackPack::useItem() {
+	if (inventory.empty()) {
+		return; // inventory is empty, there is no item for use
+	}
+
 	// inventory[curIndex]->use(curRole);
 	inventory[curIndex]->decAmount();
 
