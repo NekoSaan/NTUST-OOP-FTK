@@ -27,6 +27,7 @@ GameManager* GameManager::getInstance() {
 	if (instance == NULL) {
 		instance = new GameManager();
 	}
+
 	return instance;
 }
 
@@ -34,6 +35,7 @@ GameManager::GameManager() {
 	for (int i = 0; i < 3; i++) {
 		this->roles.push_back(new Role());
 	}
+
 	currentRole = roles[0];
 }
 
@@ -63,15 +65,15 @@ void GameManager::setMap()
 		}
 	}
 
-	//set 3 roles position
+	// set 3 roles position
 	roles[0]->setPos(25, 70);
 	roles[1]->setPos(25, 72);
 	roles[2]->setPos(27, 70);
 
-	//set current role
+	// set current role
 	currentRole = roles[0];
 
-	//set status
+	// set status
 	gameStatus = GAME_STATUS::MAP;
 }
 
@@ -92,6 +94,7 @@ void GameManager::outputGameBoard()
 
 	//set up show board, it has char and color
 	std::vector<std::vector<std::pair<std::string, int>>> showBoard(mapHeight, std::vector<std::pair<std::string, int>>(mapWidth, std::pair<std::string, int>(".", 96)));
+	
 	for (int row = 0; row < mapHeight; row += 1)
 	{
 		for (int col = 0; col < mapWidth; col += 1)
@@ -117,37 +120,52 @@ void GameManager::outputGameBoard()
 	int marginDown = cameraY + cameraHeight / 2;
 	int marginLeft = cameraX - cameraWidth / 2;
 	int marginRight = cameraX + cameraWidth / 2;
-	for (int row = marginUp; row < marginDown; row += 1)
-	{
+
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+
+	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+
+	for (int row = 0; row < windowHeight; row += 1) {
 		setCursor(row, 0);
 		std::cout << "|";
+
 		for (int col = marginLeft; col < marginRight; col += 1)
 		{
-			if (row == marginUp || row == marginDown - 1)
-			{
+			if (row == 0 || row == windowHeight - 1) {
 				std::cout << "-";
+			}
+			else if (row + marginUp >= mapHeight) {
+				std::cout << " ";
 			}
 			else
 			{
-				setColor(showBoard[row][col].second);
-				std::cout << showBoard[row][col].first;
+				setColor(showBoard[marginUp + row][col].second);
+				std::cout << showBoard[marginUp + row][col].first;
 				setColor();
 			}
 		}
+
 		std::cout << "|";
 	}
+
 }
 
 void GameManager::outputInformation(std::vector<std::string>& information)
 {
-	int height = cameraHeight;
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+
+	int height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+	int windowWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
 	int width = cameraWidth;
 
 	for (int row = 0; row < height; row += 1)
 	{
 		setCursor(row, width);
 		std::cout << "|";
-		for (int col = 1; col < cameraWidth - width - 1; col += 1)
+
+		for (int col = 1; col < windowWidth - width - 1; col += 1)
 		{
 			if (row == 0 || row == height - 1)
 			{
@@ -158,8 +176,10 @@ void GameManager::outputInformation(std::vector<std::string>& information)
 				std::cout << " ";
 			}
 		}
+
 		std::cout << "|";
 		setCursor(row, width + 2);
+
 		if (row > 0 && row < height - 1 && row - 1 < information.size())
 		{
 			std::cout << information[row - 1];
@@ -179,6 +199,7 @@ void GameManager::outputPlayerBoard(std::vector<std::string>& information, bool*
 	{
 		setCursor(height + row, cameraWidth / 3 * playerPointer);
 		std::cout << "|";
+
 		for (int col = 0; col < cameraWidth / 5; col += 1)
 		{
 			if (row == 0 || row == cameraHeight - height - 1)
@@ -190,8 +211,10 @@ void GameManager::outputPlayerBoard(std::vector<std::string>& information, bool*
 				std::cout << " ";
 			}
 		}
+
 		std::cout << "|";
 		setCursor(height + row, cameraWidth / 3 * playerPointer + 2);
+
 		if (row > 0 && row < cameraWidth / 5 - 1 && row - 1 < information.size())
 		{
 			std::cout << information[row - 1];
@@ -249,10 +272,21 @@ void GameManager::setCameraToCurrentRole() {
 	cameraX = currentRole->getPos().second;
 	cameraY = currentRole->getPos().first;
 
-	if (cameraX < cameraWidth / 2) cameraX = cameraWidth / 2;
-	if (cameraX > mapWidth - cameraWidth / 2) cameraX = mapWidth - cameraWidth / 2;
-	if (cameraY < cameraHeight / 2) cameraY = cameraHeight / 2;
-	if (cameraY > mapHeight - cameraHeight / 2) cameraY = mapHeight - cameraHeight / 2;
+	if (cameraX < cameraWidth / 2) {
+		cameraX = cameraWidth / 2;
+	}
+
+	if (cameraX > mapWidth - cameraWidth / 2) {
+		cameraX = mapWidth - cameraWidth / 2;
+	}
+
+	if (cameraY < cameraHeight / 2) {
+		cameraY = cameraHeight / 2;
+	}
+
+	if (cameraY > mapHeight - cameraHeight / 2) {
+		cameraY = mapHeight - cameraHeight / 2;
+	}
 
 }
 

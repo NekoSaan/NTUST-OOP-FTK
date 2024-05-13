@@ -6,6 +6,9 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/GameManager.h
     ${PROJECT_SOURCE_DIR}/src/GameManager.cpp
 
+    ${PROJECT_SOURCE_DIR}/src/Dice.h
+    ${PROJECT_SOURCE_DIR}/src/Dice.cpp
+
     ${PROJECT_SOURCE_DIR}/src/Point.h
 
     ${PROJECT_SOURCE_DIR}/src/Rect.h
