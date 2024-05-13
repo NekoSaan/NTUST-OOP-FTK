@@ -6,14 +6,18 @@ class Rect
 public:
 	Rect();
 
-	void setStatus(char status);
+	void setIcon(char i);
 
-	char getStatus();
+	char getIcon();
+
+	void setIsVisible(bool visible);
+
+	bool getIsVisible();
 
 private:
 	bool isVisible;
 	bool canPass;
 
-	char status;
+	char icon;
 };
 #endif // _RECT_H_

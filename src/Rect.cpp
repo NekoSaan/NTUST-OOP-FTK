@@ -2,18 +2,28 @@
 
 Rect::Rect()
 {
-	this->isVisible = true;
+	this->isVisible = false;
 	this->canPass = true;
 
-	this->status = '.';
+	this->icon = '.';
 }
 
-void Rect::setStatus(char status)
+void Rect::setIcon(char i)
 {
-	this->status = status;
+	this->icon = i;
 }
 
-char Rect::getStatus()
+char Rect::getIcon()
 {
-	return status;
+	return icon;
+}
+
+void Rect::setIsVisible(bool isVisible)
+{
+	this->isVisible = isVisible;
+}
+
+bool Rect::getIsVisible()
+{
+	return this->isVisible;
 }

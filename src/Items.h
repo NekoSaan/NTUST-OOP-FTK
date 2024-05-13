@@ -6,7 +6,7 @@
 
 enum ITEMID {
 	// Consumables, stackable
-	Godsbeard,
+	Godsbeard = 0,
 	GoldenRoot,
 	TeleportScroll,
 	Tent,
@@ -66,7 +66,7 @@ public:
 	virtual void use(Role*);
 };
 
-Item::Item(std::string tag, ITEMID id) : tag(tag), id(id), itemName(ItemList[id]), amount(1) {};
+Item::Item(std::string tag, ITEMID id) : tag(tag), id(id), itemName(ItemList[(int)id]), amount(1) {};
 
 Item::~Item(void) {
 	
@@ -77,7 +77,7 @@ Item::~Item(void) {
 }
 
 int Item::getId(void) {
-	return id;
+	return (int)id;
 }
 
 int Item::getAmount(void) {

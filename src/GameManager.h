@@ -1,22 +1,11 @@
 ﻿#pragma once
 #include <windows.h>
 #include <vector>
-#include "Rect.h"
-#include "Object.h"
+#include <string>
+#include "Role.h"
 
-extern const float CAMERAHEIGHTRATE;
-extern const float CAMERAWIDTHRATE;
-
-extern int mapHeight;
-extern int mapWidth;
-
-extern int cameraHeight;
-extern int cameraWidth;
-
-extern int cameraX;
-extern int cameraY;
-
-extern std::vector<std::vector<Rect>> gameBoard;
+class Object;
+class Rect;
 
 enum class PLAYER
 {
@@ -26,20 +15,66 @@ enum class PLAYER
 	INVALID,
 };
 
+enum class GAME_STATUS {
+	MAP, //on map
+	COMBAT, // fight with enemy
+	BACKPACK, //open backpack
+	INTERACTIVE //interact with object on map
+};
+
 class GameManager
 {
-public:
+private:
+	void setCameraToCurrentRole();
 	void setColor(int color = 7);
-
 	void setCursor(int y, int x);
+
+	std::vector<std::string> normalInformation();
+	std::vector<std::string> backpackInformation();
+	std::vector<std::string> playerInformation[3];
+
+	bool playerList[3] = { false };
+
+	static std::vector<Role*> roles;
+	static Role* currentRole;
+
+	static GameManager* instance;
+	GameManager(); //init roles 
+
+public:
+	static GameManager* getInstance();
+
+	static const float CAMERA_HEIGHT_RATE; //camera height in window height rate
+	static const float CAMERA_WIDTH_RATE; //camera width in window width rate
+
+	static int mapHeight;
+	static int mapWidth;
+	static int cameraHeight;
+	static int cameraWidth;
+	static int cameraX;
+	static int cameraY;
+
+	static GAME_STATUS gameStatus;
+	static std::vector<std::vector<Rect>> gameBoard;
+	
+	static bool isPositionValid(int y, int x);
+
+	Role* getRole(int i);
+	Role* getCurrentRole();
 
 	void setMap();
 
-	void outputGameBoard(std::string icon, std::pair<int, int> pos);
+	void outputGameBoard();
 
+	//set information by informationStatus, then call outputInformation()
+	void setInformation();
+	//input string array, print information on screen left, I think it is useful, so I put it in public
 	void outputInformation(std::vector<std::string>& information);
 
-	void outputPlayerBoard(std::vector<std::string>& information, bool* playerList);
+	// Set plyaer information
+	void setPlayerInformation(std::vector<std::string>& information, bool* playerList);
+	void ouptutPlayerInformationP();
 
-	void GameManager::canSee(int currentY, int currentX, std::vector<std::vector<std::pair<std::string, int>>>& showBoard);
+	void outputPlayerBoard(std::vector<std::string>& information, bool* playerList);
+	bool canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<std::string, int>>>& showBoard);
 };
