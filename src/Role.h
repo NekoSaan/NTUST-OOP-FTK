@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Object.h"
+#include <vector>
 
 class Object;
 class Entity;
@@ -20,5 +21,12 @@ public:
 	}
 
 	void move(int y, int x);
+
+	//Object's virtual funtion
+	void active(Role* role);
+	void chooseActiveUP();
+	void chooseActiveDown();
+	vector<string> getAllChoose();
+	int getChosenIndex();
 };
 

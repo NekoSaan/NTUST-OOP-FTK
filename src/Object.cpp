@@ -37,3 +37,13 @@ std::string Object::getTag() {
 	return tag;
 }
 
+void Object::startActive() {
+	GameManager::gameStatus = GAME_STATUS::INTERACTIVE;
+	GameManager::getInstance()->setInteractiveObject(this);
+}
+
+void Object::exitActive() {
+	GameManager::gameStatus = GAME_STATUS::MAP;
+	GameManager::getInstance()->setInteractiveObject(NULL);
+}
+

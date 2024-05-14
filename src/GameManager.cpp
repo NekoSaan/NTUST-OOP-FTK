@@ -4,6 +4,8 @@
 #include "Object.h"
 #include "Backpack.h"
 #include "Role.h"
+#include "Shop.h"
+
 const float GameManager::CAMERA_HEIGHT_RATE = 0.55;
 const float GameManager::CAMERA_WIDTH_RATE = 0.66;
 
@@ -20,6 +22,7 @@ std::vector<std::vector<Rect>> GameManager::gameBoard(mapHeight, std::vector<Rec
 
 std::vector<Role*> GameManager::roles;
 Role* GameManager::currentRole;
+Object* GameManager::interactiveObject;
 
 GameManager* GameManager::instance = NULL;
 
@@ -37,6 +40,7 @@ GameManager::GameManager() {
 	}
 
 	currentRole = roles[0];
+	interactiveObject = NULL;
 }
 
 void GameManager::setColor(int color)
@@ -57,6 +61,7 @@ void GameManager::setCursor(int y, int x)
 
 void GameManager::setMap()
 {
+	//set wall
 	for (int row = 9; row < mapHeight; row += 10)
 	{
 		for (int col = 0; col < mapWidth; col += 1)
@@ -64,6 +69,9 @@ void GameManager::setMap()
 			gameBoard[row][col].setCanPass((col % 10 == 9));
 		}
 	}
+
+	//set shop
+	gameBoard[15][65].setObject(new Shop());
 
 	// set 3 roles position
 	roles[0]->setPos(25, 70);
@@ -83,6 +91,13 @@ Role* GameManager::getRole(int i) {
 
 Role* GameManager::getCurrentRole() {
 	return currentRole;
+}
+
+Object* GameManager::getInteractiveObject() {
+	return interactiveObject;
+}
+void GameManager::setInteractiveObject(Object* o) {
+	interactiveObject = o;
 }
 
 void GameManager::outputGameBoard()
@@ -268,6 +283,9 @@ void GameManager::setInformation() {
 		case GAME_STATUS::BACKPACK:
 			information = backpackInformation();
 			break;
+		case GAME_STATUS::INTERACTIVE:
+			information = interactiveInformation();
+			break;
 	}
 
 	outputInformation(information);
@@ -310,6 +328,22 @@ std::vector<std::string> GameManager::backpackInformation() {
 	information.push_back(" "); // seperate by 1 line
 	information.push_back("___________Item Description__________");
 	information.push_back("To be countinue");
+
+	return information;
+}
+
+std::vector<std::string> GameManager::interactiveInformation() {
+	vector<string> information;
+	vector<string> choose = interactiveObject->getAllChoose();
+
+	for (int i = 0; i < choose.size(); i++) {
+		if (i == interactiveObject->getChosenIndex()) {
+			information.push_back("-> " + choose[i]);
+		}
+		else {
+			information.push_back("   " + choose[i]);
+		}
+	}
 
 	return information;
 }

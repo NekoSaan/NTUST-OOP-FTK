@@ -2,6 +2,7 @@
 #define _OBJECT_H_
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -23,11 +24,13 @@ public:
 	char getIcon();
 	string getTag();
   
-  //virtual void startActive() = 0; //tell game need to display choose screen
-  //virtual void active(Role* role) = 0;
-  //virtual void chooseActiveUP() = 0; 
-  //virtual void chooseActiveDown() = 0;
-  //virtual vector<string> getAllChoose() = 0; // return all choose's name, you can use it to display
+	void startActive(); //tell game need to display choose screen
+	void exitActive();
+	virtual void active(Role* role) = 0;
+	virtual void chooseActiveUP() = 0; 
+	virtual void chooseActiveDown() = 0;
+	virtual vector<string> getAllChoose() = 0; // return all choose's name, you can use it to display
+	virtual int getChosenIndex() = 0;
 
 protected:
 	char icon;

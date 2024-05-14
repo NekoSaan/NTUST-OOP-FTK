@@ -29,6 +29,10 @@ GameManager* gameManager;
 void keyUpdate(bool key[], bool playerKey[]);
 
 void update(bool key[], bool playerKey[]);
+void mapStatusUpdate(bool key[]);
+void combatStatusUpdate(bool key[]);
+void backpackStatusUpdate(bool key[]);
+void interactiveStatusUpdate(bool key[]);
 
 int main() {
     HWND hwndConsole = GetConsoleWindow();
@@ -79,7 +83,7 @@ int main() {
 		player[int(PLAYER::PLAYER3)] = true;
 		gameManager.outputPlayerBoard(information, player);
 		player[int(PLAYER::PLAYER3)] = false;
-    */
+		*/
 
 		// Update the key
 		keyUpdate(gKeyState, player);
@@ -161,73 +165,22 @@ void keyUpdate(bool key[], bool playerKey[])
 void update(bool key[], bool playerKey[])
 {
 	// Check input wasd
-	if (key[int(VALIDINPUT::EW)])
-	{
-		switch (GameManager::gameStatus) 
-		{
+	switch (GameManager::gameStatus) {
 		case GAME_STATUS::MAP:
-			gameManager->getCurrentRole()->move(-1, 0);
+			mapStatusUpdate(key);
+			break;
+		case GAME_STATUS::COMBAT:
+			combatStatusUpdate(key);
 			break;
 		case GAME_STATUS::BACKPACK:
-			bag.chooseUp();
+			backpackStatusUpdate(key);
 			break;
-		}
+		case GAME_STATUS::INTERACTIVE:
+			interactiveStatusUpdate(key);
+			break;
 	}
-	else if (key[int(VALIDINPUT::ES)])
-	{
-		switch (GameManager::gameStatus) 
-		{
-		case GAME_STATUS::MAP:
-			gameManager->getCurrentRole()->move(1, 0);
-			break;
-		case GAME_STATUS::BACKPACK:
-			bag.chooseDown();
-			break;
-		}
-	}
-	else if (key[int(VALIDINPUT::EA)])
-	{
-		switch (GameManager::gameStatus) 
-		{
-		case GAME_STATUS::MAP:
-			gameManager->getCurrentRole()->move(0, -1);
-			break;
-		}
-	}
-	else if (key[int(VALIDINPUT::ED)])
-	{
-		switch (GameManager::gameStatus) 
-		{
-		case GAME_STATUS::MAP:
-			gameManager->getCurrentRole()->move(0, 1);
-			break;
-		}
-	}
-	else if (key[int(VALIDINPUT::EI)]) {
-		switch (GameManager::gameStatus) 
-		{
-		case GAME_STATUS::MAP:
-			bag.invMode();
-			break;
-		}
-	}
-	else if (key[int(VALIDINPUT::EENTER)]) {
-		switch (GameManager::gameStatus)
-		{
-		case GAME_STATUS::BACKPACK:
-			bag.useItem();
-			break;
-		}
-	}
-	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
-		switch (GameManager::gameStatus)
-		{
-		case GAME_STATUS::BACKPACK:
-			bag.closeBag();
-			break;
-		}
-	}
-	else if (playerKey[int(PLAYER::PLAYER1)])
+
+	if (playerKey[int(PLAYER::PLAYER1)])
 	{
 		vector<string> information(2, " ");
 
@@ -250,6 +203,118 @@ void update(bool key[], bool playerKey[])
 		information[0] = "Player 3 : ";
 		information[1] = "Status : ";
 		gameManager->outputPlayerBoard(information, playerKey);
+	}
+	else
+	{
+		//std::cout << "invalid input\n";
+	}
+}
+
+void mapStatusUpdate(bool key[]) {
+	if (key[int(VALIDINPUT::EW)]) {
+		gameManager->getCurrentRole()->move(-1, 0);
+	}
+	else if (key[int(VALIDINPUT::ES)]) {
+		gameManager->getCurrentRole()->move(1, 0);
+	}
+	else if (key[int(VALIDINPUT::EA)]) {
+		gameManager->getCurrentRole()->move(0, -1);
+	}
+	else if (key[int(VALIDINPUT::ED)]) {
+		gameManager->getCurrentRole()->move(0, 1);
+	}
+	else if (key[int(VALIDINPUT::EI)]) {
+		bag.invMode();
+	}
+	else if (key[int(VALIDINPUT::EENTER)]) {
+		//nothing
+	}
+	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
+		//nothing
+	}
+	else
+	{
+		std::cout << "invalid input\n";
+	}
+}
+
+void combatStatusUpdate(bool key[]) {
+	if (key[int(VALIDINPUT::EW)]) {
+
+	}
+	else if (key[int(VALIDINPUT::ES)]) {
+
+	}
+	else if (key[int(VALIDINPUT::EA)]) {
+
+	}
+	else if (key[int(VALIDINPUT::ED)]) {
+
+	}
+	else if (key[int(VALIDINPUT::EI)]) {
+
+	}
+	else if (key[int(VALIDINPUT::EENTER)]) {
+
+	}
+	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
+
+	}
+	else
+	{
+		std::cout << "invalid input\n";
+	}
+}
+
+void backpackStatusUpdate(bool key[]) {
+	if (key[int(VALIDINPUT::EW)]) {
+		bag.chooseUp();
+	}
+	else if (key[int(VALIDINPUT::ES)]) {
+		bag.chooseDown();
+	}
+	else if (key[int(VALIDINPUT::EA)]) {
+		//nothing
+	}
+	else if (key[int(VALIDINPUT::ED)]) {
+		//nothing
+	}
+	else if (key[int(VALIDINPUT::EI)]) {
+		//nothing
+	}
+	else if (key[int(VALIDINPUT::EENTER)]) {
+		bag.useItem();
+	}
+	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
+		bag.closeBag();
+	}
+	else
+	{
+		std::cout << "invalid input\n";
+	}
+}
+
+void interactiveStatusUpdate(bool key[]) {
+	if (key[int(VALIDINPUT::EW)]) {
+		gameManager->getInteractiveObject()->chooseActiveUP();
+	}
+	else if (key[int(VALIDINPUT::ES)]) {
+		gameManager->getInteractiveObject()->chooseActiveDown();
+	}
+	else if (key[int(VALIDINPUT::EA)]) {
+		//nothing
+	}
+	else if (key[int(VALIDINPUT::ED)]) {
+		//nothing
+	}
+	else if (key[int(VALIDINPUT::EI)]) {
+		//nothing
+	}
+	else if (key[int(VALIDINPUT::EENTER)]) {
+		gameManager->getInteractiveObject()->active(gameManager->getCurrentRole());
+	}
+	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
+		gameManager->getInteractiveObject()->exitActive();
 	}
 	else
 	{
