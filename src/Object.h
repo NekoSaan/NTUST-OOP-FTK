@@ -12,7 +12,7 @@ class Object
 public:
 	Object();
 
-	Object(string, int, int);
+	Object(char, int, int);
 
 	//(y, x)
 	void setPos(int, int);
@@ -20,7 +20,7 @@ public:
 	//(y, x)
 	pair<int, int> getPos();
 
-	string getIcon();
+	char getIcon();
 	string getTag();
   
   //virtual void startActive() = 0; //tell game need to display choose screen
@@ -30,7 +30,7 @@ public:
   //virtual vector<string> getAllChoose() = 0; // return all choose's name, you can use it to display
 
 protected:
-	string icon;
+	char icon;
 	string tag;
 
 	int y;

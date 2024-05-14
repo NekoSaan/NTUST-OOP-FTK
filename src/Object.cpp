@@ -3,15 +3,15 @@
 
 Object::Object()
 {
-	this->icon = "H";
+	this->icon = 'H';
 
 	this->y = 0;
 	this->x = 0;
 }
 
-Object::Object(std::string tag, int y, int x)
+Object::Object(char icon, int y, int x)
 {
-	this->icon = tag;
+	this->icon = icon;
 
 	this->y = y;
 	this->x = x;
@@ -28,7 +28,7 @@ std::pair<int, int> Object::getPos()
 	return std::pair<int, int>(this->y, this->x);
 }
 
-std::string Object::getIcon()
+char Object::getIcon()
 {
 	return this->icon;
 }
