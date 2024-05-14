@@ -31,12 +31,14 @@ private:
 
 	std::vector<std::string> normalInformation();
 	std::vector<std::string> backpackInformation();
+	std::vector<std::string> interactiveInformation();
 	std::vector<std::string> playerInformation[3];
 
 	bool playerList[3] = { false };
 
 	static std::vector<Role*> roles;
 	static Role* currentRole;
+	static Object* interactiveObject;
 
 	static GameManager* instance;
 	GameManager(); //init roles 
@@ -61,6 +63,8 @@ public:
 
 	Role* getRole(int i);
 	Role* getCurrentRole();
+	Object* getInteractiveObject();
+	void setInteractiveObject(Object* o);
 
 	void setMap();
 

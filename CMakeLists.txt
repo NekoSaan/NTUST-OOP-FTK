@@ -6,8 +6,7 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/GameManager.h
     ${PROJECT_SOURCE_DIR}/src/GameManager.cpp
 
-    ${PROJECT_SOURCE_DIR}/src/Dice.h
-    ${PROJECT_SOURCE_DIR}/src/Dice.cpp
+    ${PROJECT_SOURCE_DIR}/src/dice.h
 
     ${PROJECT_SOURCE_DIR}/src/Point.h
 
@@ -27,7 +26,11 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/Role.cpp
 
     ${PROJECT_SOURCE_DIR}/src/Items.h
+    ${PROJECT_SOURCE_DIR}/src/Items.cpp
+
     ${PROJECT_SOURCE_DIR}/src/Shop.h
+    ${PROJECT_SOURCE_DIR}/src/Shop.cpp
+
     ${PROJECT_SOURCE_DIR}/src/Buff.h
 )
 
