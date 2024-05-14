@@ -275,8 +275,16 @@ void GameManager::setInformation() {
 
 std::vector<std::string> GameManager::normalInformation() {
 	vector<string> information;
-	information.push_back("Camera height: " + to_string(GameManager::cameraHeight));
-	information.push_back("Camera width: " + to_string(GameManager::cameraWidth));
+	information.push_back("Map height: " + to_string(mapHeight));
+	information.push_back("Map width: " + to_string(mapWidth));
+	information.push_back("Camera height: " + to_string(cameraHeight));
+	information.push_back("Camera width: " + to_string(cameraWidth));
+	information.push_back("Camera X: " + to_string(cameraX));
+	information.push_back("Camera Y: " + to_string(cameraY));
+	information.push_back("Current Role X: " + to_string(currentRole->getPos().second));
+	information.push_back("Current Role Y: " + to_string(currentRole->getPos().first));
+	information.push_back("------------------------------------------");
+	information.push_back("Input 'i' to open backpack");
 	information.push_back("Input 1,2,3 Display the player status");
 	return information;
 }
