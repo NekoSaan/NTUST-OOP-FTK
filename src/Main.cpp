@@ -66,6 +66,20 @@ int main() {
 
 		gameManager->outputGameBoard();
 		gameManager->setInformation();
+    
+		/*
+		player[int(PLAYER::PLAYER1)] = true;
+		gameManager.outputPlayerBoard(information, player);
+		player[int(PLAYER::PLAYER1)] = false;
+
+		player[int(PLAYER::PLAYER2)] = true;
+		gameManager.outputPlayerBoard(information, player);
+		player[int(PLAYER::PLAYER2)] = false;
+
+		player[int(PLAYER::PLAYER3)] = true;
+		gameManager.outputPlayerBoard(information, player);
+		player[int(PLAYER::PLAYER3)] = false;
+    */
 
 		// Update the key
 		keyUpdate(gKeyState, player);

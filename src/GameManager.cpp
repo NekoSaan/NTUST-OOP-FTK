@@ -120,11 +120,11 @@ void GameManager::outputGameBoard()
 				showBoard[row][col].second = 119;
 			}
 		}
-	}
-
+  }
+  
 	showBoard[pos.first][pos.second].first = icon;
 	showBoard[pos.first][pos.second].second = 108;
-
+  
 	//print out
 	int marginUp = cameraY - cameraHeight / 2;
 	int marginDown = cameraY + cameraHeight / 2;
@@ -208,10 +208,12 @@ void GameManager::outputPlayerBoard(std::vector<std::string>& information, bool*
 	{
 		setCursor(row, cameraWidth / 3 * playerPointer);
 		std::cout << (row == cameraHeight || row == windowHeight - 1 ? "*" : "|");
+    
 		for (int col = 0; col < cameraWidth / 4; col += 1)
 		{
 			std::cout << ((row == cameraHeight || row == windowHeight - 1) ? "-" : " ");
 		}
+    
 		std::cout << (row == cameraHeight || row == windowHeight - 1 ? "*" : "|");
 		
 		setCursor(row, cameraWidth / 3 * playerPointer + 2);
