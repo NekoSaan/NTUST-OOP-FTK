@@ -10,6 +10,10 @@ public:
 
 	char getIcon();
 
+	void setIsVisible(bool visible);
+
+	bool getIsVisible();
+
 private:
 	bool isVisible;
 	bool canPass;

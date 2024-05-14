@@ -2,7 +2,7 @@
 
 Rect::Rect()
 {
-	this->isVisible = true;
+	this->isVisible = false;
 	this->canPass = true;
 
 	this->icon = '.';
@@ -16,4 +16,14 @@ void Rect::setIcon(char i)
 char Rect::getIcon()
 {
 	return icon;
+}
+
+void Rect::setIsVisible(bool isVisible)
+{
+	this->isVisible = isVisible;
+}
+
+bool Rect::getIsVisible()
+{
+	return this->isVisible;
 }

@@ -11,6 +11,8 @@ struct Point
 	Point operator + (Point add);
 
 	Point operator - (Point minus);
+
+	bool operator == (Point equal);
 };
 
 Point& Point::operator = (Point pos)
@@ -28,6 +30,11 @@ Point Point::operator + (Point add)
 Point Point::operator - (Point minus)
 {
 	return Point{ this->y - minus.y , this->x - minus.x };
+}
+
+bool Point::operator == (Point equal)
+{
+	return (this->y == equal.y && this->x == equal.x);
 }
 
 #endif // _POINT_H_

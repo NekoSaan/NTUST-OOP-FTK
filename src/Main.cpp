@@ -26,9 +26,9 @@ const double_t GTIMELOG = 0.03;
 
 GameManager* gameManager;
 
-void keyUpdate(bool key[]);
+void keyUpdate(bool key[], bool playerKey[]);
 
-void update(bool key[]);
+void update(bool key[], bool playerKey[]);
 
 int main() {
     HWND hwndConsole = GetConsoleWindow();
@@ -60,13 +60,13 @@ int main() {
 		// Execute the game loop
 		if (timeFrame >= GTIMELOG)
 		{
-			update(gKeyState);
+			update(gKeyState, player);
 			startT = clock();
 		}
 
 		gameManager->outputGameBoard();
 		gameManager->setInformation();
-
+    
 		/*
 		player[int(PLAYER::PLAYER1)] = true;
 		gameManager.outputPlayerBoard(information, player);
@@ -78,10 +78,11 @@ int main() {
 
 		player[int(PLAYER::PLAYER3)] = true;
 		gameManager.outputPlayerBoard(information, player);
-		player[int(PLAYER::PLAYER3)] = false;*/
+		player[int(PLAYER::PLAYER3)] = false;
+    */
 
 		// Update the key
-		keyUpdate(gKeyState);
+		keyUpdate(gKeyState, player);
 		endT = clock();
 	} while (!gKeyState[int(VALIDINPUT::EESC)]);
 
@@ -91,12 +92,18 @@ int main() {
 // Intent: Detect input value
 // Pre: The array key
 // Post: If key been push update that element true
-void keyUpdate(bool key[])
+void keyUpdate(bool key[], bool playerKey[])
 {
 	// Reset all elemnet false
 	for (int i = 0; i < int(VALIDINPUT::INVALID); i++)
 	{
 		key[i] = false;
+	}
+
+	// Reset all player elemnet false
+	for (int i = 0; i < int(PLAYER::INVALID); i++)
+	{
+		playerKey[i] = false;
 	}
 
 	// Input
@@ -125,6 +132,15 @@ void keyUpdate(bool key[])
 	case 'i':
 		key[int(VALIDINPUT::EI)] = true;
 		break;
+	case '1':
+		playerKey[int(PLAYER::PLAYER1)] = true;
+		break;
+	case '2':
+		playerKey[int(PLAYER::PLAYER2)] = true;
+		break;
+	case '3':
+		playerKey[int(PLAYER::PLAYER3)] = true;
+		break;
 	case 8:
 		key[int(VALIDINPUT::EBACKSPACE)] = true;
 		break;
@@ -142,7 +158,7 @@ void keyUpdate(bool key[])
 // Intent: Update output information
 // Pre: The key array
 // Post: Output new inforamtion contain hero, creature move
-void update(bool key[])
+void update(bool key[], bool playerKey[])
 {
 	// Check input wasd
 	if (key[int(VALIDINPUT::EW)])
@@ -210,6 +226,30 @@ void update(bool key[])
 			bag.closeBag();
 			break;
 		}
+	}
+	else if (playerKey[int(PLAYER::PLAYER1)])
+	{
+		vector<string> information(2, " ");
+
+		information[0] = "Player 1 : ";
+		information[1] = "Status : ";
+		gameManager->outputPlayerBoard(information, playerKey);
+	}
+	else if (playerKey[int(PLAYER::PLAYER2)])
+	{
+		vector<string> information(2, " ");
+
+		information[0] = "Player 2 : ";
+		information[1] = "Status : ";
+		gameManager->outputPlayerBoard(information, playerKey);
+	}
+	else if (playerKey[int(PLAYER::PLAYER3)])
+	{
+		vector<string> information(2, " ");
+
+		information[0] = "Player 3 : ";
+		information[1] = "Status : ";
+		gameManager->outputPlayerBoard(information, playerKey);
 	}
 	else
 	{

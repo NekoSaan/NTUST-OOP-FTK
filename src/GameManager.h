@@ -31,6 +31,9 @@ private:
 
 	std::vector<std::string> normalInformation();
 	std::vector<std::string> backpackInformation();
+	std::vector<std::string> playerInformation[3];
+
+	bool playerList[3] = { false };
 
 	static std::vector<Role*> roles;
 	static Role* currentRole;
@@ -68,6 +71,10 @@ public:
 	//input string array, print information on screen left, I think it is useful, so I put it in public
 	void outputInformation(std::vector<std::string>& information);
 
+	// Set plyaer information
+	void setPlayerInformation(std::vector<std::string>& information, bool* playerList);
+	void ouptutPlayerInformationP();
+
 	void outputPlayerBoard(std::vector<std::string>& information, bool* playerList);
-	void canSee(int currentY, int currentX, std::vector<std::vector<std::pair<std::string, int>>>& showBoard);
+	bool canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<std::string, int>>>& showBoard);
 };

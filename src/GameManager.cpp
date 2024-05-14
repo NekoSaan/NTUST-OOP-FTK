@@ -99,22 +99,32 @@ void GameManager::outputGameBoard()
 	{
 		for (int col = 0; col < mapWidth; col += 1)
 		{
-			if (pow(pos.first - row, 2) + pow(pos.second - col, 2) < pow(10, 2))
+			if (gameBoard[row][col].getIsVisible())
 			{
 				showBoard[row][col].second = (gameBoard[row][col].getIcon() == '#' ? 136 : 96);
+			}
+			else if (pow(pos.first - row, 2) + pow(pos.second - col, 2) < pow(10, 2))
+			{
+				showBoard[row][col].second = (gameBoard[row][col].getIcon() == '#' ? 136 : 96);
+				if (!canSee(std::pair<int, int>(row, col), pos, showBoard))
+				{
+					showBoard[row][col].second = 119;
+				}
+				else
+				{
+					gameBoard[row][col].setIsVisible(true);
+				}
 			}
 			else
 			{
 				showBoard[row][col].second = 119;
 			}
 		}
-	}
-
-	canSee(pos.first, pos.second, showBoard);
-
+  }
+  
 	showBoard[pos.first][pos.second].first = icon;
 	showBoard[pos.first][pos.second].second = 108;
-
+  
 	//print out
 	int marginUp = cameraY - cameraHeight / 2;
 	int marginDown = cameraY + cameraHeight / 2;
@@ -126,19 +136,16 @@ void GameManager::outputGameBoard()
 
 	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 
-	for (int row = 0; row < windowHeight; row += 1) {
+	for (int row = 0; row < cameraHeight; row += 1) {
 		setCursor(row, 0);
 		std::cout << "|";
 
 		for (int col = marginLeft; col < marginRight; col += 1)
 		{
-			if (row == 0 || row == windowHeight - 1) {
+			if (row == 0 || row == cameraHeight - 1) {
 				std::cout << "-";
 			}
-			else if (row + marginUp >= mapHeight) {
-				std::cout << " ";
-			}
-			else
+			else if (row + marginUp < mapHeight) 
 			{
 				setColor(showBoard[marginUp + row][col].second);
 				std::cout << showBoard[marginUp + row][col].first;
@@ -189,83 +196,49 @@ void GameManager::outputInformation(std::vector<std::string>& information)
 
 void GameManager::outputPlayerBoard(std::vector<std::string>& information, bool* playerList)
 {
-	int height = std::floor(cameraHeight * CAMERA_HEIGHT_RATE);
-	int width = std::floor(cameraWidth * CAMERA_WIDTH_RATE);
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+
+	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 
 	int playerPointer = 0;
 	for (; !playerList[playerPointer] && playerPointer < int(PLAYER::INVALID); playerPointer += 1) {}
 
-	for (int row = 0; row < cameraHeight - height; row += 1)
+	for (int row = cameraHeight; row < windowHeight; row += 1)
 	{
-		setCursor(height + row, cameraWidth / 3 * playerPointer);
-		std::cout << "|";
-
-		for (int col = 0; col < cameraWidth / 5; col += 1)
+		setCursor(row, cameraWidth / 3 * playerPointer);
+		std::cout << (row == cameraHeight || row == windowHeight - 1 ? "*" : "|");
+    
+		for (int col = 0; col < cameraWidth / 4; col += 1)
 		{
-			if (row == 0 || row == cameraHeight - height - 1)
-			{
-				std::cout << "-";
-			}
-			else
-			{
-				std::cout << " ";
-			}
+			std::cout << ((row == cameraHeight || row == windowHeight - 1) ? "-" : " ");
 		}
-
-		std::cout << "|";
-		setCursor(height + row, cameraWidth / 3 * playerPointer + 2);
-
-		if (row > 0 && row < cameraWidth / 5 - 1 && row - 1 < information.size())
+    
+		std::cout << (row == cameraHeight || row == windowHeight - 1 ? "*" : "|");
+		
+		setCursor(row, cameraWidth / 3 * playerPointer + 2);
+		if (row >= cameraHeight && row < windowHeight && row - cameraHeight < information.size())
 		{
-			std::cout << information[row - 1];
+			std::cout << information[row - cameraHeight];
 		}
 	}
 }
 
-void GameManager::canSee(int currentY, int currentX, std::vector<std::vector<std::pair<std::string, int>>>& showBoard)
+bool GameManager::canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<std::string, int>>>& showBoard)
 {
-	for (int row = 0; row <= 20; row += 1)
+	while (!(current.first == answer.first && current.second == answer.second))
 	{
-		for (int col = 0; col <= 20; col += 1)
+		current.first += (current.first < answer.first);
+		current.first -= (current.first > answer.first);
+		current.second += (current.second < answer.second);
+		current.second -= (current.second > answer.second);
+
+		if (gameBoard[current.first][current.second].getIcon() == '#')
 		{
-			int tempY, tempX;
-			int y = currentY - 10 + row;
-			int x = currentX - 10 + col;
-			tempY = y;
-			tempX = x;
-
-			if (y > (mapHeight - 1) || x > (mapWidth - 1) || y < 0 || x < 0)
-			{
-				continue;
-			}
-
-			while (!(y == currentY && x == currentX))
-			{
-				if (x < currentX)
-				{
-					x += 1;
-				}
-				if (x > currentX)
-				{
-					x -= 1;
-				}
-				if (y < currentY)
-				{
-					y += 1;
-				}
-				if (y > currentY)
-				{
-					y -= 1;
-				}
-
-				if (gameBoard[y][x].getIcon() == '#')
-				{
-					showBoard[tempY][tempX].second = 119;
-					break;
-				}
-			}
+			return false;
 		}
 	}
+	return true;
 }
 
 void GameManager::setCameraToCurrentRole() {
@@ -309,6 +282,7 @@ std::vector<std::string> GameManager::normalInformation() {
 	vector<string> information;
 	information.push_back("Camera height: " + to_string(GameManager::cameraHeight));
 	information.push_back("Camera width: " + to_string(GameManager::cameraWidth));
+	information.push_back("Input 1,2,3 Display the player status");
 	return information;
 }
 
@@ -335,6 +309,39 @@ std::vector<std::string> GameManager::backpackInformation() {
 	information.push_back("To be countinue");
 
 	return information;
+}
+
+void setPlayerInformation(std::vector<std::string>& information, bool* playerList)
+{
+
+}
+
+void GameManager::ouptutPlayerInformationP()
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+
+	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+
+	int playerPointer = 0;
+	for (; !playerList[playerPointer] && playerPointer < int(PLAYER::INVALID); playerPointer += 1) {}
+
+	for (int row = cameraHeight; row < windowHeight; row += 1)
+	{
+		setCursor(row, cameraWidth / 3 * playerPointer);
+		std::cout << (row == cameraHeight || row == windowHeight - 1 ? "*" : "|");
+		for (int col = 0; col < cameraWidth / 4; col += 1)
+		{
+			std::cout << ((row == cameraHeight || row == windowHeight - 1) ? "-" : " ");
+		}
+		std::cout << (row == cameraHeight || row == windowHeight - 1 ? "*" : "|");
+
+		setCursor(row, cameraWidth / 3 * playerPointer + 2);
+		if (row >= cameraHeight && row < windowHeight && row - cameraHeight < playerInformation[playerPointer].size())
+		{
+			std::cout << playerInformation[playerPointer][row - cameraHeight];
+		}
+	}
 }
 
 bool GameManager::isPositionValid(int y, int x) {
