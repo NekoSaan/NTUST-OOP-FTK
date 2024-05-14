@@ -76,5 +76,5 @@ public:
 	void ouptutPlayerInformationP();
 
 	void outputPlayerBoard(std::vector<std::string>& information, bool* playerList);
-	bool canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<std::string, int>>>& showBoard);
+	bool canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<char, int>>>& showBoard);
 };

@@ -20,14 +20,15 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/Backpack.h
     ${PROJECT_SOURCE_DIR}/src/Backpack.cpp
 
-    ${PROJECT_SOURCE_DIR}/src/Items.h
-    ${PROJECT_SOURCE_DIR}/src/Shop.h
-    
     ${PROJECT_SOURCE_DIR}/src/Entity.h
     ${PROJECT_SOURCE_DIR}/src/Entity.cpp
     
     ${PROJECT_SOURCE_DIR}/src/Role.h
     ${PROJECT_SOURCE_DIR}/src/Role.cpp
+
+    ${PROJECT_SOURCE_DIR}/src/Items.h
+    ${PROJECT_SOURCE_DIR}/src/Shop.h
+    ${PROJECT_SOURCE_DIR}/src/Buff.h
 )
 
 add_executable(project ${project_SRC_LIST})

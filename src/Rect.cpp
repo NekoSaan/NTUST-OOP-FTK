@@ -1,21 +1,28 @@
 #include "Rect.h"
+#include "Object.h"
 
 Rect::Rect()
 {
 	this->isVisible = false;
 	this->canPass = true;
 
-	this->icon = '.';
+	this->object = NULL;
 }
 
-void Rect::setIcon(char i)
+std::pair<char, int> Rect::getIcon()
 {
-	this->icon = i;
-}
-
-char Rect::getIcon()
-{
-	return icon;
+	if (isVisible == false) {
+		return std::pair<char, int>(' ', 119); //in war of fog
+	}
+	else if (canPass == false) {
+		return std::pair<char, int>('#', 136); // wall
+	}
+	else if (object == NULL) {
+		return std::pair<char, int>('.', 96); //path
+	}
+	else {
+		return std::pair<char, int>(object->getIcon(), 96); //have something
+	}
 }
 
 void Rect::setIsVisible(bool isVisible)
@@ -23,7 +30,26 @@ void Rect::setIsVisible(bool isVisible)
 	this->isVisible = isVisible;
 }
 
+void Rect::setCanPass(bool b) {
+	this->canPass = b;
+}
+
+void Rect::setObject(Object* o) {
+	if (object != NULL) {
+		delete(object);
+	}
+	object = o;
+}
+
 bool Rect::getIsVisible()
 {
 	return this->isVisible;
+}
+
+bool Rect::getCanPass() {
+	return this->canPass;
+}
+
+Object* Rect::getObject() {
+	return this->object;
 }
