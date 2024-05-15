@@ -16,9 +16,6 @@ private:
     int chosenItemId;
 
 public:
-    int curPage;
-    int maxPage;
-
     Shop();
 
     // Object's virtual funtion

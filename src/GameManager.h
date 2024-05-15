@@ -29,6 +29,9 @@ private:
 	void setColor(int color = 7);
 	void setCursor(int y, int x);
 
+	// Input string array, print information on screen left
+	void outputInformation(std::vector<std::string>& information);
+
 	std::vector<std::string> normalInformation();
 	std::vector<std::string> backpackInformation();
 	std::vector<std::string> interactiveInformation();
@@ -74,9 +77,7 @@ public:
 
 	// Set information by informationStatus, then call outputInformation()
 	void setInformation();
-	// Input string array, print information on screen left, I think it is useful, so I put it in public
-	void outputInformation(std::vector<std::string>& information);
-
+	
 	// Set plyaer information
 	void setPlayerInformation(void);
 	void outputPlayerBoard(std::vector<std::string>&, int);
