@@ -10,8 +10,8 @@ class Rect;
 enum class PLAYER
 {
 	PLAYER1 = 0,
-	PLAYER2 = 1,
-	PLAYER3 = 2,
+	PLAYER2,
+	PLAYER3,
 	INVALID,
 };
 
@@ -46,8 +46,8 @@ private:
 public:
 	static GameManager* getInstance();
 
-	static const float CAMERA_HEIGHT_RATE; //camera height in window height rate
-	static const float CAMERA_WIDTH_RATE; //camera width in window width rate
+	static const float CAMERA_HEIGHT_RATE; // camera height in window height rate
+	static const float CAMERA_WIDTH_RATE; // camera width in window width rate
 
 	static int mapHeight;
 	static int mapWidth;
@@ -72,15 +72,14 @@ public:
 
 	void outputGameBoard();
 
-	//set information by informationStatus, then call outputInformation()
+	// Set information by informationStatus, then call outputInformation()
 	void setInformation();
-	//input string array, print information on screen left, I think it is useful, so I put it in public
+	// Input string array, print information on screen left, I think it is useful, so I put it in public
 	void outputInformation(std::vector<std::string>& information);
 
 	// Set plyaer information
-	void setPlayerInformation(std::vector<std::string>& information, bool* playerList);
-	void ouptutPlayerInformationP();
+	void setPlayerInformation(void);
+	void outputPlayerBoard(std::vector<std::string>&, int);
 
-	void outputPlayerBoard(std::vector<std::string>& information, bool* playerList);
 	bool canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<char, int>>>& showBoard);
 };

@@ -35,6 +35,8 @@ void backpackStatusUpdate(bool key[]);
 void interactiveStatusUpdate(bool key[]);
 
 int main() {
+	srand(time(NULL));
+
 	HWND hwndConsole = GetConsoleWindow();
     SetWindowLong(hwndConsole, GWL_STYLE, GetWindowLong(hwndConsole, GWL_STYLE) & ~WS_OVERLAPPEDWINDOW);
     ShowWindow(hwndConsole, SW_MAXIMIZE);
@@ -71,19 +73,7 @@ int main() {
 		gameManager->outputGameBoard();
 		gameManager->setInformation();
     
-		/*
-		player[int(PLAYER::PLAYER1)] = true;
-		gameManager.outputPlayerBoard(information, player);
-		player[int(PLAYER::PLAYER1)] = false;
-
-		player[int(PLAYER::PLAYER2)] = true;
-		gameManager.outputPlayerBoard(information, player);
-		player[int(PLAYER::PLAYER2)] = false;
-
-		player[int(PLAYER::PLAYER3)] = true;
-		gameManager.outputPlayerBoard(information, player);
-		player[int(PLAYER::PLAYER3)] = false;
-		*/
+		gameManager->setPlayerInformation();
 
 		// Update the key
 		keyUpdate(gKeyState, player);
@@ -180,34 +170,7 @@ void update(bool key[], bool playerKey[])
 			break;
 	}
 
-	if (playerKey[int(PLAYER::PLAYER1)])
-	{
-		vector<string> information(2, " ");
-
-		information[0] = "Player 1 : ";
-		information[1] = "Status : ";
-		gameManager->outputPlayerBoard(information, playerKey);
-	}
-	else if (playerKey[int(PLAYER::PLAYER2)])
-	{
-		vector<string> information(2, " ");
-
-		information[0] = "Player 2 : ";
-		information[1] = "Status : ";
-		gameManager->outputPlayerBoard(information, playerKey);
-	}
-	else if (playerKey[int(PLAYER::PLAYER3)])
-	{
-		vector<string> information(2, " ");
-
-		information[0] = "Player 3 : ";
-		information[1] = "Status : ";
-		gameManager->outputPlayerBoard(information, playerKey);
-	}
-	else
-	{
-		//std::cout << "invalid input\n";
-	}
+	//std::cout << "invalid input\n";
 }
 
 void mapStatusUpdate(bool key[]) {
@@ -227,10 +190,10 @@ void mapStatusUpdate(bool key[]) {
 		bag.invMode();
 	}
 	else if (key[int(VALIDINPUT::EENTER)]) {
-		//nothing
+		// nothing
 	}
 	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
-		//nothing
+		// nothing
 	}
 	else
 	{
@@ -274,13 +237,13 @@ void backpackStatusUpdate(bool key[]) {
 		bag.chooseDown();
 	}
 	else if (key[int(VALIDINPUT::EA)]) {
-		//nothing
+		// nothing
 	}
 	else if (key[int(VALIDINPUT::ED)]) {
-		//nothing
+		// nothing
 	}
 	else if (key[int(VALIDINPUT::EI)]) {
-		//nothing
+		// nothing
 	}
 	else if (key[int(VALIDINPUT::EENTER)]) {
 		bag.useItem();
@@ -302,13 +265,13 @@ void interactiveStatusUpdate(bool key[]) {
 		gameManager->getInteractiveObject()->chooseActiveDown();
 	}
 	else if (key[int(VALIDINPUT::EA)]) {
-		//nothing
+		// nothing
 	}
 	else if (key[int(VALIDINPUT::ED)]) {
-		//nothing
+		// nothing
 	}
 	else if (key[int(VALIDINPUT::EI)]) {
-		//nothing
+		// nothing
 	}
 	else if (key[int(VALIDINPUT::EENTER)]) {
 		gameManager->getInteractiveObject()->active(gameManager->getCurrentRole());

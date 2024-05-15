@@ -74,8 +74,10 @@ vector<string> Shop::getAllChoose() {
     vector<string> itemList = getItemList();
     vector<string> vendorLists;
 
+    vendorLists.push_back("Shop");
+
     for (int i = 0; i < ITEMID::Invalid; i++) {
-        vendorLists.push_back(itemList[i] + " $" + to_string(priceList[i]) + "  x" + to_string(amountList[i]));
+        vendorLists.push_back(itemList[i] + ": " + to_string(priceList[i]) + "$  x" + to_string(amountList[i]));
     }
 
     return vendorLists;

@@ -194,31 +194,6 @@ void GameManager::outputInformation(std::vector<std::string>& information)
 	}
 }
 
-void GameManager::outputPlayerBoard(std::vector<std::string>& information, bool* playerList)
-{
-	int playerPointer = 0;
-	for (; !playerList[playerPointer] && playerPointer < int(PLAYER::INVALID); playerPointer += 1) {}
-
-	for (int row = cameraHeight + 1; row < windowHeight; row += 1)
-	{
-		setCursor(row, windowWidth / 3 * playerPointer + 5);
-		std::cout << "|";
-    
-		for (int col = 0; col < windowWidth / 4; col += 1)
-		{
-			std::cout << ((row == cameraHeight || row == windowHeight - 1) ? "-" : " ");
-		}
-    
-		std::cout << "|";
-		
-		setCursor(row, windowWidth / 3 * playerPointer + 6);
-		if (row > cameraHeight + 1 && row < windowHeight && row - cameraHeight - 2 < information.size())
-		{
-			std::cout << information[row - cameraHeight - 2];
-		}
-	}
-}
-
 bool GameManager::canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<char, int>>>& showBoard)
 {
 	while (!(current.first == answer.first && current.second == answer.second))
@@ -233,6 +208,7 @@ bool GameManager::canSee(std::pair<int, int> current, std::pair<int, int> answer
 			return false;
 		}
 	}
+
 	return true;
 }
 
@@ -322,21 +298,30 @@ std::vector<std::string> GameManager::backpackInformation() {
 		}
 	}
 
-	information.push_back(" "); // seperate by 1 line
-	information.push_back("___________Item Description__________");
+	information.push_back(" "); // Seperate by 1 line
+	string seperateLine = "";
+
+	for (int i = 1; i < windowWidth - cameraWidth - 16; i++) {
+		if (i == (windowWidth - cameraWidth - 16) / 2) {
+			seperateLine += "Item Description";
+			continue;
+		}
+
+		seperateLine += "_";
+	}
+
+	information.push_back(seperateLine);
 	information.push_back("To be countinue");
 
 	return information;
 }
 
 std::vector<std::string> GameManager::interactiveInformation() {
-	vector<string> information;
 	vector<string> choose = interactiveObject->getAllChoose();
+	vector<string> information(1, choose[0]);
 
-	// information.push_back("Shop (Page:" + to_string(.getCurPage()) + "/" + to_string(.getMaxPage()) + ")");
-
-	for (int i = 0; i < choose.size(); i++) {
-		if (i == interactiveObject->getChosenIndex()) {
+	for (int i = 1; i < choose.size(); i++) {
+		if (i - 1 == interactiveObject->getChosenIndex()) {
 			information.push_back("-> " + choose[i]);
 		}
 		else {
@@ -347,30 +332,47 @@ std::vector<std::string> GameManager::interactiveInformation() {
 	return information;
 }
 
-void setPlayerInformation(std::vector<std::string>& information, bool* playerList)
+void GameManager::setPlayerInformation(void)
 {
+	for (int i = 0; i < roles.size(); i++) {
+		vector<string> info;
 
+		info.push_back("Name: Player" + to_string(i));
+		info.push_back("HP: " + to_string(roles[i]->getHp()) + "/" + to_string(roles[i]->getVitality())
+					 + ", Focus: " + to_string(roles[i]->getFocus()) + "/" + to_string(roles[i]->getMaxFocus()));
+		info.push_back("Physical ATK: " + to_string(roles[i]->getPAttack()) 
+					 + ", Physical DEF: " + to_string(roles[i]->getPDefense()));
+		info.push_back("Magical ATK: " + to_string(roles[i]->getMAttack())
+					 + ", Magical DEF: " + to_string(roles[i]->getMDefense()));
+		info.push_back("Speed: " + to_string(roles[i]->getSpeed())
+					 + ", HitRate: " + to_string(roles[i]->getHitRate()));
+		info.push_back("Weapon: ");
+		info.push_back("Armor: ");
+		info.push_back("Accessory: ");
+		info.push_back("Buff: ");
+
+		outputPlayerBoard(info, i);
+	}
 }
 
-void GameManager::ouptutPlayerInformationP()
+void GameManager::outputPlayerBoard(std::vector<std::string>& information, int playerPointer)
 {
-	int playerPointer = 0;
-	for (; !playerList[playerPointer] && playerPointer < int(PLAYER::INVALID); playerPointer += 1) {}
-
-	for (int row = cameraHeight; row < windowHeight; row += 1)
+	for (int row = cameraHeight + 1; row < windowHeight; row += 1)
 	{
-		setCursor(row, cameraWidth / 3 * playerPointer);
-		std::cout << (row == cameraHeight || row == windowHeight - 1 ? "*" : "|");
-		for (int col = 0; col < cameraWidth / 4; col += 1)
-		{
-			std::cout << ((row == cameraHeight || row == windowHeight - 1) ? "-" : " ");
-		}
-		std::cout << (row == cameraHeight || row == windowHeight - 1 ? "*" : "|");
+		setCursor(row, windowWidth / 3 * playerPointer + 2);
+		std::cout << "|";
 
-		setCursor(row, cameraWidth / 3 * playerPointer + 2);
-		if (row >= cameraHeight && row < windowHeight && row - cameraHeight < playerInformation[playerPointer].size())
+		for (int col = 0; col < windowWidth / 4 + 5; col += 1)
 		{
-			std::cout << playerInformation[playerPointer][row - cameraHeight];
+			std::cout << ((row == cameraHeight + 1 || row == windowHeight - 1) ? "-" : " ");
+		}
+
+		std::cout << "|";
+
+		setCursor(row, windowWidth / 3 * playerPointer + 3);
+		if (row > cameraHeight + 1 && row < windowHeight && row - cameraHeight - 2 < information.size())
+		{
+			std::cout << information[row - cameraHeight - 2];
 		}
 	}
 }
