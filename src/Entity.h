@@ -16,7 +16,7 @@ private:
 public:
 	// Constructor
 	Entity() {
-		srand(time(0));  // 初始化隨機種子
+		srand(time(NULL));  // 初始化隨機種子
 		setVitality(rand() % 15 + 30);  // [30, 45) 的隨機數
 		setFocus(3);  // 專注力固定為 3
 		setSpeed(rand() % 25 + 30);  // [30, 55) 的隨機數

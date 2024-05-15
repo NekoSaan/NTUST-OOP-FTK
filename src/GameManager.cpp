@@ -11,6 +11,8 @@ const float GameManager::CAMERA_WIDTH_RATE = 0.66;
 
 int GameManager::mapHeight = 50;
 int GameManager::mapWidth = 140;
+int GameManager::windowHeight = 0;
+int GameManager::windowWidth = 0;
 int GameManager::cameraHeight = 0;
 int GameManager::cameraWidth = 0;
 int GameManager::cameraX = 0;
@@ -107,7 +109,7 @@ void GameManager::outputGameBoard()
 
 	setCameraToCurrentRole();
 
-	//set up show board, 2D vector has pair, it has char and color
+	// set up show board, 2D vector has pair, it has char and color
 	std::vector<std::vector<std::pair<char, int>>> showBoard(mapHeight, std::vector<std::pair<char, int>>(mapWidth, std::pair<char, int>('.', 96)));
 	
 	for (int row = 0; row < mapHeight; row += 1)
@@ -135,16 +137,11 @@ void GameManager::outputGameBoard()
 		showBoard[pos.first][pos.second].first = icon;
 	}
 
-	// print out
+	// print out rolled map
 	int marginUp = cameraY - cameraHeight / 2;
 	int marginDown = cameraY + cameraHeight / 2;
 	int marginLeft = cameraX - cameraWidth / 2;
 	int marginRight = cameraX + cameraWidth / 2;
-
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-
-	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 
 	for (int row = 0; row < cameraHeight + 2; row += 1) {
 		setCursor(row, 0);
@@ -170,18 +167,12 @@ void GameManager::outputGameBoard()
 
 void GameManager::outputInformation(std::vector<std::string>& information)
 {
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-
-	int windowWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-	int width = cameraWidth;
-
 	for (int row = 0; row < cameraHeight + 2; row += 1)
 	{
-		setCursor(row, width + 1);
+		setCursor(row, cameraWidth);
 		std::cout << "|";
 
-		for (int col = 1; col < windowWidth - width - 1; col += 1)
+		for (int col = 1; col < windowWidth - cameraWidth - 1; col += 1)
 		{
 			if (row == 0 || row == cameraHeight + 1)
 			{
@@ -194,7 +185,7 @@ void GameManager::outputInformation(std::vector<std::string>& information)
 		}
 
 		std::cout << "|";
-		setCursor(row, width + 2);
+		setCursor(row, cameraWidth + 1);
 
 		if (row > 0 && row < cameraHeight + 1 && row - 1 < information.size())
 		{
@@ -205,12 +196,6 @@ void GameManager::outputInformation(std::vector<std::string>& information)
 
 void GameManager::outputPlayerBoard(std::vector<std::string>& information, bool* playerList)
 {
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-
-	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-	int windowWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-
 	int playerPointer = 0;
 	for (; !playerList[playerPointer] && playerPointer < int(PLAYER::INVALID); playerPointer += 1) {}
 
@@ -301,8 +286,20 @@ std::vector<std::string> GameManager::normalInformation() {
 	information.push_back("Camera Y: " + to_string(cameraY));
 	information.push_back("Current Role X: " + to_string(currentRole->getPos().second));
 	information.push_back("Current Role Y: " + to_string(currentRole->getPos().first));
-	information.push_back("------------------------------------------");
-	information.push_back("Input 'i' to open backpack");
+
+	string seperateLine = "";
+
+	for (int i = 1; i < windowWidth - cameraWidth - 6; i++) {
+		if (i == (windowWidth - cameraWidth - 6) / 2) {
+			seperateLine += "Helper";
+			continue;
+		}
+
+		seperateLine += "_";
+	}
+
+	information.push_back(seperateLine);
+	information.push_back("Input 'I' to open backpack");
 	information.push_back("Input 1,2,3 Display the player status");
 	return information;
 }
@@ -336,6 +333,8 @@ std::vector<std::string> GameManager::interactiveInformation() {
 	vector<string> information;
 	vector<string> choose = interactiveObject->getAllChoose();
 
+	// information.push_back("Shop (Page:" + to_string(.getCurPage()) + "/" + to_string(.getMaxPage()) + ")");
+
 	for (int i = 0; i < choose.size(); i++) {
 		if (i == interactiveObject->getChosenIndex()) {
 			information.push_back("-> " + choose[i]);
@@ -355,11 +354,6 @@ void setPlayerInformation(std::vector<std::string>& information, bool* playerLis
 
 void GameManager::ouptutPlayerInformationP()
 {
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-
-	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-
 	int playerPointer = 0;
 	for (; !playerList[playerPointer] && playerPointer < int(PLAYER::INVALID); playerPointer += 1) {}
 

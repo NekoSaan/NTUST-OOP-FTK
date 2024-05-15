@@ -51,6 +51,8 @@ public:
 
 	static int mapHeight;
 	static int mapWidth;
+	static int windowHeight;
+	static int windowWidth;
 	static int cameraHeight;
 	static int cameraWidth;
 	static int cameraX;

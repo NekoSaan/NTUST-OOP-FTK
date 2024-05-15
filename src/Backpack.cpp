@@ -7,8 +7,7 @@ BackPack bag;
 BackPack::BackPack(void) : money(600) {
 	// Initial Supplies or nothing
 	for (int i = 0; i < (int)ITEMID::WoodenSword; i++) {
-		Item* newItem = new Item("Consumable", ITEMID(i));
-		obtainItem(newItem);
+		obtainItem(new Item("Consumable", ITEMID(i)));
 	}
 }
 
@@ -48,7 +47,7 @@ int BackPack::getMaxPage() {
 }
 
 int BackPack::getInventorySize() {
-	return inventory.size();
+	return (int)inventory.size();
 }
 
 std::string BackPack::getItemName(int i) {
@@ -87,15 +86,27 @@ void BackPack::invMode(void) {
 }
 
 void BackPack::chooseUp() {
-	curIndex -= (curIndex > 0) ? 1 : 0;
+	curIndex--;
+
+	if (curIndex < 0) {
+		curIndex = (int)inventory.size() - 1;
+	}
+
+	curPage = curIndex / 8 + 1;
 }
 void BackPack::chooseDown() {
-	curIndex += (curIndex < inventory.size() - 1) ? 1 : 0;
+	curIndex++;
+
+	if (curIndex == inventory.size()) {
+		curIndex = 0;
+	}
+	
+	curPage = curIndex / 8 + 1;
 }
 
 void BackPack::useItem() {
-	if (inventory.empty()) {
-		return; // inventory is empty, there is no item for use
+	if (inventory.empty() || !inventory[curIndex]->getAmount()) {
+		return; // inventory or current selected item is empty. use fail.
 	}
 
 	// inventory[curIndex]->use(curRole);
@@ -106,7 +117,7 @@ void BackPack::useItem() {
 		delete inventory[curIndex];
 		inventory.erase(inventory.begin() + curIndex);
 
-		curIndex = max(0, curIndex - 1);
+		curIndex = (curIndex - 1 < 0) ? 0 : curIndex - 1;
 	}
 }
 

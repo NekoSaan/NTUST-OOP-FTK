@@ -5,7 +5,27 @@
 
 class Role;
 
-enum ITEMID {
+static std::vector<std::string> getItemList(void) {
+	std::vector<std::string> ItemList = {
+		// Consumables
+		"Godsbeard",
+		"GoldenRoot",
+		"TeleportScroll",
+		"Tent",
+
+		// Equipments, non-stackable
+		"WoodenSword",
+		"Hammer",
+		"MagicWand",
+		"Shoes",
+		"PlateArmor",
+		"Bracelet"
+	};
+
+	return ItemList;
+}
+
+static enum ITEMID {
 	// Consumables, stackable
 	Godsbeard = 0,
 	GoldenRoot,
@@ -21,8 +41,6 @@ enum ITEMID {
 	Bracelet,
 	Invalid,
 };
-
-extern std::vector<std::string> ItemList;
 
 class Item {
 protected:

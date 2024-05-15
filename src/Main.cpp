@@ -35,17 +35,17 @@ void backpackStatusUpdate(bool key[]);
 void interactiveStatusUpdate(bool key[]);
 
 int main() {
-    HWND hwndConsole = GetConsoleWindow();
+	HWND hwndConsole = GetConsoleWindow();
     SetWindowLong(hwndConsole, GWL_STYLE, GetWindowLong(hwndConsole, GWL_STYLE) & ~WS_OVERLAPPEDWINDOW);
     ShowWindow(hwndConsole, SW_MAXIMIZE);
 
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
 
-	int windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-	int windowWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-	GameManager::cameraHeight = min(windowHeight * GameManager::CAMERA_HEIGHT_RATE, GameManager::mapHeight);
-	GameManager::cameraWidth = min(windowWidth * GameManager::CAMERA_WIDTH_RATE, GameManager::mapWidth);
+	GameManager::windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+	GameManager::windowWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+	GameManager::cameraHeight = min(GameManager::windowHeight * GameManager::CAMERA_HEIGHT_RATE, GameManager::mapHeight);
+	GameManager::cameraWidth = min(GameManager::windowWidth * GameManager::CAMERA_WIDTH_RATE, GameManager::mapWidth);
 
 	gameManager = GameManager::getInstance();
 	gameManager->setMap();
