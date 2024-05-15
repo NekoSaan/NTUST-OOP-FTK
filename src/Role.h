@@ -22,7 +22,7 @@ public:
 
 	void move(int y, int x);
 
-	//Object's virtual funtion
+	// Object's virtual funtion
 	void active(Role* role);
 	void chooseActiveUP();
 	void chooseActiveDown();

@@ -12,12 +12,16 @@ class Shop : public Object {
 private:
     unordered_map<int, int> priceList;
     unordered_map<int, int> amountList;
+
     int chosenItemId;
 
 public:
+    int curPage;
+    int maxPage;
+
     Shop();
 
-    //Object's virtual funtion
+    // Object's virtual funtion
     void active(Role* role);
     void chooseActiveUP();
     void chooseActiveDown();

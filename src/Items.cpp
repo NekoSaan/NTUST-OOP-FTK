@@ -1,27 +1,11 @@
 #include "Items.h"
 #include "Role.h"
 
-
-std::vector<std::string> ItemList = {
-	// Consumables
-	"Godsbeard",
-	"GoldenRoot",
-	"TeleportScroll",
-	"Tent",
-
-	// Equipments, non-stackable
-	"WoodenSword",
-	"Hammer",
-	"MagicWand",
-	"Shoes",
-	"PlateArmor",
-	"Bracelet"
+Item::Item(std::string tag, ITEMID id) : tag(tag), id(id), amount(1) {
+	itemName = getItemList()[(int)id];
 };
 
-Item::Item(std::string tag, ITEMID id) : tag(tag), id(id), itemName(ItemList[(int)id]), amount(1) {};
-
 Item::~Item(void) {
-
 	itemName = "";
 	des = "";
 	id = ITEMID::Invalid;
@@ -64,7 +48,7 @@ void Item::use(Role* role) {
 		// teleportScene();
 		break;
 	case ITEMID::Tent:
-		// placeTentScene();
+		// placeTent();
 		break;
 	default:
 		// nothing happend, invalid id

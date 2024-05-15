@@ -17,6 +17,7 @@ void Role::move(int y, int x)
 	//check if rect has something
 	GameManager* gameManager = GameManager::getInstance();
 	Object* objectOnRect = gameManager->gameBoard[tempPosY][tempPosX].getObject();
+
 	if (objectOnRect != NULL) {
 		objectOnRect->startActive();
 	}
