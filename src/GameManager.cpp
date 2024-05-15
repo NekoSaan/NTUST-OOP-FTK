@@ -318,10 +318,21 @@ std::vector<std::string> GameManager::backpackInformation() {
 
 std::vector<std::string> GameManager::interactiveInformation() {
 	vector<string> choose = interactiveObject->getAllChoose();
-	vector<string> information(1, choose[0]);
+	vector<string> information;
 
-	for (int i = 1; i < choose.size(); i++) {
-		if (i - 1 == interactiveObject->getChosenIndex()) {
+	//one page display 8 choice
+	int currentPage = interactiveObject->getChosenIndex() / 8;
+	int maxPage = choose.size() / 8;
+	int pageStartIndex = currentPage * 8;
+
+	//information about object
+	information.push_back(interactiveObject->getTag() + " (Page: " + to_string(currentPage + 1) + "/" + to_string(maxPage + 1) + ")");
+	information.push_back("Your money: $" + to_string(bag.getMoney()));
+	information.push_back("------------");
+
+	//what you can do with object
+	for (int i = pageStartIndex; i < pageStartIndex + 8 && i < choose.size(); i++) {
+		if (i == interactiveObject->getChosenIndex()) {
 			information.push_back("-> " + choose[i]);
 		}
 		else {

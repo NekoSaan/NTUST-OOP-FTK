@@ -11,8 +11,10 @@ class Role;
 class Object
 {
 public:
-	Object();
+	static const string TAG_SHOP;
+	static const string TAG_ENEMY;
 
+	Object();
 	Object(char, int, int);
 
 	//(y, x)

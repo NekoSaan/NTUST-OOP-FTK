@@ -30,9 +30,8 @@ Shop::Shop() {
     this->amountList[ITEMID::Bracelet] = 1;
 
     this->chosenItemId = 0;
-    this->curPage = 1;
-    this->maxPage = (priceList.size() - 1) / 8 + 1;
     this->icon = '$';
+    this->tag = TAG_SHOP;
 }
 
 void Shop::active(Role* role) {
@@ -56,8 +55,6 @@ void Shop::chooseActiveUP() {
     if (chosenItemId < 0) {
         chosenItemId = ITEMID::Invalid - 1;
     }
-
-    curPage = chosenItemId / 8 + 1;
 }
 
 void Shop::chooseActiveDown() {
@@ -66,15 +63,13 @@ void Shop::chooseActiveDown() {
     if (chosenItemId == ITEMID::Invalid) {
         chosenItemId = 0;
     }
-
-    curPage = chosenItemId / 8 + 1;
 }
 
 vector<string> Shop::getAllChoose() {
     vector<string> itemList = getItemList();
     vector<string> vendorLists;
 
-    vendorLists.push_back("Shop");
+    //vendorLists.push_back("Shop");
 
     for (int i = 0; i < ITEMID::Invalid; i++) {
         vendorLists.push_back(itemList[i] + ": " + to_string(priceList[i]) + "$  x" + to_string(amountList[i]));

@@ -1,6 +1,9 @@
 #include "Object.h"
 #include "GameManager.h"
 
+const string Object::TAG_SHOP = "Shop";
+const string Object::TAG_ENEMY = "Enemy";
+
 Object::Object()
 {
 	this->icon = 'H';
