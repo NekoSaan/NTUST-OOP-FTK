@@ -32,6 +32,10 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/Shop.cpp
 
     ${PROJECT_SOURCE_DIR}/src/Buff.h
+    ${PROJECT_SOURCE_DIR}/src/Enemy.h
+    ${PROJECT_SOURCE_DIR}/src/Combat.h
+    ${PROJECT_SOURCE_DIR}/src/Weapon.h
+
 )
 
 add_executable(project ${project_SRC_LIST})

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include<vector>
+#include"Weapon.h"
 
 class Entity {
 private:
@@ -14,9 +16,9 @@ private:
 	int mAttack;   // 魔法攻擊力
 	int pDefense;  // 物理防禦力
 	int mDefense;  // 魔法防禦力
-
 	int hp;		   // 當前生命值
 	int focus;	   // 當前專注力
+	Weapon* weapon;
 
 public:
 	// Constructor
@@ -57,6 +59,9 @@ public:
 	void setMDefense(int newMDefense);
 	void setHp(int);
 	void setFocus(int);
+
+	void normalAttack(Entity* entity);
+	void skillAttack(Entity* entity);
 };
 
 #endif // _ENTITY_H_

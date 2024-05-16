@@ -2,6 +2,8 @@
 #define _ROLE_H_
 #include "Entity.h"
 #include "Object.h"
+#include "Enemy.h"
+#include "Buff.h"
 #include <vector>
 
 class Object;
@@ -10,7 +12,7 @@ class Entity;
 class Role : public Entity, public Object {
 public:
 	Role() : Entity() {};
-
+	std::vector<Buff*> buff;
 	void move(int y, int x);
 
 	// Object's virtual funtion
@@ -19,6 +21,9 @@ public:
 	void chooseActiveDown();
 	vector<string> getAllChoose();
 	int getChosenIndex();
+
+	//attack
+
 };
 
 #endif // _ROLE_H_

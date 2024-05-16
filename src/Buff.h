@@ -1,8 +1,8 @@
 #pragma once
-#include "Role.h"
+#include"Entity.h"
 class Buff {
 	int stage;
 	int duration;
 public:
-	virtual void effect(Role* role);
+	virtual void effect(Entity* role);
 };
