@@ -12,7 +12,6 @@ class Entity;
 class Role : public Entity, public Object {
 public:
 	Role() : Entity() {};
-	std::vector<Buff*> buff;
 	void move(int y, int x);
 
 	// Object's virtual funtion

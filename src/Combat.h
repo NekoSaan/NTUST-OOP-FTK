@@ -9,11 +9,13 @@ void combat(vector<Role*> role, vector<Enemy*> enemy) {
 	vector<Entity*> entity;
 
 	for (Role* x : role) {
-		entity.push_back(x);
+		if (x->searchBuff("Dizziness"))
+			entity.push_back(x);
 	}
 
 	for (Enemy* x : enemy) {
-		entity.push_back(x);
+		if (x->searchBuff("Dizziness"))
+			entity.push_back(x);
 	}
 
 	for (int i = 0; i < entity.size(); i++) {

@@ -22,6 +22,8 @@ private:
 
 public:
 	// Constructor
+	std::vector<std::string> buff;
+	std::vector<int> buffTime;
 	Entity() {
 		setVitality(rand() % 15 + 30);  // random value between [30, 45)
 		setMaxFocus(3);					// initialize to 3, fixed
@@ -62,6 +64,8 @@ public:
 
 	void normalAttack(Entity* entity);
 	void skillAttack(Entity* entity);
+	bool searchBuff(std::string Buff);
+	void giveBuff(std::string Buff, int buffTime);
 };
 
 #endif // _ENTITY_H_
