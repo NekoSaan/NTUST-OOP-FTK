@@ -111,7 +111,7 @@ void GameManager::outputGameBoard()
 
 	// set up show board, 2D vector has pair, it has char and color
 	std::vector<std::vector<std::pair<char, int>>> showBoard(mapHeight, std::vector<std::pair<char, int>>(mapWidth, std::pair<char, int>('.', 96)));
-	
+
 	for (int row = 0; row < mapHeight; row += 1)
 	{
 		for (int col = 0; col < mapWidth; col += 1)
@@ -152,7 +152,7 @@ void GameManager::outputGameBoard()
 			if (row == 0 || row == cameraHeight + 1) {
 				std::cout << "-";
 			}
-			else if (row + marginUp - 1 < mapHeight) 
+			else if (row + marginUp - 1 < mapHeight)
 			{
 				setColor(showBoard[marginUp + row - 1][col].second);
 				std::cout << showBoard[marginUp + row - 1][col].first;
@@ -238,15 +238,15 @@ void GameManager::setInformation() {
 	std::vector<std::string> information;
 
 	switch (gameStatus) {
-		case GAME_STATUS::MAP:
-			information = normalInformation();
-			break;
-		case GAME_STATUS::BACKPACK:
-			information = backpackInformation();
-			break;
-		case GAME_STATUS::INTERACTIVE:
-			information = interactiveInformation();
-			break;
+	case GAME_STATUS::MAP:
+		information = normalInformation();
+		break;
+	case GAME_STATUS::BACKPACK:
+		information = backpackInformation();
+		break;
+	case GAME_STATUS::INTERACTIVE:
+		information = interactiveInformation();
+		break;
 	}
 
 	outputInformation(information);
@@ -350,14 +350,14 @@ void GameManager::setPlayerInformation(void)
 
 		info.push_back("Name: Player" + to_string(i));
 		info.push_back("HP: " + to_string(roles[i]->getHp()) + "/" + to_string(roles[i]->getVitality())
-					 + ", Focus: " + to_string(roles[i]->getFocus()) + "/" + to_string(roles[i]->getMaxFocus()));
-		info.push_back("Physical ATK: " + to_string(roles[i]->getPAttack()) 
-					 + ", Physical DEF: " + to_string(roles[i]->getPDefense()));
+			+ ", Focus: " + to_string(roles[i]->getFocus()) + "/" + to_string(roles[i]->getMaxFocus()));
+		info.push_back("Physical ATK: " + to_string(roles[i]->getPAttack())
+			+ ", Physical DEF: " + to_string(roles[i]->getPDefense()));
 		info.push_back("Magical ATK: " + to_string(roles[i]->getMAttack())
-					 + ", Magical DEF: " + to_string(roles[i]->getMDefense()));
+			+ ", Magical DEF: " + to_string(roles[i]->getMDefense()));
 		info.push_back("Speed: " + to_string(roles[i]->getSpeed())
-					 + ", HitRate: " + to_string(roles[i]->getHitRate()));
-		info.push_back("Weapon: ");
+			+ ", HitRate: " + to_string(roles[i]->getHitRate()));
+		info.push_back("Weapon: " + roles[i]->getWeaponName());
 		info.push_back("Armor: ");
 		info.push_back("Accessory: ");
 		info.push_back("Buff: ");
