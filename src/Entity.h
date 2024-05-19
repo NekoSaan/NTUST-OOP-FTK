@@ -19,9 +19,9 @@ private:
 	int focus;	   // 當前專注力
 	int Hp;
 	Weapon* weapon;
-
 public:
 	// Constructor
+	int actions;
 	std::vector<std::string> buff;
 	std::vector<int> buffTime;
 	Entity() {
@@ -64,10 +64,11 @@ public:
 	void setHp(int);
 	void setFocus(int);
 
-	void normalAttack(Entity* entity);
-	void skillAttack(Entity* entity);
+	void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
+	void skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
 	bool searchBuff(std::string Buff);
 	void giveBuff(std::string Buff, int buffTime);
 };
-
+#include"Role.h"
+#include"Enemy.h"
 #endif // _ENTITY_H_

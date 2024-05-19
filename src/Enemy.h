@@ -3,6 +3,7 @@
 #include "Entity.h"
 class Entity;
 class Enemy :public  Entity {
-	Enemy() : Entity() {};
+public:
+	Enemy() : Entity() { };
 };
 #endif

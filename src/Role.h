@@ -11,6 +11,7 @@ class Entity;
 
 class Role : public Entity, public Object {
 public:
+
 	Role() : Entity() {};
 	void move(int y, int x);
 

@@ -1,52 +1,84 @@
 #pragma once
 #include"Entity.h"
-#include"Role.h"
-#include"Enemy.h"
 #include<vector>
 using namespace std;
 
 void combat(vector<Role*> role, vector<Enemy*> enemy) {
 	vector<Entity*> entity;
-
 	for (Role* x : role) {
-		if (x->searchBuff("Dizziness"))
-			entity.push_back(x);
+		entity.push_back(x);
 	}
-
 	for (Enemy* x : enemy) {
-		if (x->searchBuff("Dizziness"))
-			entity.push_back(x);
+		entity.push_back(x);
 	}
-
+	Entity* actor = entity[0];
 	for (int i = 0; i < entity.size(); i++) {
-		for (int j = i; j < entity.size() - 1; j++) {
-			if (entity[i]->getSpeed() > entity[i + 1]->getSpeed()) {
-				Entity* temp = entity[i];
-				entity[i] = entity[i + 1];
-				entity[i + 1] = temp;
+		if ((entity[i]->actions + 1) / entity[i]->getSpeed() < (actor->actions + 1) / actor->getSpeed()) {
+			actor = entity[i];
+		}
+		else if ((entity[i]->actions + 1) / entity[i]->getSpeed() == (actor->actions + 1) / actor->getSpeed()) {
+			if (entity[i]->getSpeed() > actor->getSpeed()) {
+				actor = entity[i];
 			}
+			else if (entity[i]->getSpeed() == actor->getSpeed()) {
+				if (entity[i]->getPAttack() + entity[i]->getMAttack() > actor->getPAttack() + actor->getMAttack()) {
+					actor = entity[i];
+				}
+				else if (entity[i]->getPAttack() + entity[i]->getMAttack() == actor->getPAttack() + actor->getMAttack()) {
+					if (entity[i]->getPDefense() + entity[i]->getMDefense() > actor->getPDefense() + actor->getMDefense()) {
+						actor = entity[i];
+					}
+					else if (entity[i]->getVitality() > actor->getVitality()) {
+						actor = entity[i];
+					}
+				}
+			}
+		}
+	}
+	Move(actor, role, enemy);
+	// 移除已擊敗的角色
+	for (auto it = role.begin(); it != role.end(); ) {
+		if ((*it)->getHp() <= 0) {
+			(*it)->actions = 0;
+			it = role.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+	// 移除已擊敗的敵人
+	for (auto it = enemy.begin(); it != enemy.end(); ) {
+		if ((*it)->getHp() <= 0) {
+			(*it)->actions = 0;
+			it = enemy.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+	if (role.empty() || role.empty()) {
+		combat(role, enemy);
+	}
+	else {
+		for (Entity* x : entity) {
+			x->actions = 0;
 		}
 	}
 }
 
-void attack(Role* attacker, vector<Role*> role, vector<Enemy*> enemy) {
-	int index = 0;
-	cout << "Which one are you going to attack?";
-	cin >> index;
-	if (index > enemy.size()) {
-		cout << "not vaild";
+void Move(Entity* attacker, vector<Role*> role, vector<Enemy*> enemy) {
+	attacker->actions++;
+	vector<Entity*> roles;
+	vector<Entity*> enemys;
+	for (Role* x : role) {
+		roles.push_back(x);
 	}
-	else {
-		int  skillIndex;
-		cout << "Which attack to use ?";
-		cin >> skillIndex;
-		if (index == 0)
-			attacker->normalAttack(enemy[index]);
-		else
-			attacker->skillAttack(enemy[index]);
-	};
-
-}
-void attack(Enemy* attacker, vector<Role*> role, vector<Enemy*> enemy) {
-	attacker->normalAttack(role[rand() % 1]);
+	for (Enemy* x : enemy) {
+		enemys.push_back(x);
+	}
+	int index = rand() % 1;
+	if (index)
+		attacker->normalAttack(roles, enemys);
+	else
+		attacker->skillAttack(roles, enemys);
 }

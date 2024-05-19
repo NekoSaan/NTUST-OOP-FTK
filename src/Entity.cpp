@@ -33,9 +33,9 @@ void  Entity::giveBuff(std::string Buff, int BuffTime) {
 		buffTime[it - buff.begin()] = BuffTime;
 	}
 }
-void Entity::normalAttack(Entity* entity) {
+void Entity::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {
 	if (weapon->type == "p") {
-		int absorption = entity->getPDefense() / (getPDefense() + 50);
+		int absorption = enemy[0]->getPDefense() / (getPDefense() + 50);
 		int n = 0;
 		std::cin >> n;
 		if (n > getFocus())
@@ -43,11 +43,11 @@ void Entity::normalAttack(Entity* entity) {
 		else
 			setFocus(getFocus() - n);
 		int Attack = getPAttack() * dise(n, 1, getHitRate());
-		entity->setHp(entity->getHp() - Attack * (1 - absorption));
+		enemy[0]->setHp(enemy[0]->getHp() - Attack * (1 - absorption));
 	}
 
 }
-void Entity::skillAttack(Entity* entity) {
+void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {
 
 }
 int Entity::getVitality() {
