@@ -3,12 +3,12 @@
 #include<vector>
 using namespace std;
 
-void combat(vector<Role*> role, vector<Enemy*> enemy) {
+void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	vector<Entity*> entity;
-	for (Role* x : role) {
+	for (Entity* x : role) {
 		entity.push_back(x);
 	}
-	for (Enemy* x : enemy) {
+	for (Entity* x : enemy) {
 		entity.push_back(x);
 	}
 	Entity* actor = entity[0];
@@ -66,19 +66,8 @@ void combat(vector<Role*> role, vector<Enemy*> enemy) {
 	}
 }
 
-void Move(Entity* attacker, vector<Role*> role, vector<Enemy*> enemy) {
+void Move(Entity* attacker, vector<Entity*> role, vector<Entity*> enemy) {
 	attacker->actions++;
-	vector<Entity*> roles;
-	vector<Entity*> enemys;
-	for (Role* x : role) {
-		roles.push_back(x);
-	}
-	for (Enemy* x : enemy) {
-		enemys.push_back(x);
-	}
-	int index = rand() % 1;
-	if (index)
-		attacker->normalAttack(roles, enemys);
-	else
-		attacker->skillAttack(roles, enemys);
+	attacker->selectAttack(role, enemy);
+	attacker->minusBuff();
 }

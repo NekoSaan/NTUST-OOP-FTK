@@ -6,6 +6,7 @@
 #include<vector>
 #include"Weapon.h"
 
+
 class Entity {
 private:
 	int vitality;  // 生命值
@@ -18,9 +19,10 @@ private:
 	int mDefense;  // 魔法防禦力
 	int focus;	   // 當前專注力
 	int Hp;
-	Weapon* weapon;
+
 public:
 	// Constructor
+	Weapon* weapon;
 	int actions;
 	std::vector<std::string> buff;
 	std::vector<int> buffTime;
@@ -64,11 +66,16 @@ public:
 	void setHp(int);
 	void setFocus(int);
 
-	void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
-	void skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
+
+
 	bool searchBuff(std::string Buff);
 	void giveBuff(std::string Buff, int buffTime);
+	void minusBuff();
+	void removeBuff(std::string Buff);
+
+	void selectAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
+	void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
+	void skillAttack(std::vector<Entity*> role, std::vector<Entity* > enemy);
 };
-#include"Role.h"
-#include"Enemy.h"
+
 #endif // _ENTITY_H_

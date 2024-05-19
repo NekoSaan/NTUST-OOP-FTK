@@ -24,5 +24,5 @@ public:
 	int getMAttack(void) { return mAttack; }
 	int getPDefense(void) { return pDefense; }
 	int getMDefense(void) { return mDefense; }
-
+	std::string getType(void) { return type; }
 };

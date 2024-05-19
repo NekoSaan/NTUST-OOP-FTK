@@ -2,6 +2,7 @@
 #include "GameManager.h"
 #include "Rect.h"
 
+
 void Role::move(int y, int x)
 {
 	int tempPosY = this->y + y;
@@ -32,3 +33,5 @@ vector<string> Role::getAllChoose() {
 int Role::getChosenIndex() {
 	return 0;
 }
+
+

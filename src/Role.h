@@ -2,8 +2,8 @@
 #define _ROLE_H_
 #include "Entity.h"
 #include "Object.h"
-#include "Enemy.h"
-#include "Buff.h"
+
+
 #include <vector>
 
 class Object;
@@ -21,8 +21,6 @@ public:
 	void chooseActiveDown();
 	vector<string> getAllChoose();
 	int getChosenIndex();
-
-	//attack
 
 };
 
