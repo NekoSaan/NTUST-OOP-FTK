@@ -120,28 +120,52 @@ std::string Entity::getWeaponName() {
 }
 
 
-void Entity::selectAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {
+void Entity::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) {
 	char c = _getch();
 	if (c == '0')
 		normalAttack(role, enemy);
 	else if (c == '1')
 		skillAttack(role, enemy);
+	else if (c == '3')
+		Flee(role, enemy);
 }
 
 void Entity::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {
 	if (weapon->getType() == "p") {
-		int absorption = enemy[0]->getPDefense() / (getPDefense() + 50);
-		int n = 0;
-		std::cin >> n;
-		if (n > getFocus())
-			std::cout << "fail";
-		else
-			setFocus(getFocus() - n);
+		char c = _getch();
+		int n = useFocus(1);
+		int absorption = enemy[(int)c]->getPDefense() / (getPDefense() + 50);
 		int Attack = getPAttack() * dise(n, 1, getHitRate());
-		enemy[0]->setHp(enemy[0]->getHp() - Attack * (1 - absorption));
+		enemy[0]->setHp(enemy[(int)c]->getHp() - Attack * (1 - absorption));
 	}
 
 }
 void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {
+	if (weapon->getActiveSkill() == "Provoke") {
+		int HitRate = getHp() / (getVitality() + getPDefense() + getMDefense()) * getSpeed();
+		char c = _getch();
+		int n = useFocus(1);
+		if (dise(n, 1, HitRate) == 1)
+			enemy[(int)c]->giveBuff("Angry", 3);
+	}
+}
+
+int Entity::useFocus(int MaxFocus) {
+	while (1) {
+		char c = _getch();
+		int n = (int)c;
+		if (n > getFocus() || n > MaxFocus) {
+			std::cout << "fail";
+			continue;
+		}
+		else {
+			setFocus(getFocus() - n);
+			return n;
+		}
+	}
+
+}
+
+void Entity::Flee(std::vector<Entity* > role, std::vector<Entity* > enemy) {
 
 }

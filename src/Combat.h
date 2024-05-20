@@ -68,6 +68,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 
 void Move(Entity* attacker, vector<Entity*> role, vector<Entity*> enemy) {
 	attacker->actions++;
-	attacker->selectAttack(role, enemy);
+	if(attacker->searchBuff("Ditness")==0)
+		attacker->selectAction(role, enemy);
 	attacker->minusBuff();
 }

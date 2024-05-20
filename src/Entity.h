@@ -66,16 +66,18 @@ public:
 	void setHp(int);
 	void setFocus(int);
 
-
+	int useFocus(int MaxFocus);
 
 	bool searchBuff(std::string Buff);
 	void giveBuff(std::string Buff, int buffTime);
 	void minusBuff();
 	void removeBuff(std::string Buff);
 
-	void selectAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
+	void selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy);
 	void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
 	void skillAttack(std::vector<Entity*> role, std::vector<Entity* > enemy);
+
+	void Flee(std::vector<Entity* > role, std::vector<Entity* > enemy);
 };
 
 #endif // _ENTITY_H_

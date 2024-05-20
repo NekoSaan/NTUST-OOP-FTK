@@ -9,6 +9,7 @@ public:
 	int mDefense = 0;  // 魔法防禦力
 	std::string type = "p";	//魔法還是物理
 	std::string weaponName = "basic";
+	std::string activeSkill = "Null";
 	Weapon() {
 		vitality = 0;
 		speed = 0;
@@ -25,4 +26,5 @@ public:
 	int getPDefense(void) { return pDefense; }
 	int getMDefense(void) { return mDefense; }
 	std::string getType(void) { return type; }
+	std::string getActiveSkill(void) { return activeSkill; }
 };
