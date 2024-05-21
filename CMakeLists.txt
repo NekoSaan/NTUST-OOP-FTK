@@ -16,6 +16,9 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/Object.h
     ${PROJECT_SOURCE_DIR}/src/Object.cpp
 
+    ${PROJECT_SOURCE_DIR}/src/Event.h
+    ${PROJECT_SOURCE_DIR}/src/Event.cpp
+
     ${PROJECT_SOURCE_DIR}/src/Backpack.h
     ${PROJECT_SOURCE_DIR}/src/Backpack.cpp
 
@@ -35,8 +38,13 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/Enemy.h
     ${PROJECT_SOURCE_DIR}/src/Enemy.cpp
     ${PROJECT_SOURCE_DIR}/src/Combat.h
-    ${PROJECT_SOURCE_DIR}/src/Weapon.h
 
+    ${PROJECT_SOURCE_DIR}/src/Weapon.h
+    ${PROJECT_SOURCE_DIR}/src/Weapon.cpp
+    ${PROJECT_SOURCE_DIR}/src/Armor.h
+    ${PROJECT_SOURCE_DIR}/src/Armor.cpp
+    ${PROJECT_SOURCE_DIR}/src/Accessory.h
+    ${PROJECT_SOURCE_DIR}/src/accessory.cpp
 )
 
 add_executable(project ${project_SRC_LIST})

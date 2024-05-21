@@ -2,10 +2,9 @@
 #define _ENEMY_H_
 #include "Entity.h"
 
-class Entity;
-class Enemy :public  Entity {
+class Enemy : public  Entity {
 public:
-	Enemy() : Entity() { };
+	Enemy(void) : Entity() {};
 };
 
-#endif
+#endif // _ENEMY_H_

@@ -25,4 +25,5 @@ private:
 
 	Object* object;
 };
+
 #endif // _RECT_H_

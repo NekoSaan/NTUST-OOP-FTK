@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef _GAMEMANAGER_H_
+#define _GAMEMANAGER_H_
 #include <windows.h>
 #include <vector>
 #include <string>
@@ -44,7 +45,7 @@ private:
 	static Object* interactiveObject;
 
 	static GameManager* instance;
-	GameManager(); //init roles 
+	GameManager(); // init roles 
 
 public:
 	static GameManager* getInstance();
@@ -84,3 +85,5 @@ public:
 
 	bool canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<char, int>>>& showBoard);
 };
+
+#endif // _GAMEMANAGER_H_
