@@ -19,7 +19,8 @@ static std::vector<std::string> getItemList(void) {
 		"MagicWand",
 		"Shoes",
 		"PlateArmor",
-		"Bracelet"
+		"Bracelet",
+		"Bug"
 	};
 
 	return ItemList;

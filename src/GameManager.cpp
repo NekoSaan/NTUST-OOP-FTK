@@ -320,7 +320,7 @@ std::vector<std::string> GameManager::interactiveInformation() {
 	vector<string> choose = interactiveObject->getAllChoose();
 	vector<string> information;
 
-	//one page display 8 choice
+	// one page display 8 choice
 	int currentPage = interactiveObject->getChosenIndex() / 8;
 	int maxPage = choose.size() / 8;
 	int pageStartIndex = currentPage * 8;
@@ -330,7 +330,7 @@ std::vector<std::string> GameManager::interactiveInformation() {
 	information.push_back("Your money: $" + to_string(bag.getMoney()));
 	information.push_back("------------");
 
-	//what you can do with object
+	// what you can do with object
 	for (int i = pageStartIndex; i < pageStartIndex + 8 && i < choose.size(); i++) {
 		if (i == interactiveObject->getChosenIndex()) {
 			information.push_back("-> " + choose[i]);

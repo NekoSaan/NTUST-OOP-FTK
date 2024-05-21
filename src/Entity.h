@@ -3,14 +3,16 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include<vector>
-#include"Weapon.h"
+#include <vector>
 
+class Weapon;
+class Armor;
+class Accessory;
 
 class Entity {
 private:
 	int vitality;  // 生命值
-	int maxFocus;     // 專注力
+	int maxFocus;  // 專注力
 	int speed;     // 速度
 	int hitRate;   // 命中率
 	int pAttack;   // 物理攻擊力
@@ -21,25 +23,13 @@ private:
 	int Hp;
 
 public:
-	// Constructor
 	Weapon* weapon;
 	int actions;
 	std::vector<std::string> buff;
 	std::vector<int> buffTime;
-	Entity() {
-		setVitality(rand() % 15 + 30);  // random value between [30, 45)
-		setMaxFocus(3);					// initialize to 3, fixed
-		setFocus(3);					// initialize to 3, fixed
-		setSpeed(rand() % 25 + 30);		// random value between [30, 55)
-		setHitRate(rand() % 20 + 40);	// random value between [40, 60)
-		setPAttack(rand() % 11 + 5);	// random value between [5, 15]
-		setMAttack(rand() % 11 + 5);	// random value between [5, 15]
-		setPDefense(rand() % 21);		// random value between [0, 20]
-		setMDefense(rand() % 21);		// random value between [0, 20]
-		setHp(getVitality());
-		setFocus(getMaxFocus());
-		weapon = new Weapon();
-	}
+
+	// Constructor
+	Entity(void);
 
 	// Getter methods
 	int getVitality();
@@ -68,8 +58,8 @@ public:
 
 	int useFocus(int MaxFocus);
 
-	bool searchBuff(std::string Buff);
-	void giveBuff(std::string Buff, int buffTime);
+	bool searchBuff(std::string);
+	void giveBuff(std::string, int);
 	void minusBuff();
 	void removeBuff(std::string Buff);
 

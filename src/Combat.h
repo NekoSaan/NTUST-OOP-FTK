@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _COMBAT_H_
+#define _COMBAT_H_
 #include"Entity.h"
 #include<vector>
 using namespace std;
@@ -72,3 +73,5 @@ void Move(Entity* attacker, vector<Entity*> role, vector<Entity*> enemy) {
 		attacker->selectAction(role, enemy);
 	attacker->minusBuff();
 }
+
+#endif // _COMBAT_H_

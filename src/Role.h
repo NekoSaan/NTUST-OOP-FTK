@@ -3,7 +3,6 @@
 #include "Entity.h"
 #include "Object.h"
 
-
 #include <vector>
 
 class Object;

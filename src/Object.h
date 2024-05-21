@@ -17,16 +17,16 @@ public:
 	Object();
 	Object(char, int, int);
 
-	//(y, x)
+	// (y, x)
 	void setPos(int, int);
 
-	//(y, x)
+	// (y, x)
 	pair<int, int> getPos();
 
 	char getIcon();
 	string getTag();
   
-	void startActive(); //tell game need to display choose screen
+	void startActive(); // tell game need to display choose screen
 	void exitActive();
 	virtual void active(Role* role) = 0;
 	virtual void chooseActiveUP() = 0; 

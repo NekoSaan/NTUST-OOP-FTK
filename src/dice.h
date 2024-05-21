@@ -3,24 +3,24 @@
 #include <stdlib.h>
 #define maxProbability 90
 
-int dise(int fourse, int dicePool, int probability) {
+int dice(int focus, int dicePool, int probability) {
 	if (probability > maxProbability) {
 		probability = maxProbability;
 	}
 
-	if (dicePool <= fourse) {
+	if (dicePool <= focus) {
 		return dicePool;
 	}
 
 	int count = 0;
 
-	for (int i = 0; i < dicePool - fourse; i++) {
+	for (int i = 0; i < dicePool - focus; i++) {
 		if (probability > rand() % 100) {
 			count++;
 		}
 	}
 
-	return count + fourse;
+	return count + focus;
 }
 
 #endif // _DICE_H_

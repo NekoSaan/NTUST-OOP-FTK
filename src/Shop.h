@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _SHOP_H_
+#define _SHOP_H_
 #include <unordered_map>
 #include <string>
 #include <vector>
@@ -25,3 +26,5 @@ public:
     vector<string> getAllChoose();
     int getChosenIndex();
 };
+
+#endif // _SHOP_H_
