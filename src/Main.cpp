@@ -75,6 +75,9 @@ int main() {
     
 		gameManager->setPlayerInformation();
 
+		system("Pause");
+		gameManager->battleScreen();
+
 		// Update the key
 		keyUpdate(gKeyState, player);
 		endT = clock();

@@ -32,7 +32,6 @@ Shop::Shop() {
     this->chosenItemId = 0;
     this->icon = '$';
     this->tag = TAG_SHOP;
-    this->description = "You can buy item in the shop.";
 }
 
 void Shop::active(Role* role) {

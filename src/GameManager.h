@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <vector>
 #include <string>
+#include <conio.h>	
 #include "Role.h"
 
 class Object;
@@ -74,6 +75,8 @@ public:
 
 	void setMap();
 
+	void battleScreen();
+
 	void outputGameBoard();
 
 	// Set information by informationStatus, then call outputInformation()
@@ -82,6 +85,10 @@ public:
 	// Set plyaer information
 	void setPlayerInformation(void);
 	void outputPlayerBoard(std::vector<std::string>&, int);
+
+	// Set enemy information
+	void setEnemyInformation(void);
+	void outputEnemyBoard(std::vector<std::string>&, int);
 
 	bool canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<char, int>>>& showBoard);
 };

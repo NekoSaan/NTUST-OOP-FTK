@@ -12,25 +12,18 @@ public:
 	int mDefense;		// magical defense
 	char type;			// type of equipment
 	std::string activeSkill = "NULL";
+	std::string weaponName;
 
-	Weapon(std::string tag, ITEMID id) : Item::Item(tag, id) {
-		vitality = 0;
-		speed = 0;
-		pAttack = 0;
-		mAttack = 0;
-		pDefense = 0;
-		mDefense = 0;
-		type = 'p';
-	}
+	Weapon(std::string tag, ITEMID id);
 
-	int getVitality(void) { return vitality; }
-	int getSpeed(void) { return speed; }
-	int getPAttack(void) { return pAttack; }
-	int getMAttack(void) { return mAttack; }
-	int getPDefense(void) { return pDefense; }
-	int getMDefense(void) { return mDefense; }
-	char getType(void) { return type; }
-	std::string getActiveSkill(void) { return activeSkill; }
+	int getVitality(void);
+	int getSpeed(void);
+	int getPAttack(void);
+	int getMAttack(void);
+	int getPDefense(void);
+	int getMDefense(void);
+	char getType(void);
+	std::string getActiveSkill(void);
 };
 
 #endif // _WEAPON_H_

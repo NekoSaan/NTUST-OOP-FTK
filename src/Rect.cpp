@@ -1,5 +1,6 @@
 #include "Rect.h"
 #include "Object.h"
+#include "Entity.h"
 
 Rect::Rect()
 {

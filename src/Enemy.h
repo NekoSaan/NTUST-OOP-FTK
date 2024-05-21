@@ -4,7 +4,7 @@
 
 class Enemy : public  Entity {
 public:
-	Enemy(void) : Entity() {};
+	Enemy(void);
 };
 
 #endif // _ENEMY_H_

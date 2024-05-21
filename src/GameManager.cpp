@@ -5,7 +5,6 @@
 #include "Backpack.h"
 #include "Role.h"
 #include "Shop.h"
-#include "ChestEvent.h"
 
 const float GameManager::CAMERA_HEIGHT_RATE = 0.55;
 const float GameManager::CAMERA_WIDTH_RATE = 0.66;
@@ -76,9 +75,6 @@ void GameManager::setMap()
 	//set shop
 	gameBoard[15][65].setObject(new Shop());
 
-	//set event
-	gameBoard[15][63].setObject(new ChestEvent());
-
 	// set 3 roles position
 	roles[0]->setPos(25, 70);
 	roles[1]->setPos(25, 72);
@@ -90,6 +86,7 @@ void GameManager::setMap()
 	// set status
 	gameStatus = GAME_STATUS::MAP;
 }
+
 
 Role* GameManager::getRole(int i) {
 	return roles[i];
@@ -104,6 +101,88 @@ Object* GameManager::getInteractiveObject() {
 }
 void GameManager::setInteractiveObject(Object* o) {
 	interactiveObject = o;
+}
+
+void GameManager::battleScreen()
+{
+	system("CLS");
+	setEnemyInformation();
+	setPlayerInformation();
+	for (int row = 0; row < windowHeight / 3; row += 1)
+	{
+		setCursor(row + windowHeight / 3, 2);
+		std::cout << "|";
+
+		for (int col = 0; col < windowWidth - 5; col += 1)
+		{
+			std::cout << ((row == 0 || row == windowHeight / 3 - 1) ? "-" : " ");
+		}
+
+		std::cout << "|";
+	}
+
+	std::vector<std::string> mode;
+	mode.push_back("Name:");
+	mode.push_back("");
+	mode.push_back("   Attack");
+	mode.push_back("   Escape");
+
+	std::vector<std::string> descript;
+	descript.push_back("Description:");
+	descript.push_back("");
+	descript.push_back("\tRoll Amount:");
+	descript.push_back("\tRoll Probability:");
+	descript.push_back("\tDamage Type:");
+	descript.push_back("\tCool Down:");
+
+	char input;
+	int chocie = 1;
+	do
+	{	
+		for (int i = 0; i < mode.size(); i += 1)
+		{
+			setCursor(windowHeight / 3 + i + 1, 3);
+			cout << mode[i];
+		}
+		
+		for (int i = 0; i < descript.size(); i += 1)
+		{
+			setCursor(windowHeight / 3 + i + 1, cameraX / 2);
+			cout << descript[i];
+		}
+
+		input = _getch();
+		switch (input)
+		{
+		case 'w':
+			chocie = (chocie < 1 ? 1 : chocie - 1);
+			break;
+		case 's':
+			chocie = (chocie > mode.size() ? chocie : chocie + 1);
+		}
+		if (chocie == 1)
+		{
+			mode[2] = "->" + mode[2].substr(2);
+			mode[3] = "  " + mode[3].substr(2);
+		}
+		else
+		{
+			mode[2] = "  " + mode[2].substr(2);
+			mode[3] = "->" + mode[3].substr(2);
+		}
+	} while (input != '\r');
+
+
+	// Escpae
+	if (chocie == 1)
+	{
+
+	}
+	// Attack
+	else
+	{
+
+	}
 }
 
 void GameManager::outputGameBoard()
@@ -329,15 +408,11 @@ std::vector<std::string> GameManager::interactiveInformation() {
 	int maxPage = choose.size() / 8;
 	int pageStartIndex = currentPage * 8;
 
-	// information about object
+	//information about object
 	information.push_back(interactiveObject->getTag() + " (Page: " + to_string(currentPage + 1) + "/" + to_string(maxPage + 1) + ")");
 	information.push_back("Your money: $" + to_string(bag.getMoney()));
 	information.push_back("------------");
 
-	// description
-	information.push_back("Description:");
-	information.push_back(interactiveObject->getDescription());
-	information.push_back("------------");
 	// what you can do with object
 	for (int i = pageStartIndex; i < pageStartIndex + 8 && i < choose.size(); i++) {
 		if (i == interactiveObject->getChosenIndex()) {
@@ -366,7 +441,7 @@ void GameManager::setPlayerInformation(void)
 		info.push_back("Speed: " + to_string(roles[i]->getSpeed())
 			+ ", HitRate: " + to_string(roles[i]->getHitRate()));
 		info.push_back("Weapon: " + roles[i]->getWeaponName());
-		info.push_back("Armor: " + roles[i]->getArmorName());
+		info.push_back("Armor: ");
 		info.push_back("Accessory: ");
 		info.push_back("Buff: ");
 
@@ -376,22 +451,67 @@ void GameManager::setPlayerInformation(void)
 
 void GameManager::outputPlayerBoard(std::vector<std::string>& information, int playerPointer)
 {
-	for (int row = cameraHeight + 1; row < windowHeight; row += 1)
+	for (int row = windowHeight / 3 * 2; row < windowHeight; row += 1)
 	{
 		setCursor(row, windowWidth / 3 * playerPointer + 2);
 		std::cout << "|";
 
 		for (int col = 0; col < windowWidth / 4 + 5; col += 1)
 		{
-			std::cout << ((row == cameraHeight + 1 || row == windowHeight - 1) ? "-" : " ");
+			std::cout << ((row == windowHeight / 3 * 2 || row == windowHeight - 1) ? "-" : " ");
 		}
 
 		std::cout << "|";
 
 		setCursor(row, windowWidth / 3 * playerPointer + 3);
-		if (row > cameraHeight + 1 && row < windowHeight && row - cameraHeight - 2 < information.size())
+		if (row > windowHeight / 3 * 2 && row < windowHeight - 1 && row - (windowHeight / 3 * 2) - 1 < information.size())
 		{
-			std::cout << information[row - cameraHeight - 2];
+			std::cout << information[row - (windowHeight / 3 * 2) - 1];
+		}
+	}
+}
+
+void GameManager::setEnemyInformation(void)
+{
+	for (int i = 0; i < roles.size(); i++) 
+	{
+		vector<string> info;
+		info.push_back("Name: Enemy" + to_string(i));
+		info.push_back("HP: " + to_string(roles[i]->getHp()) + "/" + to_string(roles[i]->getVitality())
+			+ ", Focus: " + to_string(roles[i]->getFocus()) + "/" + to_string(roles[i]->getMaxFocus()));
+		info.push_back("Physical ATK: " + to_string(roles[i]->getPAttack())
+			+ ", Physical DEF: " + to_string(roles[i]->getPDefense()));
+		info.push_back("Magical ATK: " + to_string(roles[i]->getMAttack())
+			+ ", Magical DEF: " + to_string(roles[i]->getMDefense()));
+		info.push_back("Speed: " + to_string(roles[i]->getSpeed())
+			+ ", HitRate: " + to_string(roles[i]->getHitRate()));
+		info.push_back("Weapon: " + roles[i]->getWeaponName());
+		info.push_back("Armor: ");
+		info.push_back("Accessory: ");
+		info.push_back("Buff: ");
+
+		outputEnemyBoard(info, i);
+	}
+}
+
+void GameManager::outputEnemyBoard(std::vector<std::string>& information, int playerPointer)
+{
+	for (int row = 0; row < windowHeight / 3; row += 1)
+	{
+		setCursor(row, windowWidth / 3 * playerPointer + 2);
+		std::cout << "|";
+
+		for (int col = 0; col < windowWidth / 4 + 5; col += 1)
+		{
+			std::cout << ((row == 0 || row == windowHeight / 3 - 1) ? "-" : " ");
+		}
+
+		std::cout << "|";
+
+		setCursor(row, windowWidth / 3 * playerPointer + 3);
+		if (row > 0 && row < windowHeight / 3 - 1 && row - 1 < information.size())
+		{
+			std::cout << information[row - 1];
 		}
 	}
 }
