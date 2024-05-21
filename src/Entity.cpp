@@ -118,7 +118,7 @@ int Entity::getHp() {
 }
 
 std::string Entity::getWeaponName() {
-	return weapon->weaponName;
+	return weapon->getName();
 }
 
 void Entity::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) {
@@ -135,7 +135,7 @@ void Entity::selectAction(std::vector<Entity* > role, std::vector<Entity* > enem
 }
 
 void Entity::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {
-	if (weapon->getType() == "p") {
+	if (weapon->getType() == 'p') {
 		char c = _getch();
 		int n = useFocus(1);
 		int absorption = enemy[(int)c]->getPDefense() / (getPDefense() + 50);
