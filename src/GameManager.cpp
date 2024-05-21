@@ -5,6 +5,7 @@
 #include "Backpack.h"
 #include "Role.h"
 #include "Shop.h"
+#include "ChestEvent.h"
 
 const float GameManager::CAMERA_HEIGHT_RATE = 0.55;
 const float GameManager::CAMERA_WIDTH_RATE = 0.66;
@@ -74,6 +75,9 @@ void GameManager::setMap()
 
 	//set shop
 	gameBoard[15][65].setObject(new Shop());
+
+	//set event
+	gameBoard[15][63].setObject(new ChestEvent());
 
 	// set 3 roles position
 	roles[0]->setPos(25, 70);
@@ -325,11 +329,15 @@ std::vector<std::string> GameManager::interactiveInformation() {
 	int maxPage = choose.size() / 8;
 	int pageStartIndex = currentPage * 8;
 
-	//information about object
+	// information about object
 	information.push_back(interactiveObject->getTag() + " (Page: " + to_string(currentPage + 1) + "/" + to_string(maxPage + 1) + ")");
 	information.push_back("Your money: $" + to_string(bag.getMoney()));
 	information.push_back("------------");
 
+	// description
+	information.push_back("Description:");
+	information.push_back(interactiveObject->getDescription());
+	information.push_back("------------");
 	// what you can do with object
 	for (int i = pageStartIndex; i < pageStartIndex + 8 && i < choose.size(); i++) {
 		if (i == interactiveObject->getChosenIndex()) {

@@ -19,6 +19,9 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/Event.h
     ${PROJECT_SOURCE_DIR}/src/Event.cpp
 
+    ${PROJECT_SOURCE_DIR}/src/ChestEvent.h
+    ${PROJECT_SOURCE_DIR}/src/ChestEvent.cpp
+
     ${PROJECT_SOURCE_DIR}/src/Backpack.h
     ${PROJECT_SOURCE_DIR}/src/Backpack.cpp
 
@@ -33,7 +36,6 @@ set(project_SRC_LIST
 
     ${PROJECT_SOURCE_DIR}/src/Shop.h
     ${PROJECT_SOURCE_DIR}/src/Shop.cpp
-
     
     ${PROJECT_SOURCE_DIR}/src/Enemy.h
     ${PROJECT_SOURCE_DIR}/src/Enemy.cpp

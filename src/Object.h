@@ -13,6 +13,7 @@ class Object
 public:
 	static const string TAG_SHOP;
 	static const string TAG_ENEMY;
+	static const string TAG_EVENT;
 
 	Object();
 	Object(char, int, int);
@@ -25,6 +26,7 @@ public:
 
 	char getIcon();
 	string getTag();
+	string getDescription();
   
 	void startActive(); // tell game need to display choose screen
 	void exitActive();
@@ -37,6 +39,7 @@ public:
 protected:
 	char icon;
 	string tag;
+	string description = "";
 
 	int y;
 	int x;

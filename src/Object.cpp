@@ -3,6 +3,7 @@
 
 const string Object::TAG_SHOP = "Shop";
 const string Object::TAG_ENEMY = "Enemy";
+const string Object::TAG_EVENT = "Random Event";
 
 Object::Object()
 {
@@ -38,6 +39,10 @@ char Object::getIcon()
 
 std::string Object::getTag() {
 	return tag;
+}
+
+std::string Object::getDescription() {
+	return description;
 }
 
 void Object::startActive() {
