@@ -358,7 +358,7 @@ void GameManager::setPlayerInformation(void)
 		info.push_back("Speed: " + to_string(roles[i]->getSpeed())
 			+ ", HitRate: " + to_string(roles[i]->getHitRate()));
 		info.push_back("Weapon: " + roles[i]->getWeaponName());
-		info.push_back("Armor: ");
+		info.push_back("Armor: " + roles[i]->getArmorName());
 		info.push_back("Accessory: ");
 		info.push_back("Buff: ");
 

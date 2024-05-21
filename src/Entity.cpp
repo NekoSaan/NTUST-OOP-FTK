@@ -17,7 +17,8 @@ Entity::Entity(void) {
 	setHp(getVitality());
 	setFocus(getMaxFocus());
 
-	weapon = new Weapon("Bug", ITEMID::Invalid);
+	weapon = NULL;//new Wepon("Bug", ITEMID::Invalid)
+	armor = NULL;
 }
 
 void Entity::setVitality(int newVitality) { vitality = newVitality; }
@@ -33,7 +34,6 @@ void Entity::setHp(int newHp) { Hp = newHp; }
 
 bool Entity::searchBuff(std::string Buff) {
 	std::vector<std::string>::iterator it = std::find(buff.begin(), buff.end(), Buff);
-
 	return it != buff.end();
 }
 void Entity::giveBuff(std::string Buff, int BuffTime) {
@@ -73,8 +73,13 @@ int Entity::getMaxFocus() {
 }
 
 int Entity::getSpeed() {
-	int Speed = speed + weapon->getSpeed();
-
+	int Speed = speed ;
+	if (weapon != NULL) {
+		Speed+= weapon->getSpeed();
+	}
+	if (armor != NULL) {
+		Speed += armor->getSpeed();
+	}
 	if (searchBuff("SpeedUp")) {
 		Speed *= 1.5;
 	}
@@ -91,23 +96,38 @@ int Entity::getHitRate() {
 	return std::min(100, HitRate);
 }
 int Entity::getPAttack() {
-	int PAttack = pAttack + weapon->getPAttack();
-
+	int PAttack = pAttack ;
+	if (weapon != NULL) {
+		PAttack += weapon->getPAttack();
+	}
+	
 	return std::min(100, PAttack);
 }
 int Entity::getMAttack() {
-	int MAttack = mAttack + weapon->getMAttack();
-
+	int MAttack = mAttack ;
+	if (weapon != NULL) {
+		MAttack += weapon->getMAttack();
+	}
 	return std::min(100, MAttack);
 }
 int Entity::getPDefense() {
-	int PDefense = pDefense + weapon->getPDefense();
-
+	int PDefense = pDefense;
+	if (weapon != NULL) {
+		PDefense += weapon->getPDefense();
+	}
+	if (armor != NULL) {
+		PDefense += armor->getPDefense();
+	}
 	return std::min(100, PDefense);
 }
 int Entity::getMDefense() {
-	int MDefense = mDefense + weapon->getMDefense();
-
+	int MDefense = mDefense ;
+	if (weapon != NULL) {
+		MDefense += weapon->getMDefense();
+	}
+	if (armor != NULL) {
+		MDefense += armor->getMDefense();
+	}
 	return std::min(100, mDefense);
 }
 int Entity::getFocus() {
@@ -118,7 +138,23 @@ int Entity::getHp() {
 }
 
 std::string Entity::getWeaponName() {
-	return weapon->getName();
+	if (weapon != NULL) {
+		return weapon->getName();
+	}
+	else {
+		return "hand";
+	}
+		
+}
+
+std::string Entity::getArmorName() {
+	if (armor != NULL) {
+		return armor->getName();
+	}
+	else {
+		return "no Install";
+	}
+
 }
 
 void Entity::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) {
@@ -157,17 +193,26 @@ void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy
 }
 
 int Entity::useFocus(int MaxFocus) {
+	int index=0;
 	while (1) {
 		char c = _getch();
-		int n = (int)c;
-
-		if (n > getFocus() || n > MaxFocus) {
-			std::cout << "fail";
-			continue;
+		if(c=='+'){
+			if (index+1 > getFocus() || index + 1 > MaxFocus) {
+				std::cout << "fail";
+				continue;
+			}
+			else {
+				index++;
+			}
 		}
-		else {
-			setFocus(getFocus() - n);
-			return n;
+		else if (c == '-') {
+			if (index > 0) {
+				index--;
+			}
+		}
+		else if (c == '\n') {
+			setFocus(getFocus() - index);
+			return index;
 		}
 	}
 

@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-
+#include"Armor.h"
 class Weapon;
 class Armor;
 class Accessory;
@@ -24,6 +24,8 @@ private:
 
 public:
 	Weapon* weapon;
+	Armor* armor;
+
 	int actions;
 	std::vector<std::string> buff;
 	std::vector<int> buffTime;
@@ -43,6 +45,7 @@ public:
 	int getFocus();
 	int getHp();
 	std::string getWeaponName();
+	std::string getArmorName();
 
 	// Setter methods
 	void setVitality(int newVitality);
