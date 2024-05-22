@@ -4,6 +4,7 @@
 #include <vector>
 
 class Item;
+class Role;
 
 class BackPack {
 private:
@@ -36,7 +37,7 @@ public:
 	void invMode(void);
 	void chooseUp(); //input w
 	void chooseDown(); //input s
-	void useItem(); //input enter
+	void useItem(Role*); //input enter
 	void closeBag(); //input backspace
 };
 

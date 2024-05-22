@@ -31,6 +31,14 @@ void Role::move(int y, int x)
 	}
 }
 
+void Role::gainHealth(int healHp) {
+	hp = min(hp + healHp, vitality);
+}
+
+void Role::gainFocus(int restoreN) {
+	focus = min(focus + restoreN, maxFocus);
+}
+
 void Role::active(Role* role) 
 {
 }

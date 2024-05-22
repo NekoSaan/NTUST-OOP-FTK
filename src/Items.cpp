@@ -16,13 +16,23 @@ std::vector<std::string> getItemList(void)
 		"Tent",
 
 		// Equipments, non-stackable
+		// Weapons
 		"WoodenSword",
 		"Hammer",
+		"GiantHammer",
 		"MagicWand",
-		"Shoes",
+		"RitualSword",
+		// Armor
+		"WoodenShield",
 		"PlateArmor",
+		"LeatherArmor",
+		"Robe",
+		"LaurelWreath",
+		// Accessory
+		"HolyGrail",
+		"Shoes",
 		"Bracelet",
-		"Bug"
+		"Empty"
 	};
 
 	// Return the list of item names
@@ -99,15 +109,16 @@ std::string Item::getName(void)
 // Intent: Perform action based on the item's id
 // Pre: role must be a valid Role object
 // Post: Performs an action based on the item's id; if the id is not recognized, no action is taken
+// \param role: use item character
 void Item::use(Role* role) 
 {
 	switch (id) 
 	{
 	case ITEMID::Godsbeard:
-		// role->gainHealth(25);
+		role->gainHealth(25);
 		break;
 	case ITEMID::GoldenRoot:
-		// role->gainFocus(3);
+		role->gainFocus(3);
 		break;
 	case ITEMID::TeleportScroll:
 		// teleportScene();

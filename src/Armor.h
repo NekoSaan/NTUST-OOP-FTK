@@ -12,20 +12,18 @@ private:
 	std::string activeSkill = "NULL";
 
 public:
-	Armor(std::string tag, ITEMID id) : Item::Item(tag, id) {
-		vitality = 0;
-		speed = 0;
-		pDefense = 0;
-		mDefense = 0;
-		type = 'p';
-	}
+	// Default Constructor
+	Armor(std::string, ITEMID);
 
-	int getVitality(void) { return vitality; }
-	int getSpeed(void) { return speed; }
-	int getPDefense(void) { return pDefense; }
-	int getMDefense(void) { return mDefense; }
-	char getType(void) { return type; }
-	std::string getActiveSkill(void) { return activeSkill; }
+	// Getter
+	int getVitality(void);
+	int getSpeed(void);
+	int getPDefense(void);
+	int getMDefense(void);
+	char getType(void);
+	std::string getActiveSkill(void);
+
+	void use(Role*) override;
 };
 
 #endif // _ARMOR_H_

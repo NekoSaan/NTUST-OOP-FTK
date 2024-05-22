@@ -1,6 +1,8 @@
 #include "Entity.h"
 #include "Dice.h"
 #include "Weapon.h"
+#include "Armor.h"
+#include "Accessory.h"
 #include <conio.h>
 #include <algorithm>
 
@@ -21,7 +23,8 @@ Entity::Entity(void)
 	setHp(getVitality());
 	setFocus(getMaxFocus());
 
-	weapon = new Weapon("Bug", ITEMID::Invalid);
+	weapon = new Weapon("Empty", ITEMID::Invalid);
+	armor = new Armor("Empty", ITEMID::Invalid);
 }
 
 
@@ -102,7 +105,7 @@ void Entity::setFocus(int newFocus)
 // Post: Sets the current hit points of the entity to the specified value
 void Entity::setHp(int newHp) 
 { 
-	Hp = newHp; 
+	hp = newHp; 
 }
 
 // Intent: Search for a specific buff in the entity's buffs
@@ -183,7 +186,7 @@ int Entity::getMaxFocus()
 // Post: Returns the effective speed of the entity
 int Entity::getSpeed() 
 {
-	int Speed = speed + weapon->getSpeed();
+	int Speed = speed + armor->getSpeed();
 
 	if (searchBuff("SpeedUp")) 
 	{
@@ -233,7 +236,7 @@ int Entity::getMAttack()
 // Post: Returns the effective physical defense of the entity
 int Entity::getPDefense() 
 {
-	int PDefense = pDefense + weapon->getPDefense();
+	int PDefense = pDefense + armor->getPDefense();
 
 	return std::min(100, PDefense);
 }
@@ -243,7 +246,7 @@ int Entity::getPDefense()
 // Post: Returns the effective magical defense of the entity
 int Entity::getMDefense() 
 {
-	int MDefense = mDefense + weapon->getMDefense();
+	int MDefense = mDefense + armor->getMDefense();
 
 	return std::min(100, mDefense);
 }
@@ -261,7 +264,7 @@ int Entity::getFocus()
 // Post: Returns the current hit points of the entity
 int Entity::getHp() 
 {
-	return Hp;
+	return hp;
 }
 
 // Intent: Get the name of the equipped weapon
@@ -269,7 +272,7 @@ int Entity::getHp()
 // Post: Returns the name of the equipped weapon
 std::string Entity::getWeaponName()
 {
-	return weapon->weaponName;
+	return weapon->getName();
 }
 
 // Intent: Select an action for the entity based on user input
@@ -278,6 +281,7 @@ std::string Entity::getWeaponName()
 void Entity::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) 
 {
 	char c = _getch();
+
 	if (c == '0') 
 	{
 		normalAttack(role, enemy);
@@ -305,7 +309,6 @@ void Entity::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enem
 		int Attack = getPAttack() * dice(n, 1, getHitRate());
 		enemy[0]->setHp(enemy[(int)c]->getHp() - Attack * (1 - absorption));
 	}
-
 }
 
 // Intent: Perform a skill attack against an enemy entity

@@ -1,8 +1,8 @@
 #include "Shop.h"
-#include "GameManager.h"
-#include "Items.h"
-#include "Role.h"
 #include "Backpack.h"
+#include "GameManager.h"
+#include "Weapon.h"
+#include "Armor.h"
 
 // Intent: Constructor to initialize a shop with default prices, stock amounts, and other properties
 // Pre: None
@@ -10,15 +10,26 @@
 Shop::Shop()
 {
     // Initialize prices for items in the shop
+    // Consumables
     this->priceList[int(ITEMID::Godsbeard)] = 10;
     this->priceList[int(ITEMID::GoldenRoot)] = 15;
     this->priceList[int(ITEMID::TeleportScroll)] = 30;
     this->priceList[int(ITEMID::Tent)] = 20;
+    // Weapons
     this->priceList[int(ITEMID::WoodenSword)] = 15;
     this->priceList[int(ITEMID::Hammer)] = 25;
+    this->priceList[int(ITEMID::GiantHammer)] = 40;
     this->priceList[int(ITEMID::MagicWand)] = 15;
-    this->priceList[int(ITEMID::Shoes)] = 18;
+    this->priceList[int(ITEMID::RitualSword)] = 24;
+    // Armor
+    this->priceList[int(ITEMID::WoodenShield)] = 15;
     this->priceList[int(ITEMID::PlateArmor)] = 23;
+    this->priceList[int(ITEMID::LeatherArmor)] = 20;
+    this->priceList[int(ITEMID::Robe)] = 10;
+    this->priceList[int(ITEMID::LaurelWreath)] = 40;
+    // Accessory
+    this->priceList[int(ITEMID::HolyGrail)] = 60;
+    this->priceList[int(ITEMID::Shoes)] = 18;
     this->priceList[int(ITEMID::Bracelet)] = 20;
 
     // Initialize stock amounts for items in the shop
@@ -26,12 +37,11 @@ Shop::Shop()
     this->amountList[int(ITEMID::GoldenRoot)] = 3;
     this->amountList[int(ITEMID::TeleportScroll)] = 2;
     this->amountList[int(ITEMID::Tent)] = 2;
-    this->amountList[int(ITEMID::WoodenSword)] = 1;
-    this->amountList[int(ITEMID::Hammer)] = 1;
-    this->amountList[int(ITEMID::MagicWand)] = 1;
-    this->amountList[int(ITEMID::Shoes)] = 1;
-    this->amountList[int(ITEMID::PlateArmor)] = 1;
-    this->amountList[int(ITEMID::Bracelet)] = 1;
+
+    // Every equipment have only 1 stock
+    for (int i = ITEMID::WoodenSword; i < ITEMID::Invalid; i++) {
+        this->amountList[i] = 1;
+    }
 
     // Initialize other properties of the shop
     this->chosenItemId = 0;
@@ -57,7 +67,16 @@ void Shop::active(Role* role) {
         std::string tag = (chosenItemId < int(ITEMID::WoodenSword)) ? "Consumable" : "Equipment";
 
         // Obtain the item from the shop and decrease its stock amount
-        bag.obtainItem(new Item(tag, ITEMID(chosenItemId)));
+        if (chosenItemId < ITEMID::WoodenSword) {
+            bag.obtainItem(new Item(tag, ITEMID(chosenItemId)));
+        }
+        else if (chosenItemId < ITEMID::WoodenShield) {
+            bag.obtainItem(new Weapon(tag, ITEMID(chosenItemId)));
+        }
+        else if (chosenItemId < ITEMID::HolyGrail) {
+            bag.obtainItem(new Armor(tag, ITEMID(chosenItemId)));
+        }
+
         amountList[chosenItemId]--;
     }
 }

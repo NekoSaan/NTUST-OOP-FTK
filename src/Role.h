@@ -1,14 +1,8 @@
 #ifndef _ROLE_H_
 #define _ROLE_H_
-
 #include "Entity.h"
 #include "Object.h"
-
 #include <vector>
-
-// Forward declarations
-class Object;
-class Entity;
 
 // Role class represents a character role in the game
 class Role : public Entity, public Object 
@@ -19,6 +13,9 @@ public:
 
     // Move the role to a new position on the game board and trigger any interactions with objects on the new position
     void move(int y, int x);
+
+    void gainHealth(int);
+    void gainFocus(int);
 
     // Trigger the role's interaction with another role
     void active(Role* role);

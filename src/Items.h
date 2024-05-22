@@ -18,11 +18,21 @@ enum ITEMID {
     Tent,
 
     // Equipments, non-stackable
+    // Weapons
     WoodenSword,
     Hammer,
+    GiantHammer,
     MagicWand,
-    Shoes,
+    RitualSword,
+    // Armor
+    WoodenShield,
     PlateArmor,
+    LeatherArmor,
+    Robe,
+    LaurelWreath,
+    // Accessory
+    HolyGrail,
+    Shoes,
     Bracelet,
     Invalid
 };
@@ -30,11 +40,11 @@ enum ITEMID {
 // Item class represents an item in the game
 class Item {
 protected:
-    std::string tag; // Tag of the item
-    std::string itemName; // Name of the item
-    std::string des; // Description of the item
-    ITEMID id; // ID of the item
-    int amount; // Amount of the item
+    std::string tag;        // Tag of the item
+    std::string itemName;   // Name of the item
+    std::string des;        // Description of the item
+    ITEMID id;              // ID of the item
+    int amount;             // Current amount of the item
 
 public:
     // Constructor
@@ -63,7 +73,6 @@ public:
 
     // Virtual function to use the item by a role
     virtual void use(Role*);
-
 };
 
 #endif // _ITEMS_H_

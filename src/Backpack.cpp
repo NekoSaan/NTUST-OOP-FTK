@@ -172,7 +172,7 @@ void BackPack::chooseDown()
 // Intent: Use the currently selected item in the inventory
 // Pre: None
 // Post: Uses the currently selected item in the inventory
-void BackPack::useItem() 
+void BackPack::useItem(Role* curRole) 
 {
 	// inventory or current selected item is empty. use fail.
 	if (inventory.empty() || !inventory[curIndex]->getAmount()) 

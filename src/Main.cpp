@@ -282,7 +282,7 @@ void backpackStatusUpdate(bool key[])
 	else if (key[int(VALIDINPUT::EENTER)])
 	{
 		// Use the selected item from the backpack
-		bag.useItem(); 
+		bag.useItem(gameManager->getCurrentRole()); 
 	}
 	else if (key[int(VALIDINPUT::EBACKSPACE)])
 	{

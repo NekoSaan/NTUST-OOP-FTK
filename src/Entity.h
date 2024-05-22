@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-#include"Weapon.h"
+
 class Weapon;
 class Armor;
 class Accessory;
@@ -12,7 +12,7 @@ class Accessory;
 // Entity class represents a character or entity in the game
 class Entity
 {
-private:
+protected:
     int vitality;       // Health points
     int maxFocus;       // Maximum focus points
     int speed;          // Speed
@@ -22,10 +22,12 @@ private:
     int pDefense;       // Physical defense
     int mDefense;       // Magical defense
     int focus;          // Current focus points
-    int Hp;             // Health
+    int hp;             // Health
 
 public:
     Weapon* weapon;                     // Weapon
+    Armor* armor;                       // Armor
+    Accessory* acc;                     // Accessory
     int actions;                        // Number of actions
     std::vector<std::string> buff;      // Status effects
     std::vector<int> buffTime;          // Status effects duration

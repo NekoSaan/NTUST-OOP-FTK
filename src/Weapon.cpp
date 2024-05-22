@@ -1,4 +1,5 @@
 #include "Weapon.h"
+#include "Role.h"
 
 // Intent: Construct a Weapon object with specified tag and ID
 // Pre: None
@@ -7,29 +8,10 @@ Weapon::Weapon(std::string tag, ITEMID id)
 	: Item::Item(tag, id)
 {
 	// Initialize attributes to default values
-	vitality = 0;
-	speed = 0;
 	pAttack = 0;
 	mAttack = 0;
-	pDefense = 0;
-	mDefense = 0;
+	hitRate = 0;
 	type = 'p';
-}
-
-// Intent: Get the vitality attribute of the weapon
-// Pre: None
-// Post: Returns the vitality attribute of the weapon
-int Weapon::getVitality(void) 
-{
-	return vitality; 
-}
-
-// Intent: Get the speed attribute of the weapon
-// Pre: None
-// Post: Returns the speed attribute of the weapon
-int Weapon::getSpeed(void) 
-{
-	return speed; 
 }
 
 // Intent: Get the physical attack attribute of the weapon
@@ -48,20 +30,11 @@ int Weapon::getMAttack(void)
 	return mAttack; 
 }
 
-// Intent: Get the physical defense attribute of the weapon
+// Intent: Get hir rate attribute of the weapon
 // Pre: None
-// Post: Returns the physical defense attribute of the weapon
-int Weapon::getPDefense(void) 
-{
-	return pDefense;
-}
-
-// Intent: Get the magical defense attribute of the weapon
-// Pre: None
-// Post: Returns the magical defense attribute of the weapon
-int Weapon::getMDefense(void)
-{
-	return mDefense;
+// Post: Returns the hir rate attribute of the weapon
+int Weapon::getHitRate(void) {
+	return hitRate;
 }
 
 // Intent: Get the type of the weapon (physical or magical)
@@ -78,4 +51,8 @@ char Weapon::getType(void)
 std::string Weapon::getActiveSkill(void) 
 {
 	return activeSkill; 
+}
+
+void Weapon::use(Role* role) {
+	
 }
