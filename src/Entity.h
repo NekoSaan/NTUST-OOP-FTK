@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-
+#include"Weapon.h"
 class Weapon;
 class Armor;
 class Accessory;
