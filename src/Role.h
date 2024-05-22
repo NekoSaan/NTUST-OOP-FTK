@@ -1,26 +1,39 @@
 #ifndef _ROLE_H_
 #define _ROLE_H_
+
 #include "Entity.h"
 #include "Object.h"
 
 #include <vector>
 
+// Forward declarations
 class Object;
 class Entity;
 
-class Role : public Entity, public Object {
+// Role class represents a character role in the game
+class Role : public Entity, public Object 
+{
 public:
+    // Constructor for Role class
+    Role() : Entity() {};
 
-	Role() : Entity() {};
-	void move(int y, int x);
+    // Move the role to a new position on the game board and trigger any interactions with objects on the new position
+    void move(int y, int x);
 
-	// Object's virtual funtion
-	void active(Role* role);
-	void chooseActiveUP();
-	void chooseActiveDown();
-	vector<string> getAllChoose();
-	int getChosenIndex();
+    // Trigger the role's interaction with another role
+    void active(Role* role);
 
+    // Choose the next active object in the role's inventory
+    void chooseActiveUP();
+
+    // Choose the previous active object in the role's inventory
+    void chooseActiveDown();
+
+    // Get all possible choices for the role's actions
+    vector<string> getAllChoose();
+
+    // Get the index of the chosen action
+    int getChosenIndex();
 };
 
-#endif // _ROLE_H_
+#endif _ROLE_H_

@@ -1,5 +1,6 @@
 ﻿#ifndef _GAMEMANAGER_H_
 #define _GAMEMANAGER_H_
+
 #include <windows.h>
 #include <vector>
 #include <string>
@@ -9,6 +10,7 @@
 class Object;
 class Rect;
 
+// The player enum, total has three player
 enum class PLAYER
 {
 	PLAYER1 = 0,
@@ -17,43 +19,53 @@ enum class PLAYER
 	INVALID,
 };
 
-enum class GAME_STATUS {
-	MAP, //on map
-	COMBAT, // fight with enemy
-	BACKPACK, //open backpack
-	INTERACTIVE //interact with object on map
+// THe game status enum class
+enum class GAME_STATUS 
+{
+	MAP, 
+	COMBAT,
+	BACKPACK,
+	INTERACTIVE
 };
 
 class GameManager
 {
 private:
+	// Helper functions to manage console output
 	void setCameraToCurrentRole();
 	void setColor(int color = 7);
 	void setCursor(int y, int x);
 
-	// Input string array, print information on screen left
+	// Print information on the screen
 	void outputInformation(std::vector<std::string>& information);
 
+	// Functions to generate different types of information
 	std::vector<std::string> normalInformation();
 	std::vector<std::string> backpackInformation();
 	std::vector<std::string> interactiveInformation();
-	std::vector<std::string> playerInformation[3];
+	std::vector<std::string> playerInformation[3]; 
 
+	// Array to track which players are active
 	bool playerList[3] = { false };
 
+	// Static member variables
 	static std::vector<Role*> roles;
 	static Role* currentRole;
 	static Object* interactiveObject;
-
 	static GameManager* instance;
-	GameManager(); // init roles 
+
+	// Private constructor to initialize roles
+	GameManager();
 
 public:
+	// Singleton pattern
 	static GameManager* getInstance();
 
-	static const float CAMERA_HEIGHT_RATE; // camera height in window height rate
-	static const float CAMERA_WIDTH_RATE; // camera width in window width rate
+	// Constants for camera height and width rates
+	static const float CAMERA_HEIGHT_RATE;
+	static const float CAMERA_WIDTH_RATE;
 
+	// Static member variables to define map and window dimensions
 	static int mapHeight;
 	static int mapWidth;
 	static int windowHeight;
@@ -63,34 +75,45 @@ public:
 	static int cameraX;
 	static int cameraY;
 
+	// Current game status
 	static GAME_STATUS gameStatus;
+
+	// 2D vector to represent the game board
 	static std::vector<std::vector<Rect>> gameBoard;
-	
+
+	// Function to check if a position is valid on the game board
 	static bool isPositionValid(int y, int x);
 
+	// Getters for role and interactive object
 	Role* getRole(int i);
 	Role* getCurrentRole();
 	Object* getInteractiveObject();
+
+	// Setter for interactive object
 	void setInteractiveObject(Object* o);
 
+	// Initialize the map
 	void setMap();
 
+	// Display the battle screen
 	void battleScreen();
 
+	// Output the game board
 	void outputGameBoard();
 
-	// Set information by informationStatus, then call outputInformation()
+	// Set information based on game status
 	void setInformation();
-	
-	// Set plyaer information
-	void setPlayerInformation(void);
+
+	// Set player information
+	void setPlayerInformation();
 	void outputPlayerBoard(std::vector<std::string>&, int);
 
 	// Set enemy information
-	void setEnemyInformation(void);
+	void setEnemyInformation();
 	void outputEnemyBoard(std::vector<std::string>&, int);
 
+	// Function to check if a position is visible to the player
 	bool canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<char, int>>>& showBoard);
 };
 
-#endif // _GAMEMANAGER_H_
+#endif _GAMEMANAGER_H_

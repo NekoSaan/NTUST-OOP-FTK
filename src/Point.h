@@ -3,38 +3,21 @@
 
 struct Point
 {
+	// The y and x
 	int y = -1;
 	int x = -1;
 
+	// Operator give value
 	Point& operator = (Point pos);
 
+	// Operator addation
 	Point operator + (Point add);
 
+	// Operator minus
 	Point operator - (Point minus);
 
+	// Operator compare equal
 	bool operator == (Point equal);
 };
 
-Point& Point::operator = (Point pos)
-{
-	this->x = pos.x;
-	this->y = pos.y;
-	return *this;
-}
-
-Point Point::operator + (Point add)
-{
-	return Point{ this->y + add.y , this->x + add.x };
-}
-
-Point Point::operator - (Point minus)
-{
-	return Point{ this->y - minus.y , this->x - minus.x };
-}
-
-bool Point::operator == (Point equal)
-{
-	return (this->y == equal.y && this->x == equal.x);
-}
-
-#endif // _POINT_H_
+#endif _POINT_H_

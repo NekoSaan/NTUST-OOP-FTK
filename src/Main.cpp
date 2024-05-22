@@ -5,7 +5,6 @@
 #include <string>
 #include "GameManager.h"
 #include "Backpack.h"
-
 using namespace std;
 
 // Define input command
@@ -22,69 +21,86 @@ enum VALIDINPUT
 	INVALID,
 };
 
-const double_t GTIMELOG = 0.03;
+// Constant for time between updates
+const double_t GTIMELOG = 0.03; 
 
-GameManager* gameManager;
+// Pointer to the game manager instance
+GameManager* gameManager;		
 
+// Function prototypes
 void keyUpdate(bool key[], bool playerKey[]);
-
 void update(bool key[], bool playerKey[]);
 void mapStatusUpdate(bool key[]);
 void combatStatusUpdate(bool key[]);
 void backpackStatusUpdate(bool key[]);
 void interactiveStatusUpdate(bool key[]);
 
-int main() {
-	srand(time(NULL));
+int main()
+{
+	// Seed random number generator
+	srand(time(NULL)); 
 
+	// Get handle to the console window
 	HWND hwndConsole = GetConsoleWindow();
-    SetWindowLong(hwndConsole, GWL_STYLE, GetWindowLong(hwndConsole, GWL_STYLE) & ~WS_OVERLAPPEDWINDOW);
-    ShowWindow(hwndConsole, SW_MAXIMIZE);
+	// Remove window decorations
+	SetWindowLong(hwndConsole, GWL_STYLE, GetWindowLong(hwndConsole, GWL_STYLE) & ~WS_OVERLAPPEDWINDOW);
+	// Maximize the console window
+	ShowWindow(hwndConsole, SW_MAXIMIZE);
 
+	// Get console screen buffer info
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
 
+	// Initialize game manager window dimensions
 	GameManager::windowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 	GameManager::windowWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+
+	// Calculate camera dimensions based on window dimensions and rates
 	GameManager::cameraHeight = min(GameManager::windowHeight * GameManager::CAMERA_HEIGHT_RATE, GameManager::mapHeight);
 	GameManager::cameraWidth = min(GameManager::windowWidth * GameManager::CAMERA_WIDTH_RATE, GameManager::mapWidth);
 
+	// Get singleton instance of GameManager and set up map
 	gameManager = GameManager::getInstance();
 	gameManager->setMap();
 
+	// Initialize key state arrays
 	bool gKeyState[int(VALIDINPUT::INVALID) + 1] = { false };
 	bool player[int(PLAYER::INVALID)] = { false };
 
-	double startT = clock();
-	double endT = clock();
+	double startT = clock();	// Start time for timing game loop
+	double endT = clock();		// End time for timing game loop
 
 	do
 	{
-		// Compute the time lap
+		// Compute the time elapsed since last frame
 		double timeFrame = (endT - startT) / CLOCKS_PER_SEC;
 
-		// Execute the game loop
+		// Execute the game loop if enough time has elapsed
 		if (timeFrame >= GTIMELOG)
 		{
 			update(gKeyState, player);
-			startT = clock();
+			startT = clock(); // Reset start time
 		}
 
+		// Render game board and set information
 		gameManager->outputGameBoard();
 		gameManager->setInformation();
-    
 		gameManager->setPlayerInformation();
 
+		//============================================
+		// The temporay set the battle screen
 		system("Pause");
 		gameManager->battleScreen();
+		//============================================
 
-		// Update the key
+		// Update key state
 		keyUpdate(gKeyState, player);
-		endT = clock();
-	} while (!gKeyState[int(VALIDINPUT::EESC)]);
+		endT = clock(); // Update end time
+	} while (!gKeyState[int(VALIDINPUT::EESC)]); // Continue loop until ESC key is pressed
 
-    return 0;
+	return 0;
 }
+
 
 // Intent: Detect input value
 // Pre: The array key
@@ -158,7 +174,8 @@ void keyUpdate(bool key[], bool playerKey[])
 void update(bool key[], bool playerKey[])
 {
 	// Check input wasd
-	switch (GameManager::gameStatus) {
+	switch (GameManager::gameStatus) 
+	{
 		case GAME_STATUS::MAP:
 			mapStatusUpdate(key);
 			break;
@@ -176,27 +193,69 @@ void update(bool key[], bool playerKey[])
 	//std::cout << "invalid input\n";
 }
 
-void mapStatusUpdate(bool key[]) {
-	if (key[int(VALIDINPUT::EW)]) {
-		gameManager->getCurrentRole()->move(-1, 0);
+// Intent: Update the status of the player on the map based on user input.
+// Pre: The `key` array must be initialized and contain valid input flags. The `gameManager` object and the current player role must be accessible.
+// Post: Updates the player's position on the map or switches to the inventory mode based on user input.
+void mapStatusUpdate(bool key[])
+{
+	// Move the player left on the map
+	if (key[int(VALIDINPUT::EW)])
+	{
+		gameManager->getCurrentRole()->move(-1, 0); 
 	}
-	else if (key[int(VALIDINPUT::ES)]) {
+	// Move the player right on the map
+	else if (key[int(VALIDINPUT::ES)])
+	{
 		gameManager->getCurrentRole()->move(1, 0);
 	}
-	else if (key[int(VALIDINPUT::EA)]) {
-		gameManager->getCurrentRole()->move(0, -1);
+	// Move the player up on the map
+	else if (key[int(VALIDINPUT::EA)])
+	{
+		gameManager->getCurrentRole()->move(0, -1); 
 	}
-	else if (key[int(VALIDINPUT::ED)]) {
-		gameManager->getCurrentRole()->move(0, 1);
+	// Move the player down on the map
+	else if (key[int(VALIDINPUT::ED)])
+	{
+		gameManager->getCurrentRole()->move(0, 1); 
 	}
-	else if (key[int(VALIDINPUT::EI)]) {
+	// Switch to inventory mode
+	else if (key[int(VALIDINPUT::EI)])
+	{
 		bag.invMode();
 	}
-	else if (key[int(VALIDINPUT::EENTER)]) {
-		// nothing
+	// Display message for invalid input
+	else
+	{
+		std::cout << "invalid input\n";
 	}
-	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
-		// nothing
+}
+
+
+// Intent: Update the status of the player during combat based on user input.
+// Pre: The `key` array must be initialized and contain valid input flags.
+// Post: Handles player actions during combat, such as attacking, defending, or using items, based on user input.
+void combatStatusUpdate(bool key[])
+{
+	if (key[int(VALIDINPUT::EW)])
+	{
+	}
+	else if (key[int(VALIDINPUT::ES)])
+	{
+	}
+	else if (key[int(VALIDINPUT::EA)])
+	{
+	}
+	else if (key[int(VALIDINPUT::ED)])
+	{
+	}
+	else if (key[int(VALIDINPUT::EI)])
+	{
+	}
+	else if (key[int(VALIDINPUT::EENTER)])
+	{
+	}
+	else if (key[int(VALIDINPUT::EBACKSPACE)])
+	{
 	}
 	else
 	{
@@ -204,86 +263,67 @@ void mapStatusUpdate(bool key[]) {
 	}
 }
 
-void combatStatusUpdate(bool key[]) {
-	if (key[int(VALIDINPUT::EW)]) {
 
+// Intent: Update the status of the backpack based on user input.
+// Pre: The `key` array must be initialized and contain valid input flags. The `bag` object must be accessible.
+// Post: Updates the status of the backpack, such as choosing items, using items, or closing the backpack, based on user input.
+void backpackStatusUpdate(bool key[])
+{
+	if (key[int(VALIDINPUT::EW)])
+	{
+		// Move selection cursor up in the backpack
+		bag.chooseUp(); 
 	}
-	else if (key[int(VALIDINPUT::ES)]) {
-
+	else if (key[int(VALIDINPUT::ES)])
+	{
+		// Move selection cursor down in the backpack
+		bag.chooseDown(); 
 	}
-	else if (key[int(VALIDINPUT::EA)]) {
-
+	else if (key[int(VALIDINPUT::EENTER)])
+	{
+		// Use the selected item from the backpack
+		bag.useItem(); 
 	}
-	else if (key[int(VALIDINPUT::ED)]) {
-
-	}
-	else if (key[int(VALIDINPUT::EI)]) {
-
-	}
-	else if (key[int(VALIDINPUT::EENTER)]) {
-
-	}
-	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
-
+	else if (key[int(VALIDINPUT::EBACKSPACE)])
+	{
+		// Close the backpack
+		bag.closeBag(); 
 	}
 	else
 	{
-		std::cout << "invalid input\n";
+		// Display message for invalid input
+		std::cout << "invalid input\n"; 
 	}
 }
 
-void backpackStatusUpdate(bool key[]) {
-	if (key[int(VALIDINPUT::EW)]) {
-		bag.chooseUp();
-	}
-	else if (key[int(VALIDINPUT::ES)]) {
-		bag.chooseDown();
-	}
-	else if (key[int(VALIDINPUT::EA)]) {
-		// nothing
-	}
-	else if (key[int(VALIDINPUT::ED)]) {
-		// nothing
-	}
-	else if (key[int(VALIDINPUT::EI)]) {
-		// nothing
-	}
-	else if (key[int(VALIDINPUT::EENTER)]) {
-		bag.useItem();
-	}
-	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
-		bag.closeBag();
-	}
-	else
+// Intent: Update the status of the interactive object based on user input.
+// Pre: The `key` array must be initialized and contain valid input flags. The `gameManager` object must be accessible.
+// Post: Updates the status of the interactive object, such as choosing actions, activating actions, or exiting, based on user input.
+void interactiveStatusUpdate(bool key[])
+{
+	if (key[int(VALIDINPUT::EW)])
 	{
-		std::cout << "invalid input\n";
-	}
-}
-
-void interactiveStatusUpdate(bool key[]) {
-	if (key[int(VALIDINPUT::EW)]) {
+		// Move selection cursor up in the interactive object menu
 		gameManager->getInteractiveObject()->chooseActiveUP();
 	}
-	else if (key[int(VALIDINPUT::ES)]) {
-		gameManager->getInteractiveObject()->chooseActiveDown();
+	else if (key[int(VALIDINPUT::ES)])
+	{
+		// Move selection cursor down in the interactive object menu
+		gameManager->getInteractiveObject()->chooseActiveDown(); 
 	}
-	else if (key[int(VALIDINPUT::EA)]) {
-		// nothing
+	else if (key[int(VALIDINPUT::EENTER)])
+	{
+		// Activate the selected action
+		gameManager->getInteractiveObject()->active(gameManager->getCurrentRole()); 
 	}
-	else if (key[int(VALIDINPUT::ED)]) {
-		// nothing
-	}
-	else if (key[int(VALIDINPUT::EI)]) {
-		// nothing
-	}
-	else if (key[int(VALIDINPUT::EENTER)]) {
-		gameManager->getInteractiveObject()->active(gameManager->getCurrentRole());
-	}
-	else if (key[int(VALIDINPUT::EBACKSPACE)]) {
-		gameManager->getInteractiveObject()->exitActive();
+	else if (key[int(VALIDINPUT::EBACKSPACE)])
+	{
+		// Exit from the interactive object menu
+		gameManager->getInteractiveObject()->exitActive(); 
 	}
 	else
 	{
-		std::cout << "invalid input\n";
+		// Display message for invalid input
+		std::cout << "invalid input\n"; 
 	}
 }

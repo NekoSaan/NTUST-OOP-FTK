@@ -1,43 +1,108 @@
 #include "Items.h"
 #include "Role.h"
 
-Item::Item(std::string tag, ITEMID id) : tag(tag), id(id), amount(1) {
+// Intent: Retrieve the list of item names
+// Pre: None
+// Post: Returns a vector of strings containing the names of all items available in the game
+std::vector<std::string> getItemList(void) 
+{
+	// Define the list of item names
+	std::vector<std::string> ItemList = 
+	{
+		// Consumables
+		"Godsbeard",
+		"GoldenRoot",
+		"TeleportScroll",
+		"Tent",
+
+		// Equipments, non-stackable
+		"WoodenSword",
+		"Hammer",
+		"MagicWand",
+		"Shoes",
+		"PlateArmor",
+		"Bracelet",
+		"Bug"
+	};
+
+	// Return the list of item names
+	return ItemList;
+}
+
+// Intent: Construct an Item object with specified tag and id, initializing amount to 1
+// Pre: None
+// Post: Constructs an Item object with specified tag, id, and amount
+Item::Item(std::string tag, ITEMID id) : tag(tag), id(id), amount(1) 
+{
 	itemName = getItemList()[(int)id];
 };
 
-Item::~Item(void) {
+// Intent: Destruct an Item object
+// Pre: None
+// Post: Clears the itemName, des, id, and amount of the Item object
+Item::~Item(void) 
+{
 	itemName = "";
 	des = "";
 	id = ITEMID::Invalid;
 	amount = NULL;
 }
 
-int Item::getId(void) {
+// Intent: Get the id of the Item object
+// Pre: None
+// Post: Returns the id of the Item object
+int Item::getId(void) 
+{
 	return (int)id;
 }
 
-int Item::getAmount(void) {
+// Intent: Get the amount of the Item object
+// Pre: None
+// Post: Returns the amount of the Item object
+int Item::getAmount(void) 
+{
 	return amount;
 }
 
-void Item::incAmount(void) {
+// Intent: Increment the amount of the Item object by 1
+// Pre: None
+// Post: Increases the amount of the Item object by 1
+void Item::incAmount(void) 
+{
 	amount++;
 }
 
-void Item::decAmount(void) {
+// Intent: Decrement the amount of the Item object by 1
+// Pre: None
+// Post: Decreases the amount of the Item object by 1
+void Item::decAmount(void) 
+{
 	amount--;
 }
 
-std::string Item::getTag(void) {
+// Intent: Get the tag of the Item object
+// Pre: None
+// Post: Returns the tag of the Item object
+std::string Item::getTag(void) 
+{
 	return tag;
 }
 
-std::string Item::getName(void) {
+// Intent: Get the name of the Item object
+// Pre: None
+// Post: Returns the name of the Item object
+std::string Item::getName(void) 
+{
 	return itemName;
 }
 
-void Item::use(Role* role) {
-	switch (id) {
+// Intent: Perform action based on the item's id
+// Pre: role must be a valid Role object
+// Post: Performs an action based on the item's id; if the id is not recognized, no action is taken
+void Item::use(Role* role) 
+{
+	switch (id) 
+	{
 	case ITEMID::Godsbeard:
 		// role->gainHealth(25);
 		break;
@@ -51,9 +116,7 @@ void Item::use(Role* role) {
 		// placeTent();
 		break;
 	default:
-		// nothing happend, invalid id
+		// nothing happened, invalid id
 		break;
 	}
-
-	// others using overwrite method to action
 }

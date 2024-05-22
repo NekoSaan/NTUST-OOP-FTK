@@ -3,7 +3,8 @@
 #include "Role.h"
 #include "Backpack.h"
 
-ChestEvent::ChestEvent() {
+ChestEvent::ChestEvent() 
+{
 	this->usedFocus = 0;
 	this->chosenIndex = 0;
 	this->diceNum = 3;
@@ -14,10 +15,12 @@ ChestEvent::ChestEvent() {
 }
 
 //Event virtual function
-void ChestEvent::startEvent(Role* role) {
+void ChestEvent::startEvent(Role* role) 
+{
 	int n = dice(usedFocus, diceNum, 50);
 	role->setFocus(role->getFocus() - usedFocus);
-	switch (n) {
+	switch (n) 
+	{
 	case 3:
 		bag.earnMoney(100);
 		break;

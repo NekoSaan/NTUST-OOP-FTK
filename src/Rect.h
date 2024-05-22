@@ -1,29 +1,44 @@
 #ifndef _RECT_H_
 #define _RECT_H_
-#include <utility>
 
+#include <utility> 
+
+// Forward declaration
 class Object;
 
+// Rect class represents a rectangular area in the game environment
 class Rect
 {
 public:
-	Rect();
+    // Constructor for Rect class
+    Rect();
 
-	std::pair<char, int> getIcon();
+    // Get the icon of the Rect
+    std::pair<char, int> getIcon();
 
-	void setIsVisible(bool visible);
-	void setCanPass(bool b);
-	void setObject(Object* o);
+    // Set the visibility status of the Rect
+    void setIsVisible(bool visible);
 
-	bool getIsVisible();
-	bool getCanPass();
-	Object* getObject();
+    // Set the passability status of the Rect
+    void setCanPass(bool b);
+
+    // Set the object associated with the Rect
+    void setObject(Object* o);
+
+    // Get the visibility status of the Rect
+    bool getIsVisible();
+
+    // Get the passability status of the Rect
+    bool getCanPass();
+
+    // Get the object associated with the Rect
+    Object* getObject();
 
 private:
-	bool isVisible;
-	bool canPass;
+    bool isVisible; // Visibility status of the Rect
+    bool canPass;   // Passability status of the Rect
 
-	Object* object;
+    Object* object; // Object associated with the Rect
 };
 
-#endif // _RECT_H_
+#endif _RECT_H_

@@ -3,73 +3,67 @@
 #include <string>
 #include <vector>
 
+// Forward declaration of Role class
 class Role;
 
-static std::vector<std::string> getItemList(void) {
-	std::vector<std::string> ItemList = {
-		// Consumables
-		"Godsbeard",
-		"GoldenRoot",
-		"TeleportScroll",
-		"Tent",
+// Declaration of static function to get the list of item names
+std::vector<std::string> getItemList(void);
 
-		// Equipments, non-stackable
-		"WoodenSword",
-		"Hammer",
-		"MagicWand",
-		"Shoes",
-		"PlateArmor",
-		"Bracelet",
-		"Bug"
-	};
+// Enumeration to represent different types of items
+enum ITEMID {
+    // Consumables, stackable
+    Godsbeard = 0,
+    GoldenRoot,
+    TeleportScroll,
+    Tent,
 
-	return ItemList;
-}
-
-static enum ITEMID {
-	// Consumables, stackable
-	Godsbeard = 0,
-	GoldenRoot,
-	TeleportScroll,
-	Tent,
-
-	// Equipments, non-stackable
-	WoodenSword,
-	Hammer,
-	MagicWand,
-	Shoes,
-	PlateArmor,
-	Bracelet,
-	Invalid,
+    // Equipments, non-stackable
+    WoodenSword,
+    Hammer,
+    MagicWand,
+    Shoes,
+    PlateArmor,
+    Bracelet,
+    Invalid
 };
 
+// Item class represents an item in the game
 class Item {
 protected:
-	std::string tag;
-	std::string itemName;
-	std::string des;
-	ITEMID id;
-	int amount;
+    std::string tag; // Tag of the item
+    std::string itemName; // Name of the item
+    std::string des; // Description of the item
+    ITEMID id; // ID of the item
+    int amount; // Amount of the item
 
 public:
+    // Constructor
+    Item(std::string, ITEMID);
 
-	Item(std::string, ITEMID);
+    // Destructor
+    ~Item(void);
 
-	~Item(void);
+    // Get the ID of the item
+    int getId(void);
 
-	int getId(void);
+    // Get the amount of the item
+    int getAmount(void);
 
-	int getAmount(void);
+    // Increase the amount of the item
+    void incAmount(void);
 
-	void incAmount(void);
+    // Decrease the amount of the item
+    void decAmount(void);
 
-	void decAmount(void);
+    // Get the tag of the item
+    std::string getTag(void);
 
-	std::string getTag(void);
+    // Get the name of the item
+    std::string getName(void);
 
-	std::string getName(void);
+    // Virtual function to use the item by a role
+    virtual void use(Role*);
 
-	virtual void use(Role*);
 };
 
 #endif // _ITEMS_H_
