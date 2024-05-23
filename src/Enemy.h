@@ -4,6 +4,8 @@
 
 class Enemy : public Entity {
 public:
+	Weapon* weapon;
+
 	Enemy(void) : Entity() {};
 	virtual void selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy);
 	virtual void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);

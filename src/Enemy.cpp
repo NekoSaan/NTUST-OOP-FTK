@@ -3,7 +3,9 @@
 #include "Weapon.h"
 #include <conio.h>
 
-void Enemy::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) {
+
+void Enemy::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) 
+{
 	int index=rand()%1;
 	if (index == 0) {
 		normalAttack(role, enemy);
@@ -12,7 +14,9 @@ void Enemy::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy
 		skillAttack(role, enemy);
 	}
 }
-void Enemy::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {
+
+void Enemy::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
+{
 	if (weapon->getType() == 'p') {
 		int index = rand() % role.size();
 		int n = useFocus(1);

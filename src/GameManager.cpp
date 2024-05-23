@@ -107,7 +107,7 @@ void GameManager::setMap()
 	gameBoard[15][65].setObject(new Shop());
 
 	//set event
-	gameBoard[21][65].setObject(new ChestEvent());
+	gameBoard[15][63].setObject(new ChestEvent());
 
 	// set 3 roles position
 	roles[0]->setPos(25, 70);
@@ -266,7 +266,8 @@ std::vector<std::string> GameManager::normalInformation()
 // Intent: Provide information about interactive objects
 // Pre: None
 // Post: Returns a vector of strings containing information about the interactive object
-std::vector<std::string> GameManager::backpackInformation() {
+std::vector<std::string> GameManager::backpackInformation() 
+{
 	vector<string> information;
 	information.push_back("Bag (Page:" + to_string(bag.getCurPage()) + "/" + to_string(bag.getMaxPage()) + ")");
 
@@ -325,10 +326,7 @@ std::vector<std::string> GameManager::interactiveInformation()
 
 	// Description
 	information.push_back("Description:");
-	vector<string> description = interactiveObject->getDescription();
-	for (int i = 0; i < description.size(); i++) {
-		information.push_back(description[i]);
-	}
+	information.push_back(interactiveObject->getDescription());
 	information.push_back("------------");
 
 	// Display available choices for the current page
@@ -351,9 +349,9 @@ std::vector<std::string> GameManager::interactiveInformation()
 // Intent: Set the information of players for display
 // Pre: None
 // Post: Sets the player information and displays it on the screen
-void GameManager::setPlayerInformation(void)
+void GameManager::setPlayerInformation(int playerSize)
 {
-	for (int i = 0; i < roles.size(); i++)
+	for (int i = 0; i < playerSize; i++)
 	{
 		vector<string> info;
 		char str[256];
@@ -379,7 +377,7 @@ void GameManager::setPlayerInformation(void)
 		info.push_back(str);
 
 		// Weapon information
-		snprintf(str, sizeof(str), "Weapon: %p", roles[i]->getWeaponName());
+		//snprintf(str, sizeof(str), "Weapon: %p", roles[i]->getWeaponName());
 		info.push_back("Weapon: " + roles[i]->getWeaponName());
 
 		info.push_back("Armor: ");
@@ -422,9 +420,9 @@ void GameManager::outputPlayerBoard(std::vector<std::string>& information, int p
 // Intent: Set the information of enemies for display
 // Pre: None
 // Post: Sets the enemy information and displays it on the screen
-void GameManager::setEnemyInformation(void)
+void GameManager::setEnemyInformation(int playerSize)
 {
-	for (int i = 0; i < roles.size(); i++)
+	for (int i = 0; i < playerSize; i++)
 	{
 		vector<string> info;
 		char str[256];
@@ -450,7 +448,7 @@ void GameManager::setEnemyInformation(void)
 		info.push_back(str);
 
 		// Weapon information
-		snprintf(str, sizeof(str), "Weapon: %d", roles[i]->getWeaponName());
+		//snprintf(str, sizeof(str), "Weapon: %d", roles[i]->getWeaponName());
 		info.push_back("Weapon: " + roles[i]->getWeaponName());
 
 		info.push_back("Armor: ");
@@ -494,12 +492,12 @@ void GameManager::outputEnemyBoard(std::vector<std::string>& information, int pl
 // Intent: Display the battle screen
 // Pre: None
 // Post: Displays the battle screen and handles player input
-void GameManager::battleScreen()
+void GameManager::battleScreen(std::vector<Entity*> player, std::vector<Entity*> enemy, std::vector<std::string> list, std::vector<std::string> data)
 {
 	// The enemey and player information display
 	system("CLS");
-	setEnemyInformation();
-	setPlayerInformation();
+	setEnemyInformation(enemy.size());
+	setPlayerInformation(player.size());
 
 	// The choose board display
 	for (int row = 0; row < windowHeight / 3; row += 1)
@@ -514,39 +512,30 @@ void GameManager::battleScreen()
 		std::cout << "|";
 	}
 
-	// The mode choice board
-	std::vector<std::string> mode;
-	mode.push_back("Name:");
-	mode.push_back("");
-	mode.push_back("   Attack");
-	mode.push_back("   Escape");
-
-	// The decription inforamtion
-	std::vector<std::string> descript;
-	descript.push_back("Description:");
-	descript.push_back("");
-	descript.push_back("\tRoll Amount:");
-	descript.push_back("\tRoll Probability:");
-	descript.push_back("\tDamage Type:");
-	descript.push_back("\tCool Down:");
-
 	char input;
-	int chocie = 1;
-
+	int chocie = 0;
 	do
 	{
 		// The mode information
-		for (int i = 0; i < mode.size(); i += 1)
+		for (int i = 0; i < list.size(); i += 1)
 		{
 			setCursor(windowHeight / 3 + i + 1, 3);
-			cout << mode[i];
+			if (i == chocie)
+			{
+				cout << "->";
+			}
+			else
+			{
+				cout << "  ";
+			}
+			cout << list[i];
 		}
 
 		// The description information
-		for (int i = 0; i < descript.size(); i += 1)
+		for (int i = 0; i < data.size(); i += 1)
 		{
 			setCursor(windowHeight / 3 + i + 1, cameraX / 2);
-			cout << descript[i];
+			cout << data[i];
 		}
 
 		// Let user input the w/s to choose the mode
@@ -557,31 +546,10 @@ void GameManager::battleScreen()
 			chocie = (chocie < 1 ? 1 : chocie - 1);
 			break;
 		case 's':
-			chocie = (chocie > mode.size() ? chocie : chocie + 1);
+			chocie = (chocie > list.size() ? chocie : chocie + 1);
 		}
-		if (chocie == 1)
-		{
-			mode[2] = "->" + mode[2].substr(2);
-			mode[3] = "  " + mode[3].substr(2);
-		}
-		else
-		{
-			mode[2] = "  " + mode[2].substr(2);
-			mode[3] = "->" + mode[3].substr(2);
-		}
+
 	} while (input != '\r');
-
-
-	// Escpae
-	if (chocie == 1)
-	{
-
-	}
-	// Attack
-	else
-	{
-
-	}
 }
 
 // Intent: Output the game board to the console

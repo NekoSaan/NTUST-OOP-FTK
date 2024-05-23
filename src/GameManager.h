@@ -19,7 +19,7 @@ enum class PLAYER
 	INVALID,
 };
 
-// The game status enum class
+// THe game status enum class
 enum class GAME_STATUS 
 {
 	MAP, 
@@ -31,9 +31,6 @@ enum class GAME_STATUS
 class GameManager
 {
 private:
-	//instance, Singleton pattern
-	static GameManager* instance;
-
 	// Helper functions to manage console output
 	void setCameraToCurrentRole();
 	void setColor(int color = 7);
@@ -55,6 +52,7 @@ private:
 	static std::vector<Role*> roles;
 	static Role* currentRole;
 	static Object* interactiveObject;
+	static GameManager* instance;
 
 	// Private constructor to initialize roles
 	GameManager();
@@ -98,7 +96,7 @@ public:
 	void setMap();
 
 	// Display the battle screen
-	void battleScreen();
+	void GameManager::battleScreen(std::vector<Entity*> player, std::vector<Entity*> enemy, std::vector<std::string> list, std::vector<std::string> data);
 
 	// Output the game board
 	void outputGameBoard();
@@ -107,11 +105,11 @@ public:
 	void setInformation();
 
 	// Set player information
-	void setPlayerInformation();
+	void setPlayerInformation(int playerSize = roles.size());
 	void outputPlayerBoard(std::vector<std::string>&, int);
 
 	// Set enemy information
-	void setEnemyInformation();
+	void setEnemyInformation(int playerSize);
 	void outputEnemyBoard(std::vector<std::string>&, int);
 
 	// Function to check if a position is visible to the player

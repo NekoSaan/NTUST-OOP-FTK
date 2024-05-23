@@ -60,6 +60,7 @@ std::string Armor::getActiveSkill(void)
 	return activeSkill;
 }
 
-void Armor::use(Role* role) {
+void Armor::use(Role* role)
+{
 
 }

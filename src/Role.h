@@ -17,13 +17,20 @@ public:
     void gainHealth(int);
     void gainFocus(int);
 
-    // Object's virtual funtion
+    // Trigger the role's interaction with another role
     void active(Role* role);
+
+    // Choose the next active object in the role's inventory
     void chooseActiveUP();
+
+    // Choose the previous active object in the role's inventory
     void chooseActiveDown();
+
+    // Get all possible choices for the role's actions
     vector<string> getAllChoose();
+
+    // Get the index of the chosen action
     int getChosenIndex();
-    vector<string> getDescription();
 };
 
 #endif _ROLE_H_

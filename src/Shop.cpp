@@ -47,6 +47,7 @@ Shop::Shop()
     this->chosenItemId = 0;
     this->icon = '$';
     this->tag = TAG_SHOP;
+    this->description = "You can buy item in the shop.";
 }
 
 // Intent: Activate the shop when a player interacts with it
@@ -134,10 +135,4 @@ vector<string> Shop::getAllChoose()
 int Shop::getChosenIndex() 
 {
     return chosenItemId; 
-}
-
-vector<string> Shop::getDescription() {
-    vector<string> description;
-    description.push_back("You can buy item in the shop.");
-    return description;
 }

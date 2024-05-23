@@ -12,6 +12,7 @@ Event::Event()
     this->hasActive = false;
     this->icon = '?';
     this->tag = TAG_EVENT;
+    this->description = "Random thing will happen.";
 }
 
 // Intent: Activate the event based on the chosen index.
@@ -21,23 +22,21 @@ void Event::active(Role* role)
 {    
     switch (chosenIndex) 
     {
-    case 0: // do it
+    case 0:
         startEvent(role);
-        usedFocus = 0;
         break;
-    case 1: // increase focus
+    case 1:
         usedFocus++;
         if (usedFocus > diceNum) usedFocus = diceNum;
         if (usedFocus > role->getFocus()) usedFocus = role->getFocus();
         break;
-    case 2: // decrease focus
+    case 2:
         usedFocus--;
         if (usedFocus < 0) usedFocus = 0;
         break;
-    case 3: // go back
+    case 3:
         exitActive();
     }
-    
 }
 
 // Intent: Move the selection cursor up.

@@ -66,10 +66,3 @@ int Role::getChosenIndex()
 {
 	return 0;
 }
-
-vector<string> Role::getDescription() {
-	vector<string> description;
-	description.push_back("This is a role.");
-	description.push_back("Actually, you should not read this.");
-	return description;
-}
