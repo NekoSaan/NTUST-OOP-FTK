@@ -13,6 +13,7 @@ public:
     void chooseActiveDown();
     vector<string> getAllChoose();
     int getChosenIndex();
+    virtual vector<string> getDescription() = 0;
 
 protected:
     int usedFocus;

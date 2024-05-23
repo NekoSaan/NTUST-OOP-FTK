@@ -64,14 +64,6 @@ std::string Object::getTag()
 	return tag;
 }
 
-// Intent: Get the description of the object
-// Pre: None
-// Post: Returns the tag representing the type of the object
-std::string Object::getDescription()
-{
-	return description;
-}
-
 // Intent: Start the active state of the object
 // Pre: None
 // Post: Sets the game status to interactive and sets the current interactive object

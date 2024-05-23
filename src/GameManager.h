@@ -19,7 +19,7 @@ enum class PLAYER
 	INVALID,
 };
 
-// THe game status enum class
+// The game status enum class
 enum class GAME_STATUS 
 {
 	MAP, 
@@ -31,6 +31,9 @@ enum class GAME_STATUS
 class GameManager
 {
 private:
+	//instance, Singleton pattern
+	static GameManager* instance;
+
 	// Helper functions to manage console output
 	void setCameraToCurrentRole();
 	void setColor(int color = 7);
@@ -52,7 +55,6 @@ private:
 	static std::vector<Role*> roles;
 	static Role* currentRole;
 	static Object* interactiveObject;
-	static GameManager* instance;
 
 	// Private constructor to initialize roles
 	GameManager();
