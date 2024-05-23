@@ -4,11 +4,15 @@
 
 class ChestEvent : public Event 
 {
+private:
+	//Event virtual function
+	void startEvent(Role* role);
+
 public:
 	ChestEvent();
 
 	//Event virtual function
-	void startEvent(Role* role);
+	vector<string> getDescription();
 };
 
 #endif _CHESTEVENT_H_

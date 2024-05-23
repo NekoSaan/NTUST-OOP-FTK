@@ -107,7 +107,7 @@ void GameManager::setMap()
 	gameBoard[15][65].setObject(new Shop());
 
 	//set event
-	gameBoard[15][63].setObject(new ChestEvent());
+	gameBoard[21][65].setObject(new ChestEvent());
 
 	// set 3 roles position
 	roles[0]->setPos(25, 70);
@@ -325,7 +325,10 @@ std::vector<std::string> GameManager::interactiveInformation()
 
 	// Description
 	information.push_back("Description:");
-	information.push_back(interactiveObject->getDescription());
+	vector<string> description = interactiveObject->getDescription();
+	for (int i = 0; i < description.size(); i++) {
+		information.push_back(description[i]);
+	}
 	information.push_back("------------");
 
 	// Display available choices for the current page

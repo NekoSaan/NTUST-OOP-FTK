@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "Dice.h"
+#include "Weapon.h"
 #include <conio.h>
-
 
 void Enemy::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) {
 	int index=rand()%1;

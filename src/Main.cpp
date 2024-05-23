@@ -89,8 +89,8 @@ int main()
 
 		//============================================
 		// The temporay set the battle screen
-		system("Pause");
-		gameManager->battleScreen();
+		//system("Pause");
+		//gameManager->battleScreen();
 		//============================================
 
 		// Update key state
