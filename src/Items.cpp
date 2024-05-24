@@ -32,12 +32,14 @@ std::vector<std::string> getItemList(void)
 		"HolyGrail",
 		"Shoes",
 		"Bracelet",
-		"Empty"
+		"DisplayTest"
 	};
 
 	// Return the list of item names
 	return ItemList;
 }
+
+Item::Item(void) : tag("Empty"), id(ITEMID::Invalid), amount(0) {};
 
 // Intent: Construct an Item object with specified tag and id, initializing amount to 1
 // Pre: None
@@ -53,7 +55,7 @@ Item::Item(std::string tag, ITEMID id) : tag(tag), id(id), amount(1)
 Item::~Item(void) 
 {
 	itemName = "";
-	des = "";
+	//des = "";
 	id = ITEMID::Invalid;
 	amount = NULL;
 }

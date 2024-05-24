@@ -1,13 +1,15 @@
 #include "Accessory.h"
 #include "Role.h"
+#include "Backpack.h"
 
-Accessory::Accessory(std::string tag, ITEMID id)
-	: Item::Item(tag, id) 
-{
-	this->mDefense = 0;
-	this->speed = 0;
-	this->maxFocus = 0;
-}
+Accessory::Accessory(std::string tag, ITEMID id) : Item::Item(tag, id) {
+	// init stat
+	mDefense = 0;
+	speed = 0;
+	maxFocus = 0;
+
+	// accroding to id to assign
+};
 
 // Intent: Get the speed attribute of the weapon
 // Pre: None
@@ -33,5 +35,13 @@ int Accessory::getMaxFocus(void) {
 }
 
 void Accessory::use(Role* role) {
+	if (role->acc->getTag() == "Accessory") {
 
+	}
+	else {
+		delete role->acc;
+		role->acc = nullptr;
+	}
+
+	role->acc = this;
 }

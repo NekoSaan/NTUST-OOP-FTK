@@ -4,16 +4,17 @@
 
 class Weapon : public Item
 {
-public:
+private:
 	int pAttack;						// Physical attack attribute
 	int mAttack;						// Magical attack attribute
 	int hitRate;						// Hit rate attribute
 	char type;						    // Type of equipment (physical or magical)
 	std::string activeSkill = "NULL";	// Active skill associated with the weapon
 
+public:
 	// Constructor for Weapon class
 	Weapon(std::string, ITEMID);
-
+	
 	// Get the physical attack attribute of the weapon
 	int getPAttack(void);
 

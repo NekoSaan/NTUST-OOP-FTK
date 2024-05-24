@@ -42,11 +42,13 @@ class Item {
 protected:
     std::string tag;        // Tag of the item
     std::string itemName;   // Name of the item
-    std::string des;        // Description of the item
+    //std::string des;        // Description of the item
     ITEMID id;              // ID of the item
     int amount;             // Current amount of the item
 
 public:
+    Item(void);
+
     // Constructor
     Item(std::string, ITEMID);
 

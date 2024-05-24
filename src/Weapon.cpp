@@ -1,17 +1,19 @@
 #include "Weapon.h"
 #include "Role.h"
+#include "Backpack.h"
 
 // Intent: Construct a Weapon object with specified tag and ID
 // Pre: None
 // Post: Constructs a Weapon object with specified tag and ID, and initializes its attributes to default values
-Weapon::Weapon(std::string tag, ITEMID id)
-	: Item::Item(tag, id)
+Weapon::Weapon(std::string tag, ITEMID id) : Item::Item(tag, id)
 {
 	// Initialize attributes to default values
 	pAttack = 0;
 	mAttack = 0;
 	hitRate = 0;
 	type = 'p';
+
+	// accroding to id to assign
 }
 
 // Intent: Get the physical attack attribute of the weapon
@@ -54,5 +56,13 @@ std::string Weapon::getActiveSkill(void)
 }
 
 void Weapon::use(Role* role) {
-	
+	if (role->weapon->getTag() == "Weapon") {
+		
+	}
+	else {
+		delete role->weapon;
+		role->weapon = nullptr;
+	}
+
+	role->weapon = this;
 }

@@ -8,7 +8,8 @@
 
 // Intent: Construct an Entity object
 // Pre: None
-// Post: Constructs an Entity object with random attribute values within specified ranges, initializes focus, and creates a default weapon
+// Post: Constructs an Entity object with random attribute values within
+//		 specified ranges, initializes focus, and creates a default weapon
 Entity::Entity(void)
 {
 	setVitality(rand() % 15 + 30);  // random value between [30, 45)
@@ -21,12 +22,11 @@ Entity::Entity(void)
 	setPDefense(rand() % 21);		// random value between [0, 20]
 	setMDefense(rand() % 21);		// random value between [0, 20]
 	setHp(getVitality());
-	setFocus(getMaxFocus());
 
-	weapon = new Weapon("Empty", ITEMID::Invalid);
-	armor = new Armor("Empty", ITEMID::Invalid);
+	this->weapon = new Weapon("Empty", ITEMID::Invalid);
+	this->armor = new Armor("Empty", ITEMID::Invalid);
+	this->acc = new Accessory("Empty", ITEMID::Invalid);
 }
-
 
 // Intent: Set the vitality of the entity
 // Pre: newVitality must be a non-negative integer
@@ -41,7 +41,7 @@ void Entity::setVitality(int newVitality)
 // Post: Sets the maximum focus of the entity to the specified value
 void Entity::setMaxFocus(int newFocus) 
 {
-	maxFocus = newFocus; 
+	maxFocus = newFocus;
 }
 
 // Intent: Set the speed of the entity
@@ -155,7 +155,7 @@ void  Entity::minusBuff()
 // Intent: Remove a specific buff from the entity
 // Pre: None
 // Post: Removes the specified buff from the entity's buffs
-void  Entity::removeBuff(std::string Buff)
+void Entity::removeBuff(std::string Buff)
 {
 	std::vector<std::string>::iterator it = std::find(buff.begin(), buff.end(), Buff);
 	int index = std::distance(buff.begin(), it);
@@ -166,27 +166,26 @@ void  Entity::removeBuff(std::string Buff)
 // Intent: Get the current vitality of the entity
 // Pre: None
 // Post: Returns the current vitality of the entity
-int Entity::getVitality() 
+int Entity::getVitality()
 {
-	int Vitality = vitality; // + weapon->getVitality()
-
-	return std::min(100, Vitality);
+	return vitality;
 }
 
 // Intent: Get the maximum focus of the entity
 // Pre: None
 // Post: Returns the maximum focus of the entity
-int Entity::getMaxFocus() 
+int Entity::getMaxFocus()
 {
-	return maxFocus;
+	return maxFocus + acc->getMaxFocus();
 }
+
 
 // Intent: Get the effective speed of the entity, considering buffs and equipped weapon
 // Pre: None
 // Post: Returns the effective speed of the entity
 int Entity::getSpeed() 
 {
-	int Speed = speed + armor->getSpeed();
+	int Speed = speed + armor->getSpeed() + acc->getSpeed();
 
 	if (searchBuff("SpeedUp")) 
 	{
@@ -200,13 +199,8 @@ int Entity::getSpeed()
 // Pre: None
 // Post: Returns the effective hit rate of the entity
 int Entity::getHitRate() 
-{
-	int HitRate = hitRate;
-
-	if (searchBuff("Angle")) 
-	{
-		HitRate -= 30;
-	}
+{ 
+	int HitRate = hitRate + weapon->getHitRate() - (searchBuff("Angle") ? 30 : 0);
 
 	return std::min(100, HitRate);
 }
@@ -216,9 +210,7 @@ int Entity::getHitRate()
 // Post: Returns the effective physical attack of the entity
 int Entity::getPAttack() 
 {
-	int PAttack = pAttack + weapon->getPAttack();
-
-	return std::min(100, PAttack);
+	return std::min(100, pAttack + weapon->getPAttack());
 }
 
 // Intent: Get the effective magical attack of the entity, considering equipped weapon
@@ -226,9 +218,7 @@ int Entity::getPAttack()
 // Post: Returns the effective magical attack of the entity
 int Entity::getMAttack() 
 {
-	int MAttack = mAttack + weapon->getMAttack();
-
-	return std::min(100, MAttack);
+	return std::min(100, mAttack + weapon->getMAttack());
 }
 
 // Intent: Get the effective physical defense of the entity, considering equipped weapon
@@ -236,9 +226,7 @@ int Entity::getMAttack()
 // Post: Returns the effective physical defense of the entity
 int Entity::getPDefense() 
 {
-	int PDefense = pDefense + armor->getPDefense();
-
-	return std::min(100, PDefense);
+	return std::min(100, pDefense + armor->getPDefense());
 }
 
 // Intent: Get the effective magical defense of the entity, considering equipped weapon
@@ -246,7 +234,7 @@ int Entity::getPDefense()
 // Post: Returns the effective magical defense of the entity
 int Entity::getMDefense() 
 {
-	int MDefense = mDefense + armor->getMDefense();
+	int MDefense = mDefense + armor->getMDefense() + acc->getMDefense();
 
 	return std::min(100, mDefense);
 }
@@ -256,7 +244,7 @@ int Entity::getMDefense()
 // Post: Returns the current focus of the entity
 int Entity::getFocus() 
 {
-	return focus;
+	return focus; // current focus
 }
 
 // Intent: Get the current hit points of the entity
@@ -264,21 +252,13 @@ int Entity::getFocus()
 // Post: Returns the current hit points of the entity
 int Entity::getHp() 
 {
-	return hp;
-}
-
-// Intent: Get the name of the equipped weapon
-// Pre: None
-// Post: Returns the name of the equipped weapon
-std::string Entity::getWeaponName()
-{
-	return weapon->getName();
+	return hp; // current health
 }
 
 // Intent: Select an action for the entity based on user input
 // Pre: role and enemy must be non-empty vectors of Entity pointers
 // Post: Selects an action for the entity based on user input
-void Entity::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) 
+void Entity::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) 
 {
 	char c = _getch();
 
@@ -334,7 +314,7 @@ void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy
 // Post: Uses focus points for an action
 int Entity::useFocus(int MaxFocus) 
 {
-	while (1) 
+	while (true)
 	{
 		char c = _getch();
 		int n = (int)c;

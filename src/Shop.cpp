@@ -3,6 +3,7 @@
 #include "GameManager.h"
 #include "Weapon.h"
 #include "Armor.h"
+#include "Accessory.h"
 
 // Intent: Constructor to initialize a shop with default prices, stock amounts, and other properties
 // Pre: None
@@ -63,18 +64,19 @@ void Shop::active(Role* role) {
 
     // Check if the player can afford the chosen item
     if (bag.costMoney(priceList[chosenItemId])) {
-        // Determine the tag based on the type of item
-        std::string tag = (chosenItemId < int(ITEMID::WoodenSword)) ? "Consumable" : "Equipment";
-
         // Obtain the item from the shop and decrease its stock amount
+        // Also determine the tag of item based on each item's ID
         if (chosenItemId < ITEMID::WoodenSword) {
-            bag.obtainItem(new Item(tag, ITEMID(chosenItemId)));
+            bag.obtainItem(new Item("Consumable", ITEMID(chosenItemId)));
         }
         else if (chosenItemId < ITEMID::WoodenShield) {
-            bag.obtainItem(new Weapon(tag, ITEMID(chosenItemId)));
+            bag.obtainItem(new Weapon("Weapon", ITEMID(chosenItemId)));
         }
         else if (chosenItemId < ITEMID::HolyGrail) {
-            bag.obtainItem(new Armor(tag, ITEMID(chosenItemId)));
+            bag.obtainItem(new Armor("Armor", ITEMID(chosenItemId)));
+        }
+        else {
+            bag.obtainItem(new Accessory("Accessory", ITEMID(chosenItemId)));
         }
 
         amountList[chosenItemId]--;

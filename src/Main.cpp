@@ -226,7 +226,7 @@ void mapStatusUpdate(bool key[])
 	// Display message for invalid input
 	else
 	{
-		std::cout << "invalid input\n";
+		std::cout << "Invalid Input";
 	}
 }
 
@@ -259,7 +259,7 @@ void combatStatusUpdate(bool key[])
 	}
 	else
 	{
-		std::cout << "invalid input\n";
+		std::cout << "Invalid Input";
 	}
 }
 
@@ -292,7 +292,7 @@ void backpackStatusUpdate(bool key[])
 	else
 	{
 		// Display message for invalid input
-		std::cout << "invalid input\n"; 
+		std::cout << "Invalid Input"; 
 	}
 }
 
@@ -324,6 +324,6 @@ void interactiveStatusUpdate(bool key[])
 	else
 	{
 		// Display message for invalid input
-		std::cout << "invalid input\n"; 
+		std::cout << "Invalid Input"; 
 	}
 }

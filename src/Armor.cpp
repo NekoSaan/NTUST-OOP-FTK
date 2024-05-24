@@ -1,5 +1,6 @@
 #include "Armor.h"
 #include "Role.h"
+#include "Backpack.h"
 
 Armor::Armor(std::string tag, ITEMID id)
 	: Item::Item(tag, id) 
@@ -9,6 +10,8 @@ Armor::Armor(std::string tag, ITEMID id)
 	pDefense = 0;
 	mDefense = 0;
 	type = 'p';
+
+	// accroding to id to assign
 }
 
 // Intent: Get the vitality attribute of the weapon
@@ -62,5 +65,13 @@ std::string Armor::getActiveSkill(void)
 
 void Armor::use(Role* role)
 {
+	if (role->armor->getTag() == "Armor") {
 
+	}
+	else {
+		delete role->armor;
+		role->armor = nullptr;
+	}
+
+	role->armor = this;
 }

@@ -1,11 +1,13 @@
 ﻿#include "GameManager.h"
 #include <iostream>
 #include "Rect.h"
-#include "Object.h"
 #include "Backpack.h"
 #include "Role.h"
 #include "Shop.h"
 #include "ChestEvent.h"
+#include "Weapon.h"
+#include "Armor.h"
+#include "Accessory.h"
 
 // Define constants for camera height and width rates
 const float GameManager::CAMERA_HEIGHT_RATE = 0.55;
@@ -357,7 +359,7 @@ void GameManager::setPlayerInformation(int playerSize)
 		char str[256];
 
 		// Name information
-		snprintf(str, sizeof(str), "Name: Player: %d", i);
+		snprintf(str, sizeof(str), "Name: Player%d", i + 1);
 		info.push_back(str);
 
 		// HP and Focus information
@@ -378,10 +380,10 @@ void GameManager::setPlayerInformation(int playerSize)
 
 		// Weapon information
 		//snprintf(str, sizeof(str), "Weapon: %p", roles[i]->getWeaponName());
-		info.push_back("Weapon: " + roles[i]->getWeaponName());
+		info.push_back("Weapon: " + roles[i]->weapon->getName());
 
-		info.push_back("Armor: ");
-		info.push_back("Accessory: ");
+		info.push_back("Armor: " + roles[i]->armor->getName());
+		info.push_back("Accessory: " + roles[i]->acc->getName());
 		info.push_back("Buff: ");
 
 		outputPlayerBoard(info, i);
@@ -449,10 +451,9 @@ void GameManager::setEnemyInformation(int playerSize)
 
 		// Weapon information
 		//snprintf(str, sizeof(str), "Weapon: %d", roles[i]->getWeaponName());
-		info.push_back("Weapon: " + roles[i]->getWeaponName());
-
-		info.push_back("Armor: ");
-		info.push_back("Accessory: ");
+		info.push_back("Weapon: " + roles[i]->weapon->getName());
+		info.push_back("Armor: " + roles[i]->armor->getName());
+		info.push_back("Accessory: " + roles[i]->acc->getName());
 		info.push_back("Buff: ");
 
 		outputEnemyBoard(info, i);
