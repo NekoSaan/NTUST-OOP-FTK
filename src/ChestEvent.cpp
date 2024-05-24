@@ -22,6 +22,7 @@ vector<string> ChestEvent::getDescription() {
 	description.push_back("1 get $5(" + formatProbability(getExpectProbability(usedFocus, diceNum, 1, 50)) + "%)");
 	description.push_back("0 10 damage(" + formatProbability(getExpectProbability(usedFocus, diceNum, 0, 50)) + "%)");
 	description.push_back("Used focus: " + to_string(usedFocus));
+
 	return description;
 }
 
