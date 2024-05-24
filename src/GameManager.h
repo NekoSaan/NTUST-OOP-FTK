@@ -96,7 +96,7 @@ public:
 	void setMap();
 
 	// Display the battle screen
-	void GameManager::battleScreen(std::vector<Entity*> player, std::vector<Entity*> enemy, std::vector<std::string> list, std::vector<std::string> data);
+	void battleScreen(std::vector<Entity*> player, std::vector<Entity*> enemy, std::vector<std::string> list, std::vector<std::string> data);
 
 	// Output the game board
 	void outputGameBoard();

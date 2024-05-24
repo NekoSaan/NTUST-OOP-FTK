@@ -1,8 +1,10 @@
 #ifndef _COMBAT_H_
 #define _COMBAT_H_
 #include"Entity.h"
-#include<vector>
+#include"GameManager.h"
+
 using namespace std;
+GameManager* gameManage = GameManager::getInstance();
 
 void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	vector<Entity*> entity;
@@ -36,7 +38,13 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 			}
 		}
 	}
-	Move(actor, role, enemy);
+	{
+		gameManage->battleScreen(role, enemy, { "ab" }, { "ab" });
+		actor->actions++;
+		if (actor->searchBuff("Ditness") == 0)
+			actor->selectAction(role, enemy);
+		actor->minusBuff();
+	}
 	// 移除已擊敗的角色
 	for (auto it = role.begin(); it != role.end(); ) {
 		if ((*it)->getHp() <= 0) {
@@ -57,7 +65,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 			++it;
 		}
 	}
-	if (role.empty() || role.empty()) {
+	if (role.empty() || enemy.empty()) {
 		combat(role, enemy);
 	}
 	else {
@@ -67,11 +75,4 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	}
 }
 
-void Move(Entity* attacker, vector<Entity*> role, vector<Entity*> enemy) {
-	attacker->actions++;
-	if(attacker->searchBuff("Ditness")==0)
-		attacker->selectAction(role, enemy);
-	attacker->minusBuff();
-}
-
-#endif // _COMBAT_H_
+#endif
