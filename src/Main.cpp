@@ -5,6 +5,8 @@
 #include <string>
 #include "GameManager.h"
 #include "Backpack.h"
+#include"Combat.h"
+#include"Enemy.h"
 using namespace std;
 
 // Define input command
@@ -72,6 +74,7 @@ int main()
 
 	do
 	{
+
 		// Compute the time elapsed since last frame
 		double timeFrame = (endT - startT) / CLOCKS_PER_SEC;
 
@@ -81,18 +84,21 @@ int main()
 			update(gKeyState, player);
 			startT = clock(); // Reset start time
 		}
-
+		Role x, y, z;
+		Enemy a, b, c;
+		vector<Entity* > roles;
+		vector<Entity *> enemys;
+		roles.push_back(&x);
+		roles.push_back(&y);
+		roles.push_back(&z);
+		enemys.push_back(&a);
+		enemys.push_back(&b);
+		enemys.push_back(&c);
+		combat(roles, enemys);
 		// Render game board and set information
 		gameManager->outputGameBoard();
 		gameManager->setInformation();
 		gameManager->setPlayerInformation();
-
-		//============================================
-		// The temporay set the battle screen
-		//system("Pause");
-		//gameManager->battleScreen();
-		//============================================
-
 		// Update key state
 		keyUpdate(gKeyState, player);
 		endT = clock(); // Update end time

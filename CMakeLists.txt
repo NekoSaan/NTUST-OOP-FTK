@@ -43,6 +43,7 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/Enemy.cpp
 
     ${PROJECT_SOURCE_DIR}/src/Combat.h
+    ${PROJECT_SOURCE_DIR}/src/Combat.cpp
 
     ${PROJECT_SOURCE_DIR}/src/Weapon.h
     ${PROJECT_SOURCE_DIR}/src/Weapon.cpp

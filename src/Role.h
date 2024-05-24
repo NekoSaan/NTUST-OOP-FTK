@@ -31,6 +31,10 @@ public:
 
     // Get the index of the chosen action
     int getChosenIndex();
+
+    virtual void selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy);
+    virtual void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
+    virtual void skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
 };
 
 #endif _ROLE_H_
