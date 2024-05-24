@@ -69,6 +69,12 @@ int Role::getChosenIndex()
 }
 
 
+vector<string> Role::getDescription() {
+	vector<string> description;
+	description.push_back("This is a role.");
+	description.push_back("Actually, you should not read this.");
+	return description;
+}
 
 // Intent: Select an action for the entity based on user input
 // Pre: role and enemy must be non-empty vectors of Entity pointers

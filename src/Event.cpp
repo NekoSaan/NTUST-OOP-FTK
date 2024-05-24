@@ -4,7 +4,7 @@
 // Intent: Initializes the Event object with default values.
 // Pre: None.
 // Post: Event object is initialized with default values.
-Event::Event() 
+Event::Event()
 {
     this->usedFocus = 0;
     this->chosenIndex = 0;
@@ -12,41 +12,42 @@ Event::Event()
     this->hasActive = false;
     this->icon = '?';
     this->tag = TAG_EVENT;
-    this->description = "Random thing will happen.";
 }
 
 // Intent: Activate the event based on the chosen index.
 // Pre: A Role object must be provided.
 // Post: The event is activated, modifying the Role object accordingly.
-void Event::active(Role* role) 
-{    
-    switch (chosenIndex) 
+void Event::active(Role* role)
+{
+    switch (chosenIndex)
     {
-    case 0:
+    case 0: // do it
         startEvent(role);
+        usedFocus = 0;
         break;
-    case 1:
+    case 1: // increase focus
         usedFocus++;
         if (usedFocus > diceNum) usedFocus = diceNum;
         if (usedFocus > role->getFocus()) usedFocus = role->getFocus();
         break;
-    case 2:
+    case 2: // decrease focus
         usedFocus--;
         if (usedFocus < 0) usedFocus = 0;
         break;
-    case 3:
+    case 3: // go back
         exitActive();
     }
+
 }
 
 // Intent: Move the selection cursor up.
 // Pre: None.
 // Post: The selection cursor is moved up.
-void Event::chooseActiveUP() 
+void Event::chooseActiveUP()
 {
     chosenIndex--;
 
-    if (chosenIndex < 0) 
+    if (chosenIndex < 0)
     {
         chosenIndex = 3;
     }
@@ -55,11 +56,11 @@ void Event::chooseActiveUP()
 // Intent: Move the selection cursor down.
 // Pre: None.
 // Post: The selection cursor is moved down.
-void Event::chooseActiveDown() 
+void Event::chooseActiveDown()
 {
     chosenIndex++;
 
-    if (chosenIndex > 3) 
+    if (chosenIndex > 3)
     {
         chosenIndex = 0;
     }
@@ -68,7 +69,7 @@ void Event::chooseActiveDown()
 // Intent: Get all available choices for the event.
 // Pre: None.
 // Post: Returns a vector containing all available choices.
-vector<string> Event::getAllChoose() 
+vector<string> Event::getAllChoose()
 {
     vector<string> choose;
     choose.push_back("Do it!");
@@ -81,7 +82,7 @@ vector<string> Event::getAllChoose()
 // Intent: Get the index of the chosen action.
 // Pre: None.
 // Post: Returns the index of the chosen action.
-int Event::getChosenIndex() 
-{    
+int Event::getChosenIndex()
+{
     return chosenIndex;
 }

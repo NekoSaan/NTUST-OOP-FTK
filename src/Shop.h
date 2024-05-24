@@ -23,20 +23,13 @@ public:
     // Constructor for Shop class
     Shop();
 
-    // Trigger the shop's interaction with a role
+    // Object's virtual funtion
     void active(Role* role);
-
-    // Choose the next active item in the shop
     void chooseActiveUP();
-
-    // Choose the previous active item in the shop
     void chooseActiveDown();
-
-    // Get all possible choices for the shop's actions
     vector<string> getAllChoose();
-
-    // Get the index of the chosen action
     int getChosenIndex();
+    vector<string> getDescription();
 };
 
 #endif _SHOP_H_
