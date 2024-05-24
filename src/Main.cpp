@@ -84,6 +84,8 @@ int main()
 			update(gKeyState, player);
 			startT = clock(); // Reset start time
 		}
+
+		/*
 		Role x, y, z;
 		Enemy a, b, c;
 		vector<Entity* > roles;
@@ -94,7 +96,8 @@ int main()
 		enemys.push_back(&a);
 		enemys.push_back(&b);
 		enemys.push_back(&c);
-		combat(roles, enemys);
+		combat(roles, enemys);*/
+
 		// Render game board and set information
 		gameManager->outputGameBoard();
 		gameManager->setInformation();

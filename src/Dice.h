@@ -11,6 +11,8 @@ int dice(int focus, int dicePool, int probability);
 
 // probabillity is 0~100, return 0~100
 double getExpectProbability(int focus, int diceNum, int expectNum, double probability);
+
+// input 0~100, return "XX.X%"
 string formatProbability(double probability);
 
 //only for 0~10
