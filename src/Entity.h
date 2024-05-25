@@ -65,10 +65,10 @@ public:
     void giveBuff(std::string, int);
     void minusBuff();
     void removeBuff(std::string Buff);
-    virtual void selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
+    virtual int selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
     virtual void normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
     virtual void skillAttack(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
-    int Flee(std::vector<Entity* > role, std::vector<Entity* > enemy);
+    int Flee();
 };
 
 #endif _ENTITY_H_

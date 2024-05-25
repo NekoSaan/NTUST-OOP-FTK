@@ -13,7 +13,7 @@ public:
 
 	Enemy();
 
-	virtual void selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy);
+	virtual int selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy);
 	virtual void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
 	virtual void skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
 

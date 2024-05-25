@@ -47,7 +47,7 @@ void Enemy::combatSupport(Role* role) {
 	combat(roles, enemies);
 }
 
-void Enemy::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) 
+int Enemy::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy) 
 {
 	int index=rand()%1;
 	if (index == 0) {
@@ -56,6 +56,7 @@ void Enemy::selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy
 	else if (index == 1) {
 		skillAttack(role, enemy);
 	}
+	return 0;
 }
 
 void Enemy::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)

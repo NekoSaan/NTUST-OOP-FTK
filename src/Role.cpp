@@ -76,10 +76,22 @@ vector<string> Role::getDescription() {
 	return description;
 }
 
+int selectTarget(std::vector<Entity* > role, std::vector<Entity* > enemy) {
+	char c = getch();
+	int targetIndex = c - '0';  // Convert char to integer
+	if (targetIndex < 0 || targetIndex >= enemy.size()) {
+		std::cout << "Invalid target. Please try again." << std::endl;
+		// Recurse until valid input is received
+		return selectTarget(role, enemy);
+	}
+	return targetIndex;
+}
+
+
 // Intent: Select an action for the entity based on user input
 // Pre: role and enemy must be non-empty vectors of Entity pointers
 // Post: Selects an action for the entity based on user input
-void Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
+int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	GameManager* gameManager = GameManager::getInstance();
 	int selectedOption = 0;
 	int numOptions = 3;  // Number of options in the menu
@@ -101,7 +113,7 @@ void Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				std::cout << "Normal Attack" << std::endl;
 				break;
 			case 1:
-				std::cout << weapon->getActiveSkill()<< std::endl;
+				std::cout << weapon->getActiveSkill() << std::endl;
 				break;
 			case 2:
 				std::cout << "Flee" << std::endl;
@@ -127,21 +139,18 @@ void Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				skillAttack(role, enemy);
 				break;
 			case 2:
-				if (Flee(role, enemy) == 1) {
-					std::vector<Entity*>::iterator it = std::find(role.begin(), role.end(), this);
-					if (it != role.end()) {
-						
-						(*it)->actions = 0;
-						cout << 1;
-						role.erase(it);
-					}
-				}
+				if (Flee() == 1)
+					return 1;
 				break;
 			}
 			break;  // Exit loop after selection made
 		}
+		
 	}
+	return 0;
 }
+     
+
 
 
 // Intent: Perform a normal attack against an enemy entity
@@ -150,21 +159,23 @@ void Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	GameManager* gameManager = GameManager::getInstance();
 	gameManager->battleScreen(role, enemy, { "" }, { "select target(input number)" });
-	char c = getch();
-	int targetIndex = c - '0';  // Convert char to integer
+
+	int targetIndex = selectTarget(role, enemy);
 	gameManager->battleScreen(role, enemy, { "" }, { "" });
-	if (targetIndex < 0 || targetIndex >= enemy.size()) {
-		std::cout << "Invalid target. Please try again." << std::endl;
-		normalAttack(role, enemy);  // Recurse until valid input is received
-		return;
-	}
+	
 
 	if (weapon->getType() == 'p') {
 		int n = useFocus(1);
 		int absorption = enemy[targetIndex]->getPDefense() / (getPDefense() + 50);
 		int attack = getPAttack() * dice(n, 1, getHitRate());
 		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption));
-		
+
+	}
+	else {
+		int n = useFocus(1);
+		int absorption = enemy[targetIndex]->getMDefense() / (getMDefense() + 50);
+		int attack = getMAttack() * dice(n, 1, getHitRate());
+		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption));
 	}
 }
 
@@ -173,17 +184,49 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 // Post: Performs a skill attack against an enemy entity
 void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 {
+	GameManager* gameManager = GameManager::getInstance();
+	gameManager->battleScreen(role, enemy, { "" }, { "select target(input number)" });
+	
 	if (weapon->getActiveSkill() == "Provoke")
 	{
 		int HitRate = getHp() / (getVitality() + getPDefense() + getMDefense()) * getSpeed();
-		char c = _getch();
+		int targetIndex = selectTarget(role, enemy);
 		int n = useFocus(1);
 
 		if (dice(n, 1, HitRate) == 1)
 		{
-			enemy[(int)c]->giveBuff("Angry", 3);
+			enemy[targetIndex]->giveBuff("Angry", 3);
 		}
 	}
+	else if(weapon->getActiveSkill() == "Shock - Blast"){
+		int n = useFocus(3);
+		for (int i = 0; i < enemy.size(); i++) {
+			int absorption = enemy[i]->getMDefense() / (getMDefense() + 50);
+			int attack = getMAttack() * dice(n, 3, getHitRate()-5);
+			enemy[i]->setHp(enemy[i]->getHp() - attack/2 * (1 - absorption));
+		}
+    }
+	else if (weapon->getActiveSkill() == "Heal") {
+		
+		int targetIndex = selectTarget(role, role);
+		int n = useFocus(2);
+
+		if (dice(n, 2, getHitRate()) == 2)
+		{
+			role[targetIndex]->setHp(role[targetIndex]->getHp()+getMAttack()*3/2);
+		}
+	}
+	else if (weapon->getActiveSkill() == "SpeedUp")
+	{
+		int targetIndex = selectTarget(role, role);
+		int n = useFocus(2);
+
+		if (dice(n, 2, getHitRate()) == 2)
+		{
+			role[targetIndex]->giveBuff("SpeedUp", 3);
+		}
+	}
+	
 }
 
 

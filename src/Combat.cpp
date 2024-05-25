@@ -5,16 +5,18 @@
 
 using namespace std;
 GameManager* gameManage = GameManager::getInstance();
-void Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
-	gameManage->battleScreen(role, enemy, { "attack" }, { "->" });
+int Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
 	actor->actions++;
 	if (actor->searchBuff("Ditness") == 0) {
-		actor->selectAction(role, enemy);
+		if (actor->selectAction(role, enemy) == 1) {
+			return 1;
+		}
 	}
 	if (actor->searchBuff("Poisoned") == 1) {
 		actor->setHp(max(actor->getHp() / 10, 1));
 	}
 	actor->minusBuff();
+	return 0;
 }
 void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	vector<Entity*> entity;
@@ -49,7 +51,12 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 		}
 	}
 	
-	Action(actor, role, enemy);
+	if (Action(actor, role, enemy) == 1) {
+		auto it = std::find(role.begin(), role.end(), actor);
+		if (it != role.end()) {
+			role.erase(it);
+		}
+	}
 	
 	// 移除已擊敗的角色
 	for (auto it = role.begin(); it != role.end(); ) {

@@ -258,7 +258,7 @@ int Entity::getHp()
 // Intent: Select an action for the entity based on user input
 // Pre: role and enemy must be non-empty vectors of Entity pointers
 // Post: Selects an action for the entity based on user input
-void Entity::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) 
+int Entity::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) 
 {
 	char c = _getch();
 
@@ -272,8 +272,9 @@ void Entity::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)
 	}
 	else if (c == '3') 
 	{
-		Flee(role, enemy);
+		Flee();
 	}
+	return 0;
 }
 
 // Intent: Perform a normal attack against an enemy entity
@@ -296,17 +297,6 @@ void Entity::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enem
 // Post: Performs a skill attack against an enemy entity
 void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) 
 {
-	if (weapon->getActiveSkill() == "Provoke") 
-	{
-		int HitRate = getHp() / (getVitality() + getPDefense() + getMDefense()) * getSpeed();
-		char c = _getch();
-		int n = useFocus(1);
-
-		if (dice(n, 1, HitRate) == 1) 
-		{
-			enemy[(int)c]->giveBuff("Angry", 3);
-		}
-	}
 }
 
 // Intent: Use focus points for an action
@@ -337,16 +327,13 @@ int Entity::useFocus(int MaxFocus) {
 		}
 	}
 }
-int Entity::Flee(std::vector<Entity* > role, std::vector<Entity* > enemy)
+int Entity::Flee()
 {
-
-		// Check if 'this' is in the 'role' vector
-	std::vector<Entity*>::iterator it = std::find(role.begin(), role.end(), this);
-		if (it != role.end()) {
-			// Remove 'this' from 'role' vector
-			(*it)->actions = 0;
-			return 1;
-			
-		}
-		return 0;
+	
+	int n = useFocus(1);
+	if (dice(n, 1, min(98,speed*getHp()/(getHp()+getMDefense()+getPDefense())) )== 1)
+	{
+		return 1;
+	}
+	return 0;
 }
