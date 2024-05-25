@@ -86,22 +86,16 @@ int main()
 		}
 
 		
-		/*
-		Enemy a, b, c;
+		
 		vector<Entity* > roles;
-		vector<Entity *> enemys;
 		roles.push_back(gameManager->getRole(0));
 		roles.push_back(gameManager->getRole(1));
 		roles.push_back(gameManager->getRole(2));
-		enemys.push_back(&a);
-		enemys.push_back(&b);
-		enemys.push_back(&c);
-		combat(roles, enemys);
-		*/
+		
 		// Render game board and set information
 		gameManager->outputGameBoard();
 		gameManager->setInformation();
-		gameManager->setPlayerInformation();
+		gameManager->setPlayerInformation(roles.size(),roles);
 		// Update key state
 		keyUpdate(gKeyState, player);
 		endT = clock(); // Update end time

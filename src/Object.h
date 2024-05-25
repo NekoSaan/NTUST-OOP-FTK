@@ -25,9 +25,9 @@ public:
 
     // Set the position of the object
     void setPos(int, int);
-    void setIcon(char icon);
 
     // getter
+    //(y, x)
     pair<int, int> getPos();
     char getIcon();
     string getTag();

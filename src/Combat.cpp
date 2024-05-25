@@ -11,6 +11,9 @@ void Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
 	if (actor->searchBuff("Ditness") == 0) {
 		actor->selectAction(role, enemy);
 	}
+	if (actor->searchBuff("Poisoned") == 1) {
+		actor->setHp(max(actor->getHp() / 10, 1));
+	}
 	actor->minusBuff();
 }
 void combat(vector<Entity*> role, vector<Entity*> enemy) {

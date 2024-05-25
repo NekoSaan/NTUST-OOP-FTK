@@ -313,7 +313,9 @@ void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy
 // Pre: MaxFocus must be a non-negative integer
 // Post: Uses focus points for an action
 int Entity::useFocus(int MaxFocus) {
+	cout << "use fourse";
 	while (true) {
+		
 		char c = getch();
 
 		// 检查输入是否为有效数字字符
@@ -335,10 +337,16 @@ int Entity::useFocus(int MaxFocus) {
 		}
 	}
 }
-
-// Intent: Attempt to flee from a battle
-// Pre: role and enemy must be non-empty vectors of Entity pointers
-// Post: Attempts to flee from a battle
-void Entity::Flee(std::vector<Entity* > role, std::vector<Entity* > enemy) 
+int Entity::Flee(std::vector<Entity* > role, std::vector<Entity* > enemy)
 {
+
+		// Check if 'this' is in the 'role' vector
+	std::vector<Entity*>::iterator it = std::find(role.begin(), role.end(), this);
+		if (it != role.end()) {
+			// Remove 'this' from 'role' vector
+			(*it)->actions = 0;
+			return 1;
+			
+		}
+		return 0;
 }

@@ -68,7 +68,7 @@ public:
     virtual void selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
     virtual void normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
     virtual void skillAttack(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
-    void Flee(std::vector<Entity* > role, std::vector<Entity* > enemy);
+    int Flee(std::vector<Entity* > role, std::vector<Entity* > enemy);
 };
 
 #endif _ENTITY_H_

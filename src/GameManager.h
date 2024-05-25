@@ -4,11 +4,8 @@
 #include <windows.h>
 #include <vector>
 #include <string>
-#include <conio.h>
-#include <utility>
+#include <conio.h>	
 #include "Role.h"
-
-#define ENEMYNUM 10
 
 class Object;
 class Rect;
@@ -56,7 +53,6 @@ private:
 
 	// Static member variables
 	static std::vector<Role*> roles;
-	static std::vector<Role*> enemy;
 	static Role* currentRole;
 	static Object* interactiveObject;
 	
@@ -111,11 +107,11 @@ public:
 	void setInformation();
 
 	// Set player information
-	void setPlayerInformation(int playerSize = roles.size());
+	void setPlayerInformation(int playerSize , vector<Entity*>player);
 	void outputPlayerBoard(std::vector<std::string>&, int);
 
 	// Set enemy information
-	void setEnemyInformation(int playerSize);
+	void setEnemyInformation(int playerSize,vector<Entity*>enemys);
 	void outputEnemyBoard(std::vector<std::string>&, int);
 
 	// Function to check if a position is visible to the player
