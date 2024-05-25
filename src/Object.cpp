@@ -4,7 +4,6 @@
 // Initialize static member variables
 const string Object::TAG_SHOP = "Shop";
 const string Object::TAG_ENEMY = "Enemy";
-
 const string Object::TAG_EVENT = "Event";
 
 // Intent: Construct an Object with default icon and position
