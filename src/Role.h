@@ -2,11 +2,10 @@
 #define _ROLE_H_
 #include "Entity.h"
 #include "Object.h"
-#include "Enemy.h"
 #include <vector>
 
 // Role class represents a character role in the game
-class Role : public Entity, public Object
+class Role : public Entity, public Object 
 {
 public:
     // Constructor for Role class
