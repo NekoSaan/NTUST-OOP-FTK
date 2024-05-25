@@ -2,7 +2,8 @@
 #include "GameManager.h"
 #include "Rect.h"
 #include "Weapon.h"
-#include"Dice.h"
+#include "Dice.h"
+
 // Intent: Move the role to a new position on the game board and trigger any interactions with objects on the new position
 // Pre: Parameters y and x represent the change in position (delta y, delta x) from the current position
 // Post: Updates the role's position on the game board and triggers any interactions with objects on the new position
@@ -85,7 +86,7 @@ void Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	int numOptions = 3;  // Number of options in the menu
 
 	while (true) {
-		gameManager->battleScreen(role, enemy, { "" }, { " selct your Action\n" });
+		gameManager->battleScreen(role, role, { "" }, { "" });
 
 		// Display menu with highlighted selected option
 		for (int i = 0; i < numOptions; ++i) {
@@ -141,10 +142,10 @@ void Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 // Post: Performs a normal attack against an enemy entity
 void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	GameManager* gameManager = GameManager::getInstance();
-	gameManager->battleScreen(role, enemy, { "" }, { "select target(input number)" });
+	gameManager->battleScreen(role, enemy, { "" }, { "" });
 	char c = getch();
 	int targetIndex = c - '0';  // Convert char to integer
-	gameManager->battleScreen(role, enemy, { "" }, { "" });
+
 	if (targetIndex < 0 || targetIndex >= enemy.size()) {
 		std::cout << "Invalid target. Please try again." << std::endl;
 		normalAttack(role, enemy);  // Recurse until valid input is received
@@ -156,7 +157,6 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 		int absorption = enemy[targetIndex]->getPDefense() / (getPDefense() + 50);
 		int attack = getPAttack() * dice(n, 1, getHitRate());
 		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption));
-		
 	}
 }
 
@@ -177,4 +177,3 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 		}
 	}
 }
-

@@ -4,6 +4,7 @@
 // Initialize static member variables
 const string Object::TAG_SHOP = "Shop";
 const string Object::TAG_ENEMY = "Enemy";
+
 const string Object::TAG_EVENT = "Event";
 
 // Intent: Construct an Object with default icon and position
@@ -45,6 +46,11 @@ void Object::setPos(int y, int x)
 std::pair<int, int> Object::getPos()
 {
 	return std::pair<int, int>(this->y, this->x);
+}
+
+void Object::setIcon(char icon)
+{
+	this->icon = icon;
 }
 
 // Intent: Get the icon of the object
