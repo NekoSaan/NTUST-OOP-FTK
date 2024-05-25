@@ -48,6 +48,11 @@ std::pair<int, int> Object::getPos()
 	return std::pair<int, int>(this->y, this->x);
 }
 
+void Object::setIcon(char icon)
+{
+	this->icon = icon;
+}
+
 // Intent: Get the icon of the object
 // Pre: None
 // Post: Returns the icon representing the object

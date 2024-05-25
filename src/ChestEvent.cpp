@@ -1,5 +1,5 @@
 #include "ChestEvent.h"
-#include "dice.h"
+#include "Dice.h"
 #include "Role.h"
 #include "Backpack.h"
 

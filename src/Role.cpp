@@ -2,7 +2,8 @@
 #include "GameManager.h"
 #include "Rect.h"
 #include "Weapon.h"
-#include"Dice.h"
+#include "Dice.h"
+
 // Intent: Move the role to a new position on the game board and trigger any interactions with objects on the new position
 // Pre: Parameters y and x represent the change in position (delta y, delta x) from the current position
 // Post: Updates the role's position on the game board and triggers any interactions with objects on the new position

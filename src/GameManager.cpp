@@ -8,6 +8,7 @@
 #include "Weapon.h"
 #include "Armor.h"
 #include "Accessory.h"
+#include "Enemy.h"
 
 // Define constants for camera height and width rates
 const float GameManager::CAMERA_HEIGHT_RATE = 0.55;
@@ -31,6 +32,9 @@ std::vector<std::vector<Rect>> GameManager::gameBoard(mapHeight, std::vector<Rec
 
 // Initialize the vector to store Role objects
 std::vector<Role*> GameManager::roles;
+
+// Initialize the vector to store enemy
+std::vector<Role*> GameManager::enemy;
 
 // Pointer to the current role
 Role* GameManager::currentRole;
@@ -60,6 +64,11 @@ GameManager* GameManager::getInstance()
 // Post: Initializes GameManager instance with roles and sets default values
 GameManager::GameManager()
 {
+	for (int i = 0; i < ENEMYNUM; i++)
+	{
+		this->enemy.push_back(new Role());
+	}
+
 	for (int i = 0; i < 3; i++)
 	{
 		this->roles.push_back(new Role());
@@ -97,11 +106,26 @@ void GameManager::setCursor(int y, int x)
 void GameManager::setMap()
 {
 	//set wall
+	std::vector<std::vector<Rect>> tempGameBoard(mapHeight, std::vector<Rect>(mapWidth));
 	for (int row = 9; row < mapHeight; row += 10)
 	{
 		for (int col = 0; col < mapWidth; col += 1)
 		{
 			gameBoard[row][col].setCanPass((col % 10 == 9));
+			tempGameBoard[row][col].setCanPass((col % 10 == 9));
+		}
+	}
+
+	for (int row, col, enemyP = 0; enemyP < ENEMYNUM;)
+	{
+		row = int(rand() % mapHeight);
+		col = int(rand() % mapWidth);
+		if (tempGameBoard[row][col].getCanPass())
+		{
+			enemyP += 1;
+			enemy[0]->setPos(25, 71);
+			enemy[0]->setIcon('E');
+			tempGameBoard[row][col].setCanPass(false);
 		}
 	}
 
@@ -437,19 +461,19 @@ void GameManager::setEnemyInformation(int playerSize)
 		info.push_back(str);
 
 		// HP and Focus information
-		snprintf(str, sizeof(str), "HP: %d/%d, Focus: %d/%d", roles[i]->getHp(), roles[i]->getVitality(), roles[i]->getFocus(), roles[i]->getMaxFocus());
+		snprintf(str, sizeof(str), "HP: %d/%d, Focus: %d/%d", enemy[i]->getHp(), enemy[i]->getVitality(), enemy[i]->getFocus(), enemy[i]->getMaxFocus());
 		info.push_back(str);
 
 		// Physical ATK and DEF information
-		snprintf(str, sizeof(str), "Physical ATK: %d, Physical DEF: %d", roles[i]->getPAttack(), roles[i]->getPDefense());
+		snprintf(str, sizeof(str), "Physical ATK: %d, Physical DEF: %d", enemy[i]->getPAttack(), enemy[i]->getPDefense());
 		info.push_back(str);
 
 		// Magical ATK and DEF information
-		snprintf(str, sizeof(str), "Magical ATK: %d, Magical DEF: %d", roles[i]->getMAttack(), roles[i]->getMDefense());
+		snprintf(str, sizeof(str), "Magical ATK: %d, Magical DEF: %d", enemy[i]->getMAttack(), enemy[i]->getMDefense());
 		info.push_back(str);
 
 		// Speed and hit rate information
-		snprintf(str, sizeof(str), "Speed: %d, HitRate: %d", roles[i]->getSpeed(), roles[i]->getHitRate());
+		snprintf(str, sizeof(str), "Speed: %d, HitRate: %d", enemy[i]->getSpeed(), enemy[i]->getHitRate());
 		info.push_back(str);
 
 		// Weapon information
@@ -576,6 +600,15 @@ void GameManager::outputGameBoard()
 		pos = roles[i]->getPos();
 		showBoard[pos.first][pos.second].first = icon;
 	}
+
+	// The loop check each board need to be show
+	for (int i = 0; i < enemy.size(); i++)
+	{
+		pos = enemy[0]->getPos();
+		showBoard[pos.first][pos.second].first = enemy[0]->getIcon();
+	}
+	pos = currentRole->getPos();
+	showBoard[pos.first][pos.second].first = icon;
 
 	// print out rolled map
 	int marginUp = cameraY - cameraHeight / 2;

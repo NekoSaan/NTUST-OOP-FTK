@@ -4,8 +4,11 @@
 #include <windows.h>
 #include <vector>
 #include <string>
-#include <conio.h>	
+#include <conio.h>
+#include <utility>
 #include "Role.h"
+
+#define ENEMYNUM 10
 
 class Object;
 class Rect;
@@ -53,6 +56,7 @@ private:
 
 	// Static member variables
 	static std::vector<Role*> roles;
+	static std::vector<Role*> enemy;
 	static Role* currentRole;
 	static Object* interactiveObject;
 	
