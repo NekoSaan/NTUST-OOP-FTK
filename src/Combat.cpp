@@ -10,7 +10,6 @@ void Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
 	actor->actions++;
 	if (actor->searchBuff("Ditness") == 0) {
 		actor->selectAction(role, enemy);
-		gameManage->battleScreen(role, enemy, { "ak" }, { "<-" });
 	}
 	actor->minusBuff();
 }
@@ -24,10 +23,10 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	}
 	Entity* actor = entity[0];
 	for (int i = 0; i < entity.size(); i++) {
-		if ((entity[i]->actions + 1) / entity[i]->getSpeed() < (actor->actions + 1) / actor->getSpeed()) {
+		if ((entity[i]->actions + 1) *100/ entity[i]->getSpeed() < (actor->actions + 1) * 100 / actor->getSpeed()) {
 			actor = entity[i];
 		}
-		else if ((entity[i]->actions + 1) / entity[i]->getSpeed() == (actor->actions + 1) / actor->getSpeed()) {
+		else if ((entity[i]->actions + 1) * 100 / entity[i]->getSpeed() == (actor->actions + 1) * 100 / actor->getSpeed()) {
 			if (entity[i]->getSpeed() > actor->getSpeed()) {
 				actor = entity[i];
 			}

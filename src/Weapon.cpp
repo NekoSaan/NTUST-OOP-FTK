@@ -44,7 +44,7 @@ int Weapon::getHitRate(void) {
 // Post: Returns the type of the weapon
 char Weapon::getType(void) 
 {
-	return type; 
+	return 'p'; 
 }
 
 // Intent: Get the active skill of the weapon

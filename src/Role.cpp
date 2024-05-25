@@ -79,36 +79,83 @@ vector<string> Role::getDescription() {
 // Intent: Select an action for the entity based on user input
 // Pre: role and enemy must be non-empty vectors of Entity pointers
 // Post: Selects an action for the entity based on user input
-void  Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)
-{
-	char c = _getch();
+void Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
+	GameManager* gameManager = GameManager::getInstance();
+	int selectedOption = 0;
+	int numOptions = 3;  // Number of options in the menu
 
-	if (c == '0')
-	{
-		normalAttack(role, enemy);
-	}
-	else if (c == '1')
-	{
-		skillAttack(role, enemy);
-	}
-	else if (c == '3')
-	{
-		Flee(role, enemy);
+	while (true) {
+		gameManager->battleScreen(role, role, { "" }, { "" });
+
+		// Display menu with highlighted selected option
+		for (int i = 0; i < numOptions; ++i) {
+			if (i == selectedOption) {
+				std::cout << "-> ";
+			}
+			else {
+				std::cout << "   ";
+			}
+
+			switch (i) {
+			case 0:
+				std::cout << "Normal Attack" << std::endl;
+				break;
+			case 1:
+				std::cout << "Skill Attack" << std::endl;
+				break;
+			case 2:
+				std::cout << "Flee" << std::endl;
+				break;
+			}
+		}
+
+		char input = getch();
+
+		// Handle arrow keys for navigation
+		if (input == 'w' && selectedOption > 0) {
+			selectedOption--;
+		}
+		else if (input == 's' && selectedOption < numOptions - 1) {
+			selectedOption++;
+		}
+		else if (input == '\r') {  // '\r' is Enter key
+			switch (selectedOption) {
+			case 0:
+				normalAttack(role, enemy);
+				break;
+			case 1:
+				skillAttack(role, enemy);
+				break;
+			case 2:
+				Flee(role, enemy);
+				break;
+			}
+			break;  // Exit loop after selection made
+		}
 	}
 }
+
 
 // Intent: Perform a normal attack against an enemy entity
 // Pre: role and enemy must be non-empty vectors of Entity pointers
 // Post: Performs a normal attack against an enemy entity
-void Role::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
-{
-	if (weapon->getType() == 'p')
-	{
-		char c = _getch();
+void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
+	GameManager* gameManager = GameManager::getInstance();
+	gameManager->battleScreen(role, enemy, { "" }, { "" });
+	char c = getch();
+	int targetIndex = c - '0';  // Convert char to integer
+
+	if (targetIndex < 0 || targetIndex >= enemy.size()) {
+		std::cout << "Invalid target. Please try again." << std::endl;
+		normalAttack(role, enemy);  // Recurse until valid input is received
+		return;
+	}
+
+	if (weapon->getType() == 'p') {
 		int n = useFocus(1);
-		int absorption = enemy[(int)c]->getPDefense() / (getPDefense() + 50);
-		int Attack = getPAttack() * dice(n, 1, getHitRate());
-		enemy[0]->setHp(enemy[(int)c]->getHp() - Attack * (1 - absorption));
+		int absorption = enemy[targetIndex]->getPDefense() / (getPDefense() + 50);
+		int attack = getPAttack() * dice(n, 1, getHitRate());
+		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption));
 	}
 }
 

@@ -19,6 +19,17 @@ void Enemy::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy
 {
 	if (weapon->getType() == 'p') {
 		int index = rand() % role.size();
+		int absorption = role[index]->getPDefense() / (role[index]->getPDefense() + 50);
+		int Attack = getPAttack() * dice(0, 1, getHitRate());
+		role[index]->setHp(role[index]->getHp() - Attack * (1 - absorption));
+	}
+
+}
+
+void Enemy::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
+{
+	if (weapon->getType() == 'p') {
+		int index = rand() % role.size();
 		int n = useFocus(1);
 		int absorption = role[index]->getPDefense() / (role[index]->getPDefense() + 50);
 		int Attack = getPAttack() * dice(n, 1, getHitRate());

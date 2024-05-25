@@ -6,9 +6,10 @@ class Enemy : public Entity {
 public:
 	Weapon* weapon;
 
-	Enemy(void) : Entity() {};
+	Enemy() : Entity() {};
 	virtual void selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy);
 	virtual void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
+	virtual void skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
 };
 
 #endif // _ENEMY_H_

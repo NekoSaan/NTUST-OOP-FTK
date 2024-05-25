@@ -1,4 +1,4 @@
-#include "Entity.h"
+﻿#include "Entity.h"
 #include "Dice.h"
 #include "Weapon.h"
 #include "Armor.h"
@@ -22,7 +22,7 @@ Entity::Entity(void)
 	setPDefense(rand() % 21);		// random value between [0, 20]
 	setMDefense(rand() % 21);		// random value between [0, 20]
 	setHp(getVitality());
-
+	actions = 0;
 	this->weapon = new Weapon("Empty", ITEMID::Invalid);
 	this->armor = new Armor("Empty", ITEMID::Invalid);
 	this->acc = new Accessory("Empty", ITEMID::Invalid);
@@ -312,20 +312,24 @@ void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy
 // Intent: Use focus points for an action
 // Pre: MaxFocus must be a non-negative integer
 // Post: Uses focus points for an action
-int Entity::useFocus(int MaxFocus) 
-{
-	while (true)
-	{
-		char c = _getch();
-		int n = (int)c;
+int Entity::useFocus(int MaxFocus) {
+	while (true) {
+		char c = getch();
 
-		if (n > getFocus() || n > MaxFocus) 
-		{
-			std::cout << "fail";
+		// 检查输入是否为有效数字字符
+		if (!isdigit(c)) {
+			std::cout << "Invalid input. Please enter a digit." << std::endl;
 			continue;
 		}
-		else 
-		{
+
+		int n = c - '0';  // 将字符转换为数字
+
+		// 检查使用的注意力值是否超过限制
+		if (n > getFocus() || n > MaxFocus) {
+			std::cout << "Fail: Amount exceeds available or maximum focus." << std::endl;
+			continue;
+		}
+		else {
 			setFocus(getFocus() - n);
 			return n;
 		}

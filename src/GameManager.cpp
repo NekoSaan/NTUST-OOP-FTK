@@ -518,42 +518,16 @@ void GameManager::battleScreen(std::vector<Entity*> player, std::vector<Entity*>
 
 	char input;
 	int chocie = 0;
-	do
+	
+
+	// The description information
+	for (int i = 0; i < data.size(); i += 1)
 	{
-		// The mode information
-		for (int i = 0; i < list.size(); i += 1)
-		{
-			setCursor(windowHeight / 3 + i + 1, 3);
-			if (i == chocie)
-			{
-				cout << "->";
-			}
-			else
-			{
-				cout << "  ";
-			}
-			cout << list[i];
-		}
-
-		// The description information
-		for (int i = 0; i < data.size(); i += 1)
-		{
-			setCursor(windowHeight / 3 + i + 1, cameraX / 2);
-			cout << data[i];
-		}
-
-		// Let user input the w/s to choose the mode
-		input = _getch();
-		switch (input)
-		{
-		case 'w':
-			chocie = (chocie < 1 ? 1 : chocie - 1);
-			break;
-		case 's':
-			chocie = (chocie > list.size() ? chocie : chocie + 1);
-		}
-
-	} while (input != '\r');
+		setCursor(windowHeight / 3 + i + 1, cameraX / 2);
+		cout << data[i];
+	}
+		
+	
 }
 
 // Intent: Output the game board to the console
