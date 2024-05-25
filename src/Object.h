@@ -27,6 +27,7 @@ public:
     void setPos(int, int);
 
     // getter
+    //(y, x)
     pair<int, int> getPos();
     char getIcon();
     string getTag();

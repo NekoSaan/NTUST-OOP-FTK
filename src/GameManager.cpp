@@ -8,6 +8,7 @@
 #include "Weapon.h"
 #include "Armor.h"
 #include "Accessory.h"
+#include "Enemy.h"
 
 // Define constants for camera height and width rates
 const float GameManager::CAMERA_HEIGHT_RATE = 0.55;
@@ -110,6 +111,11 @@ void GameManager::setMap()
 
 	//set event
 	gameBoard[21][65].setObject(new ChestEvent());
+
+	//set enemy
+	gameBoard[27][72].setObject(new Enemy());
+	gameBoard[27][73].setObject(new Enemy());
+	gameBoard[27][74].setObject(new Enemy());
 
 	// set 3 roles position
 	roles[0]->setPos(25, 70);
@@ -322,7 +328,7 @@ std::vector<std::string> GameManager::interactiveInformation()
 	int pageStartIndex = currentPage * 8; // Calculate the starting index for the current page
 
 	// Add information about the interactive object and page number
-	information.push_back(interactiveObject->getTag() + " (Page: " + std::to_string(currentPage + 1) + "/" + std::to_string(maxPage + 1) + ")");
+	information.push_back(interactiveObject->getTag());
 	information.push_back("Your money: $" + std::to_string(bag.getMoney())); // Assuming `bag` is accessible
 	information.push_back("------------");
 
@@ -333,6 +339,7 @@ std::vector<std::string> GameManager::interactiveInformation()
 		information.push_back(description[i]);
 	}
 	information.push_back("------------");
+	information.push_back("(Page: " + std::to_string(currentPage + 1) + "/" + std::to_string(maxPage + 1) + ")");
 
 	// Display available choices for the current page
 	for (int i = pageStartIndex; i < pageStartIndex + 8 && i < choose.size(); i++)
