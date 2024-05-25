@@ -25,7 +25,6 @@ public:
 
     // Set the position of the object
     void setPos(int, int);
-    void setIcon(char icon);
 
     // getter
     pair<int, int> getPos();

@@ -313,7 +313,9 @@ void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy
 // Pre: MaxFocus must be a non-negative integer
 // Post: Uses focus points for an action
 int Entity::useFocus(int MaxFocus) {
+	cout << "use fourse";
 	while (true) {
+		
 		char c = getch();
 
 		// 检查输入是否为有效数字字符
