@@ -12,6 +12,7 @@
 //		 specified ranges, initializes focus, and creates a default weapon
 Entity::Entity(void)
 {
+	
 	setVitality(rand() % 15 + 30);  // random value between [30, 45)
 	setMaxFocus(3);					// initialize to 3, fixed
 	setFocus(3);					// initialize to 3, fixed
@@ -127,12 +128,13 @@ void Entity::giveBuff(std::string Buff, int BuffTime)
 
 	if (it != buff.end()) 
 	{
-		buff.push_back(Buff);
-		buffTime.push_back(BuffTime);
+		buffTime[it - buff.begin()] = BuffTime;
+		
 	}
 	else 
 	{
-		buffTime[it - buff.begin()] = BuffTime;
+		buff.push_back(Buff);
+		buffTime.push_back(BuffTime);
 	}
 }
 
