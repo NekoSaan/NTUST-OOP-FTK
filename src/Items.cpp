@@ -32,7 +32,7 @@ std::vector<std::string> getItemList(void)
 		"HolyGrail",
 		"Shoes",
 		"Bracelet",
-		"DisplayTest"
+		" "
 	};
 
 	// Return the list of item names

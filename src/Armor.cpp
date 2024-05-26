@@ -11,7 +11,29 @@ Armor::Armor(std::string tag, ITEMID id)
 	mDefense = 0;
 	type = 'p';
 
-	// accroding to id to assign
+	switch (id) {
+		case ITEMID::WoodenShield:
+			pDefense = 10;
+			activeSkill = "Provoke";
+			break;
+		case ITEMID::PlateArmor:
+			pDefense = 20;
+			speed = -10;
+			activeSkill = "Fortify";
+			break;
+		case ITEMID::LeatherArmor:
+			pDefense = 5;
+			activeSkill = "Fortify";
+			break;
+		case ITEMID::Robe:
+			mDefense = 10;
+			type = 'm';
+		case ITEMID::LaurelWreath:
+			type = 'm';
+			break;
+		default:
+			break;
+	}
 }
 
 // Intent: Get the vitality attribute of the weapon
@@ -63,14 +85,15 @@ std::string Armor::getActiveSkill(void)
 	return activeSkill;
 }
 
-void Armor::use(Role* role)
-{
-	if (role->armor->getTag() == "Armor") {
-
+void Armor::use(Role* role) {
+	// Because when we equip, we use the same pointer.
+	if (role->armor->getTag() == "Weapon") {
+		role->armor->incAmount();
 	}
 	else {
+		// Not equipped.
 		delete role->armor;
-		role->armor = nullptr;
+		role->weapon = nullptr;
 	}
 
 	role->armor = this;

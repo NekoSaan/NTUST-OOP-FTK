@@ -23,9 +23,19 @@ Entity::Entity(void)
 	setMDefense(rand() % 21);		// random value between [0, 20]
 	setHp(getVitality());
 	actions = 0;
-	this->weapon = new Weapon("Empty", ITEMID::Invalid);
-	this->armor = new Armor("Empty", ITEMID::Invalid);
-	this->acc = new Accessory("Empty", ITEMID::Invalid);
+
+	int randWeapon = rand() % 200 + 1;
+
+	if (randWeapon < 100) {
+		randWeapon = rand() % 5; // number of weapons
+		weapon = new Weapon("Weapon", ITEMID(randWeapon + ITEMID::WoodenSword));
+	}
+	else {
+		weapon = new Weapon("Empty", ITEMID::Invalid);
+	}
+
+	armor = new Armor("Empty", ITEMID::Invalid);
+	acc = new Accessory("Empty", ITEMID::Invalid);
 }
 
 // Intent: Set the vitality of the entity
@@ -308,7 +318,7 @@ int Entity::useFocus(int MaxFocus) {
 		
 		char c = getch();
 
-		// 检查输入是否为有效数字字符
+		// 检查输入是否为有效数字
 		if (!isdigit(c)) {
 			std::cout << "Invalid input. Please enter a digit." << std::endl;
 			continue;
@@ -329,11 +339,13 @@ int Entity::useFocus(int MaxFocus) {
 }
 int Entity::Flee()
 {
-	
 	int n = useFocus(1);
-	if (dice(n, 1, min(98,speed*getHp()/(getHp()+getMDefense()+getPDefense())) )== 1)
+	int param = speed * getHp() / (getHp() + getMDefense() + getPDefense());
+
+	if (dice( n, 1, min(98, param) ) == 1)
 	{
 		return 1;
 	}
+
 	return 0;
 }

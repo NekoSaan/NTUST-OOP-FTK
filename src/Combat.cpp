@@ -1,10 +1,10 @@
 #ifndef _COMBAT_H_
 #define _COMBAT_H_
-#include"Entity.h"
-#include"GameManager.h"
+#include "Entity.h"
+#include "GameManager.h"
 
 using namespace std;
-GameManager* gameManage = GameManager::getInstance();
+
 int Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
 	actor->actions++;
 	if (actor->searchBuff("Ditness") == 0) {
@@ -89,4 +89,4 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	}
 }
 
-#endif
+#endif // _COMBAT_H_

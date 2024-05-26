@@ -8,7 +8,21 @@ Accessory::Accessory(std::string tag, ITEMID id) : Item::Item(tag, id) {
 	speed = 0;
 	maxFocus = 0;
 
-	// accroding to id to assign
+	switch (id) {
+		case ITEMID::HolyGrail:
+			mDefense = 30;
+			activeSkill = "Heal";
+			break;
+		case ITEMID::Shoes:
+			speed = 5;
+			activeSkill = "Run";
+			break;
+		case ITEMID::Bracelet:
+			maxFocus = 1;
+			break;
+		default:
+			break;
+	}
 };
 
 // Intent: Get the speed attribute of the weapon
@@ -35,10 +49,12 @@ int Accessory::getMaxFocus(void) {
 }
 
 void Accessory::use(Role* role) {
+	// Because when we equip, we use the same pointer.
 	if (role->acc->getTag() == "Accessory") {
-
+		role->acc->incAmount();
 	}
 	else {
+		// Not equipped.
 		delete role->acc;
 		role->acc = nullptr;
 	}

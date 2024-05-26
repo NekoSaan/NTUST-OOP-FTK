@@ -1,6 +1,7 @@
 #include "Backpack.h"
 #include "Items.h"
 #include "GameManager.h"
+#include "Role.h"
 
 BackPack bag;
 
@@ -27,14 +28,14 @@ void BackPack::obtainItem(Item* item)
 		return;
 	}
 
-	for (int i = 0; i < inventory.size(); i++) 
+	for (size_t i = 0; i < inventory.size(); i++) 
 	{
 		if (item->getId() == inventory[i]->getId()) 
 		{
 			inventory[i]->incAmount();
 
-			item = nullptr;
 			delete item;
+			item = nullptr;
 			return;
 		}
 	}
@@ -77,18 +78,12 @@ int BackPack::getMaxPage()
 // Intent: Get the size of the inventory
 // Pre: None
 // Post: Returns the size of the inventory
-int BackPack::getInventorySize() 
-{
-	return (int)inventory.size();
-}
+int BackPack::getInventorySize() { return (int)inventory.size(); }
 
 // Intent: Get the name of the item at the specified index in the inventory
 // Pre: i must be a valid index within the inventory range
 // Post: Returns the name of the item at the specified index in the inventory
-std::string BackPack::getItemName(int i) 
-{
-	return inventory[i]->getName();
-}
+std::string BackPack::getItemName(int i) { return inventory[i]->getName(); }
 
 // Intent: Get the amount of the item at the specified index in the inventory
 // Pre: i must be a valid index within the inventory range
@@ -180,13 +175,13 @@ void BackPack::useItem(Role* curRole)
 		return;
 	}
 
-	// inventory[curIndex]->use(curRole);
+	inventory[curIndex]->use(curRole);
 	inventory[curIndex]->decAmount();
 
 	if (inventory[curIndex]->getAmount() == 0 && inventory[curIndex]->getTag() == "Consumable") 
 	{
-		inventory[curIndex] = nullptr;
 		delete inventory[curIndex];
+		inventory[curIndex] = nullptr;
 		inventory.erase(inventory.begin() + curIndex);
 
 		curIndex = (curIndex - 1 < 0) ? 0 : curIndex - 1;

@@ -17,10 +17,10 @@ vector<string> ChestEvent::getDescription() {
 	vector<string> description;
 	string probability = "";
 	description.push_back("Do you want to open the chest ?");
-	description.push_back("3 get $100(" + formatProbability(getExpectProbability(usedFocus, diceNum, 3, 50)) + ")");
-	description.push_back("2 get $20(" + formatProbability(getExpectProbability(usedFocus, diceNum, 2, 50)) + ")");
-	description.push_back("1 get $5(" + formatProbability(getExpectProbability(usedFocus, diceNum, 1, 50)) + ")");
-	description.push_back("0 10 damage(" + formatProbability(getExpectProbability(usedFocus, diceNum, 0, 50)) + ")");
+	description.push_back("hit 3 get $100 (" + formatProbability(getExpectProbability(usedFocus, diceNum, 3, 50)) + ")");
+	description.push_back("hit 2 get $20 (" + formatProbability(getExpectProbability(usedFocus, diceNum, 2, 50)) + ")");
+	description.push_back("hit 1 get $5 (" + formatProbability(getExpectProbability(usedFocus, diceNum, 1, 50)) + ")");
+	description.push_back("hit 0 get 10 damage (" + formatProbability(getExpectProbability(usedFocus, diceNum, 0, 50)) + ")");
 	description.push_back("Used focus: " + to_string(usedFocus));
 	return description;
 }

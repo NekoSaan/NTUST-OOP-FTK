@@ -1,11 +1,13 @@
 #include "Enemy.h"
 #include "Dice.h"
 #include "Weapon.h"
-#include <conio.h>
+#include "Armor.h"
+#include "Accessory.h"
 #include "GameManager.h"
 #include "Rect.h"
-#include <cmath>
 #include "Combat.h"
+#include <conio.h>
+#include <cmath>
 
 Enemy::Enemy() : Entity() {
 	this->tag = TAG_ENEMY;

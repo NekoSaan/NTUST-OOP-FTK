@@ -2,7 +2,14 @@
 #include "GameManager.h"
 #include "Rect.h"
 #include "Weapon.h"
-#include"Dice.h"
+#include "Armor.h"
+#include "Accessory.h"
+#include "Dice.h"
+
+Role::Role(void) : Entity::Entity() {
+
+};
+
 // Intent: Move the role to a new position on the game board and trigger any interactions with objects on the new position
 // Pre: Parameters y and x represent the change in position (delta y, delta x) from the current position
 // Post: Updates the role's position on the game board and triggers any interactions with objects on the new position
@@ -68,7 +75,6 @@ int Role::getChosenIndex()
 	return 0;
 }
 
-
 vector<string> Role::getDescription() {
 	vector<string> description;
 	description.push_back("This is a role.");
@@ -86,7 +92,6 @@ int selectTarget(std::vector<Entity* > role, std::vector<Entity* > enemy) {
 	}
 	return targetIndex;
 }
-
 
 // Intent: Select an action for the entity based on user input
 // Pre: role and enemy must be non-empty vectors of Entity pointers
@@ -110,13 +115,13 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 
 			switch (i) {
 			case 0:
-				std::cout << "Normal Attack" << std::endl;
+				std::cout << "Normal Attack\n";
 				break;
 			case 1:
 				std::cout << weapon->getActiveSkill() << std::endl;
 				break;
 			case 2:
-				std::cout << "Flee" << std::endl;
+				std::cout << "Flee\n";
 				break;
 			}
 		}
@@ -139,19 +144,16 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				skillAttack(role, enemy);
 				break;
 			case 2:
-				if (Flee() == 1)
+				if (Flee() == 1) {
 					return 1;
+				}
 				break;
 			}
 			break;  // Exit loop after selection made
-		}
-		
+		}	
 	}
 	return 0;
 }
-     
-
-
 
 // Intent: Perform a normal attack against an enemy entity
 // Pre: role and enemy must be non-empty vectors of Entity pointers
@@ -162,7 +164,6 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 
 	int targetIndex = selectTarget(role, enemy);
 	gameManager->battleScreen(role, enemy, { "" }, { "" });
-	
 
 	if (weapon->getType() == 'p') {
 		int n = useFocus(1);
@@ -213,7 +214,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 
 		if (dice(n, 2, getHitRate()) == 2)
 		{
-			role[targetIndex]->setHp(role[targetIndex]->getHp()+getMAttack()*3/2);
+			role[targetIndex]->setHp(role[targetIndex]->getHp() + getMAttack() * 3 / 2);
 		}
 	}
 	else if (weapon->getActiveSkill() == "SpeedUp")
@@ -225,9 +226,5 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 		{
 			role[targetIndex]->giveBuff("SpeedUp", 3);
 		}
-	}
-	
+	}	
 }
-
-
-

@@ -87,7 +87,7 @@ int main()
 
 		
 		
-		vector<Entity* > roles;
+		vector<Entity*> roles;
 		roles.push_back(gameManager->getRole(0));
 		roles.push_back(gameManager->getRole(1));
 		roles.push_back(gameManager->getRole(2));
@@ -232,7 +232,6 @@ void mapStatusUpdate(bool key[])
 		std::cout << "Invalid Input";
 	}
 }
-
 
 // Intent: Update the status of the player during combat based on user input.
 // Pre: The `key` array must be initialized and contain valid input flags.

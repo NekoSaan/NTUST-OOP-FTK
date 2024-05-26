@@ -9,7 +9,7 @@ class Role : public Entity, public Object
 {
 public:
     // Constructor for Role class
-    Role() : Entity() {};
+    Role(void);
 
     // Move the role to a new position on the game board and trigger any interactions with objects on the new position
     void move(int y, int x);

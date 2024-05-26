@@ -8,6 +8,7 @@ private:
 	int pAttack;						// Physical attack attribute
 	int mAttack;						// Magical attack attribute
 	int hitRate;						// Hit rate attribute
+	int dp;								// abbreviation of `dice pool`
 	char type;						    // Type of equipment (physical or magical)
 	std::string activeSkill = "NULL";	// Active skill associated with the weapon
 
@@ -23,6 +24,9 @@ public:
 
 	// Get hit rate
 	int getHitRate(void);
+
+	// Get dice pool
+	int getDP(void);
 
 	// Get the type of the weapon (physical or magical)
 	char getType(void);

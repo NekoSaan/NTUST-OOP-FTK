@@ -42,7 +42,6 @@ Object* GameManager::interactiveObject;
 // Initialize the singleton instance to NULL
 GameManager* GameManager::instance = NULL;
 
-
 // Intent: To retrieve the singleton instance of GameManager
 // Pre: None
 // Post: Returns the instance of GameManager
@@ -181,7 +180,6 @@ bool GameManager::canSee(std::pair<int, int> current, std::pair<int, int> answer
 	return true;
 }
 
-
 // Intent: Set the camera position to focus on the current role within the map bounds
 // Pre: The current role must be initialized, and the map dimensions and camera dimensions must be set.
 // Post: Adjusts the camera position to ensure the current role is within the camera bounds.
@@ -267,7 +265,6 @@ std::vector<std::string> GameManager::normalInformation()
 
 	information.push_back(seperateLine);
 	information.push_back("Input 'I' to open backpack");
-	information.push_back("Input 1,2,3 Display the player status");
 	return information;
 }
 
@@ -329,7 +326,7 @@ std::vector<std::string> GameManager::interactiveInformation()
 
 	// Add information about the interactive object and page number
 	information.push_back(interactiveObject->getTag());
-	information.push_back("Your money: $" + std::to_string(bag.getMoney())); // Assuming `bag` is accessible
+	information.push_back("Your money: $" + std::to_string(bag.getMoney()));
 	information.push_back("------------");
 
 	// Description
@@ -391,7 +388,6 @@ void GameManager::setPlayerInformation(int playerSize,vector<Entity*>player)
 		// Weapon information
 		//snprintf(str, sizeof(str), "Weapon: %p", roles[i]->getWeaponName());
 		info.push_back("Weapon: " + roles[i]->weapon->getName());
-
 		info.push_back("Armor: " + roles[i]->armor->getName());
 		info.push_back("Accessory: " + roles[i]->acc->getName());
 		info.push_back("Buff: ");
@@ -406,10 +402,19 @@ void GameManager::setPlayerInformation(int playerSize,vector<Entity*>player)
 void GameManager::outputPlayerBoard(std::vector<std::string>& information, int playerPointer)
 {
 	// The board information
-	for (int row = 0; row < windowHeight / 3; row += 1)
+	for (int row = -2; row < windowHeight / 3; row += 1)
 	{
 		// The row start postion
 		setCursor(windowHeight / 3 * 2 + row, windowWidth / 3 * playerPointer + 2);
+
+		// filled in empty space
+		if (row < 0) {
+			for (int col = 0; col < windowWidth / 4 + 5; col++) {
+				std::cout << ' ';
+			}
+			continue;
+		}
+
 		std::cout << "|";
 
 		for (int col = 0; col < windowWidth / 4 + 5; col += 1)
@@ -432,7 +437,7 @@ void GameManager::outputPlayerBoard(std::vector<std::string>& information, int p
 // Intent: Set the information of enemies for display
 // Pre: None
 // Post: Sets the enemy information and displays it on the screen
-void GameManager::setEnemyInformation(int playerSize,vector<Entity*>enemys)
+void GameManager::setEnemyInformation(int playerSize, vector<Entity*> enemys)
 {
 	for (int i = 0; i < playerSize; i++)
 	{
@@ -440,7 +445,7 @@ void GameManager::setEnemyInformation(int playerSize,vector<Entity*>enemys)
 		char str[256];
 
 		// Name information
-		snprintf(str, sizeof(str), "Name: Enemy: %d", i);
+		snprintf(str, sizeof(str), "Name: Enemy%d", i + 1);
 		info.push_back(str);
 
 		// HP and Focus information
@@ -507,10 +512,9 @@ void GameManager::battleScreen(std::vector<Entity*> player, std::vector<Entity*>
 {
 	// The enemey and player information display
 	system("CLS");
-	setPlayerInformation(player.size(),player);
-	setEnemyInformation(enemy.size(),enemy);
+	setPlayerInformation(player.size(), player);
+	setEnemyInformation(enemy.size(), enemy);
 	
-
 	// The choose board display
 	for (int row = 0; row < windowHeight / 3; row += 1)
 	{
@@ -526,16 +530,13 @@ void GameManager::battleScreen(std::vector<Entity*> player, std::vector<Entity*>
 
 	char input;
 	int chocie = 0;
-	
 
 	// The description information
 	for (int i = 0; i < data.size(); i += 1)
 	{
 		setCursor(windowHeight / 3 + i + 1, cameraX / 2);
 		cout << data[i];
-	}
-		
-	
+	}	
 }
 
 // Intent: Output the game board to the console
