@@ -13,7 +13,7 @@ Weapon::Weapon(std::string tag, ITEMID id) : Item::Item(tag, id)
 	hitRate = 0;
 	dp = 1;
 	type = 'p';
-
+	cd = 0;
 	switch (id) {
 		case ITEMID::WoodenSword:
 			pAttack = 5;
@@ -95,4 +95,11 @@ void Weapon::use(Role* role) {
 	}
 
 	role->weapon = this;
+}
+
+void  Weapon::setCD(int CD) {
+	cd = CD;
+}
+int Weapon::getCD() {
+	return cd;
 }

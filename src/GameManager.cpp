@@ -390,7 +390,11 @@ void GameManager::setPlayerInformation(int playerSize,vector<Entity*>player)
 		info.push_back("Weapon: " + roles[i]->weapon->getName());
 		info.push_back("Armor: " + roles[i]->armor->getName());
 		info.push_back("Accessory: " + roles[i]->acc->getName());
-		info.push_back("Buff: ");
+		string buff;
+		for (int j = 0; j < roles[i]->buff.size(); j++) {
+			buff += roles[i]->buff[j];
+		}
+		info.push_back("Buff: " + buff);
 
 		outputPlayerBoard(info, i);
 	}
@@ -469,7 +473,12 @@ void GameManager::setEnemyInformation(int playerSize, vector<Entity*> enemys)
 		info.push_back("Weapon: " + enemys[i]->weapon->getName());
 		info.push_back("Armor: " + enemys[i]->armor->getName());
 		info.push_back("Accessory: " + enemys[i]->acc->getName());
-		info.push_back("Buff: ");
+		string buff;
+		for (int j = 0; j < enemys[i]->buff.size(); j++) {
+			buff += enemys[i]->buff[j];
+		}
+		info.push_back("Buff: "+buff);
+		
 
 		outputEnemyBoard(info, i);
 	}

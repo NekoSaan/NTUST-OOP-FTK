@@ -2,6 +2,7 @@
 #define _COMBAT_H_
 #include "Entity.h"
 #include "GameManager.h"
+#include"Weapon.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ int Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
 		actor->setHp(max(actor->getHp() / 10, 1));
 	}
 	actor->minusBuff();
+	actor->weapon->setCD(max(actor->weapon->getCD()-1, 0));
 	return 0;
 }
 void combat(vector<Entity*> role, vector<Entity*> enemy) {
@@ -62,6 +64,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	for (auto it = role.begin(); it != role.end(); ) {
 		if ((*it)->getHp() <= 0) {
 			(*it)->actions = 0;
+			(*it)->weapon->setCD(0);
 			it = role.erase(it);
 		}
 		else {
@@ -72,6 +75,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	for (auto it = enemy.begin(); it != enemy.end(); ) {
 		if ((*it)->getHp() <= 0) {
 			(*it)->actions = 0;
+			(*it)->weapon->setCD(0);
 			it = enemy.erase(it);
 		}
 		else {
@@ -84,6 +88,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	else {
 		for (Entity* x : entity) {
 			x->actions = 0;
+			x->weapon->setCD(0);
 
 		}
 	}

@@ -136,7 +136,7 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				std::cout << "Normal Attack\n";
 				break;
 			case 1:
-				std::cout << weapon->getActiveSkill() << std::endl;
+				std::cout << weapon->getActiveSkill()<<" cd:"<< weapon->getCD()<< std::endl;
 				break;
 			case 2:
 				std::cout << "Flee\n";
@@ -205,6 +205,9 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 {
 	GameManager* gameManager = GameManager::getInstance();
 	gameManager->battleScreen(role, enemy, { "" }, { "select target(input number)" });
+	if (weapon->getCD() > 0) {
+		selectAction(role, enemy);
+	}
 	
 	if (weapon->getActiveSkill() == "Provoke")
 	{
@@ -216,6 +219,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 		{
 			enemy[targetIndex]->giveBuff("Angry", 3);
 		}
+		weapon->setCD(3);
 	}
 	else if(weapon->getActiveSkill() == "Shock - Blast"){
 		int n = useFocus(3, role, enemy);
@@ -224,6 +228,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 			int attack = getMAttack() * dice(n, 3, getHitRate()-5);
 			enemy[i]->setHp(enemy[i]->getHp() - attack/2 * (1 - absorption));
 		}
+		weapon->setCD(2);
     }
 	else if (weapon->getActiveSkill() == "Heal") {
 		
@@ -234,6 +239,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 		{
 			role[targetIndex]->setHp(role[targetIndex]->getHp() + getMAttack() * 3 / 2);
 		}
+		weapon->setCD(2);
 	}
 	else if (weapon->getActiveSkill() == "SpeedUp")
 	{
@@ -244,7 +250,11 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 		{
 			role[targetIndex]->giveBuff("SpeedUp", 3);
 		}
-	}	
+		weapon->setCD(4);
+	}
+	else {
+		selectAction(role, enemy);
+	}
 }
 
 
