@@ -82,15 +82,33 @@ vector<string> Role::getDescription() {
 	return description;
 }
 
-int selectTarget(std::vector<Entity* > role, std::vector<Entity* > enemy) {
-	char c = getch();
-	int targetIndex = c - '0';  // Convert char to integer
-	if (targetIndex < 0 || targetIndex >= enemy.size()) {
-		std::cout << "Invalid target. Please try again." << std::endl;
-		// Recurse until valid input is received
-		return selectTarget(role, enemy);
+int selectTarget(const std::vector<Entity*>& role, const std::vector<Entity*>& enemy) {
+	GameManager* gameManager = GameManager::getInstance();
+
+	int selectedIndex = 0;
+	while (true) {
+		gameManager->battleScreen(role, enemy, { "" }, { "" });
+		cout << "請選擇一個目標：\n";
+		for (size_t i = 0; i < enemy.size(); ++i) {
+			if (i == selectedIndex) {
+				cout << "> 目標 " << i + 1 << endl; // 當前選中的目標
+			}
+			else {
+				cout << "  目標 " << i + 1 << endl;
+			}
+		}
+		char c = _getch(); 
+
+		if (c == 'w' || c == 'W') {
+			selectedIndex = (selectedIndex - 1 + enemy.size()) % enemy.size();
+		}
+		else if (c == 's' || c == 'S') {
+			selectedIndex = (selectedIndex + 1) % enemy.size();
+		}
+		else if (c == '\r') { // Enter 鍵
+			return selectedIndex;
+		}
 	}
-	return targetIndex;
 }
 
 // Intent: Select an action for the entity based on user input
@@ -159,21 +177,21 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 // Pre: role and enemy must be non-empty vectors of Entity pointers
 // Post: Performs a normal attack against an enemy entity
 void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
-	GameManager* gameManager = GameManager::getInstance();
-	gameManager->battleScreen(role, enemy, { "" }, { "select target(input number)" });
+	
 
 	int targetIndex = selectTarget(role, enemy);
+	GameManager* gameManager = GameManager::getInstance();
 	gameManager->battleScreen(role, enemy, { "" }, { "" });
 
 	if (weapon->getType() == 'p') {
-		int n = useFocus(1);
+		int n = useFocus(1, role, enemy);
 		int absorption = enemy[targetIndex]->getPDefense() / (getPDefense() + 50);
 		int attack = getPAttack() * dice(n, 1, getHitRate());
 		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption));
 
 	}
 	else {
-		int n = useFocus(1);
+		int n = useFocus(1,role, enemy);
 		int absorption = enemy[targetIndex]->getMDefense() / (getMDefense() + 50);
 		int attack = getMAttack() * dice(n, 1, getHitRate());
 		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption));
@@ -192,7 +210,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 	{
 		int HitRate = getHp() / (getVitality() + getPDefense() + getMDefense()) * getSpeed();
 		int targetIndex = selectTarget(role, enemy);
-		int n = useFocus(1);
+		int n = useFocus(1,role, enemy);
 
 		if (dice(n, 1, HitRate) == 1)
 		{
@@ -200,7 +218,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 		}
 	}
 	else if(weapon->getActiveSkill() == "Shock - Blast"){
-		int n = useFocus(3);
+		int n = useFocus(3, role, enemy);
 		for (int i = 0; i < enemy.size(); i++) {
 			int absorption = enemy[i]->getMDefense() / (getMDefense() + 50);
 			int attack = getMAttack() * dice(n, 3, getHitRate()-5);
@@ -210,7 +228,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 	else if (weapon->getActiveSkill() == "Heal") {
 		
 		int targetIndex = selectTarget(role, role);
-		int n = useFocus(2);
+		int n = useFocus(2,role, enemy);
 
 		if (dice(n, 2, getHitRate()) == 2)
 		{
@@ -220,11 +238,54 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 	else if (weapon->getActiveSkill() == "SpeedUp")
 	{
 		int targetIndex = selectTarget(role, role);
-		int n = useFocus(2);
+		int n = useFocus(2, role, enemy);
 
 		if (dice(n, 2, getHitRate()) == 2)
 		{
 			role[targetIndex]->giveBuff("SpeedUp", 3);
 		}
 	}	
+}
+
+
+int Role::useFocus(int MaxFocus,std::vector<Entity* > role, std::vector<Entity* > enemy) {
+	vector<int> options;
+	for (int i = 0; i <= MaxFocus && i <= getFocus(); ++i) {
+		options.push_back(i);
+	}
+
+	int selectedIndex = 0;
+
+	while (true) {
+		GameManager* gameManager = GameManager::getInstance();
+		gameManager->battleScreen(role, enemy, { "" }, { " selct your Action\n" });
+		cout << "請選擇要使用的專注值：\n";
+		for (size_t i = 0; i < options.size(); ++i) {
+			if (i == selectedIndex) {
+				cout << " > " << options[i] << " 點" << endl; // 當前選中的選項
+			}
+			else {
+				cout << "   " << options[i] << " 點" << endl;
+			}
+		}
+
+		char c = _getch(); // Windows上使用_getch，其他情況下使用getch
+
+		if (c == 'w' || c == 'W') {
+			selectedIndex = (selectedIndex - 1 + options.size()) % options.size();
+		}
+		else if (c == 's' || c == 'S') {
+			selectedIndex = (selectedIndex + 1) % options.size();
+		}
+		else if (c == '\r') { // Enter 鍵
+			int selectedFocus = options[selectedIndex];
+			setFocus(getFocus() - selectedFocus);
+			return selectedFocus;
+		}
+	}
+}
+
+
+int Role::Flee() {
+	return 1;
 }

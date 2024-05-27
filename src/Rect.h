@@ -34,6 +34,8 @@ public:
     // Get the object associated with the Rect
     Object* getObject();
 
+    
+
 private:
     bool isVisible; // Visibility status of the Rect
     bool canPass;   // Passability status of the Rect

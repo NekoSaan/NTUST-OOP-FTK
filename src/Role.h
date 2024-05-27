@@ -28,7 +28,8 @@ public:
     virtual int selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy);
     virtual void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
     virtual void skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
-
+    int useFocus(int MaxFocus, std::vector<Entity* > role, std::vector<Entity* > enemy);
+    int Flee();
 };
 
 #endif _ROLE_H_

@@ -284,7 +284,7 @@ int Entity::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)
 	}
 	else if (c == '3') 
 	{
-		Flee();
+		return 1;
 	}
 	return 0;
 }
@@ -294,14 +294,6 @@ int Entity::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)
 // Post: Performs a normal attack against an enemy entity
 void Entity::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) 
 {
-	if (weapon->getType() == 'p') 
-	{
-		char c = _getch();
-		int n = useFocus(1);
-		int absorption = enemy[(int)c]->getPDefense() / (getPDefense() + 50);
-		int Attack = getPAttack() * dice(n, 1, getHitRate());
-		enemy[0]->setHp(enemy[(int)c]->getHp() - Attack * (1 - absorption));
-	}
 }
 
 // Intent: Perform a skill attack against an enemy entity
@@ -311,43 +303,3 @@ void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy
 {
 }
 
-// Intent: Use focus points for an action
-// Pre: MaxFocus must be a non-negative integer
-// Post: Uses focus points for an action
-int Entity::useFocus(int MaxFocus) {
-	cout << "use fourse";
-	while (true) {
-		
-		char c = getch();
-
-		// 检查输入是否为有效数字
-		if (!isdigit(c)) {
-			std::cout << "Invalid input. Please enter a digit." << std::endl;
-			continue;
-		}
-
-		int n = c - '0';  // 将字符转换为数字
-
-		// 检查使用的注意力值是否超过限制
-		if (n > getFocus() || n > MaxFocus) {
-			std::cout << "Fail: Amount exceeds available or maximum focus." << std::endl;
-			continue;
-		}
-		else {
-			setFocus(getFocus() - n);
-			return n;
-		}
-	}
-}
-int Entity::Flee()
-{
-	int n = useFocus(1);
-	int param = speed * getHp() / (getHp() + getMDefense() + getPDefense());
-
-	if (dice( n, 1, min(98, param) ) == 1)
-	{
-		return 1;
-	}
-
-	return 0;
-}

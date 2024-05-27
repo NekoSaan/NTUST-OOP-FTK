@@ -60,7 +60,6 @@ public:
     void setFocus(int);
 
     // Other methods
-    int useFocus(int MaxFocus);
     bool searchBuff(std::string);
     void giveBuff(std::string, int);
     void minusBuff();
@@ -68,7 +67,7 @@ public:
     virtual int selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
     virtual void normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
     virtual void skillAttack(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;
-    int Flee();
+
 };
 
 #endif _ENTITY_H_

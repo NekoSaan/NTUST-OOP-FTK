@@ -76,7 +76,7 @@ int Weapon::getDP(void) { return dp; }
 // Intent: Get the type of the weapon (physical or magical)
 // Pre: None
 // Post: Returns the type of the weapon
-char Weapon::getType(void) { return type; }
+char Weapon::getType(void) { return 'p'; }//return type;
 
 // Intent: Get the active skill of the weapon
 // Pre: None
