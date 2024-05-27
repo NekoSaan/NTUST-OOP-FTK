@@ -123,6 +123,7 @@ void GameManager::setMap()
 
 	// set current role
 	currentRole = roles[0];
+	currentRole->setMovementPoint();
 
 	// set status
 	gameStatus = GAME_STATUS::MAP;
@@ -142,6 +143,20 @@ Role* GameManager::getRole(int i)
 Role* GameManager::getCurrentRole()
 {
 	return currentRole;
+}
+
+void GameManager::nextRole() {
+	currentRole->gainHealth(currentRole->getMovementPoint());
+	int roleIndex = 0;
+	for (int i = 0; i < 3; i++) {
+		if (currentRole == roles[i]) {
+			roleIndex = i;
+			break;
+		}
+	}
+	roleIndex = (roleIndex + 1) % 3;
+	currentRole = roles[roleIndex];
+	currentRole->setMovementPoint();
 }
 
 // Intent: Retrieve the interactive object
@@ -250,6 +265,7 @@ std::vector<std::string> GameManager::normalInformation()
 	information.push_back("Camera Y: " + std::to_string(cameraY));
 	information.push_back("Current Role X: " + std::to_string(currentRole->getPos().second));
 	information.push_back("Current Role Y: " + std::to_string(currentRole->getPos().first));
+	information.push_back("Current Role Movement Point: " + std::to_string(currentRole->getMovementPoint()));
 
 	std::string seperateLine = "";
 
@@ -265,6 +281,7 @@ std::vector<std::string> GameManager::normalInformation()
 
 	information.push_back(seperateLine);
 	information.push_back("Input 'I' to open backpack");
+	information.push_back("Input 'P' to the next role");
 	return information;
 }
 
@@ -483,7 +500,6 @@ void GameManager::setEnemyInformation(int playerSize, vector<Entity*> enemys)
 		outputEnemyBoard(info, i);
 	}
 }
-
 
 // Intent: Output the enemy board to the console
 // Pre: None

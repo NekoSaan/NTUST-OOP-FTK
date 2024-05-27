@@ -91,6 +91,8 @@ public:
 	Role* getCurrentRole();
 	Object* getInteractiveObject();
 
+	void nextRole();
+
 	// Setter for interactive object
 	void setInteractiveObject(Object* o);
 

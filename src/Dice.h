@@ -6,7 +6,7 @@
 
 using namespace std;
 
-// The rool dice
+// The rool dice, probabillity is 0~100
 int dice(int focus, int dicePool, int probability);
 
 // probabillity is 0~100, return 0~100
