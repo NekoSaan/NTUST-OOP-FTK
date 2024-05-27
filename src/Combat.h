@@ -1,6 +1,6 @@
 #ifndef _COMBAT_H_
 #define _COMBAT_H_
-#include"Entity.h"
+#include "Entity.h"
 
 using namespace std;
 

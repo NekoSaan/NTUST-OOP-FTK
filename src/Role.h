@@ -7,6 +7,9 @@
 // Role class represents a character role in the game
 class Role : public Entity, public Object 
 {
+private:
+    int movementPoint;
+
 public:
     // Constructor for Role class
     Role(void);
@@ -16,6 +19,9 @@ public:
 
     void gainHealth(int);
     void gainFocus(int);
+
+    void setMovementPoint();
+    int getMovementPoint();
 
     // Object's virtual funtion
     void active(Role* role);

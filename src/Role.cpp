@@ -15,6 +15,8 @@ Role::Role(void) : Entity::Entity() {
 // Post: Updates the role's position on the game board and triggers any interactions with objects on the new position
 void Role::move(int y, int x)
 {
+	if (movementPoint <= 0) return;
+	
 	// Calculate the new position
 	int tempPosY = this->y + y;
 	int tempPosX = this->x + x;
@@ -27,6 +29,7 @@ void Role::move(int y, int x)
 
 	// Update the role's position
 	setPos(tempPosY, tempPosX);
+	movementPoint--;
 
 	// Check if there is an object on the rect
 	GameManager* gameManager = GameManager::getInstance();
@@ -45,6 +48,15 @@ void Role::gainHealth(int healHp) {
 
 void Role::gainFocus(int restoreN) {
 	focus = min(focus + restoreN, maxFocus);
+}
+
+void Role::setMovementPoint() {
+	int maxMovementPoint = speed / 10;
+	movementPoint = dice(1, maxMovementPoint, speed);
+}
+
+int Role::getMovementPoint() {
+	return movementPoint;
 }
 
 void Role::active(Role* role) 

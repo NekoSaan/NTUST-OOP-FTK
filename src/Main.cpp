@@ -17,6 +17,7 @@ enum VALIDINPUT
 	EA,
 	ED,
 	EI,
+	EP,
 	EBACKSPACE,
 	EENTER,
 	EESC,
@@ -148,6 +149,10 @@ void keyUpdate(bool key[], bool playerKey[])
 	case 'i':
 		key[int(VALIDINPUT::EI)] = true;
 		break;
+	case 'P':
+	case 'p':
+		key[int(VALIDINPUT::EP)] = true;
+		break;
 	case '1':
 		playerKey[int(PLAYER::PLAYER1)] = true;
 		break;
@@ -225,6 +230,9 @@ void mapStatusUpdate(bool key[])
 	else if (key[int(VALIDINPUT::EI)])
 	{
 		bag.invMode();
+	}
+	else if (key[int(VALIDINPUT::EP)]) {
+		gameManager->nextRole();
 	}
 	// Display message for invalid input
 	else
