@@ -104,6 +104,7 @@ public:
 
 	// Output the game board
 	void outputGameBoard();
+	void outputShowBoard(std::vector<std::vector<std::pair<char, int>>>& showBoard, char icon);
 
 	// Set information based on game status
 	void setInformation();

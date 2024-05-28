@@ -7,6 +7,7 @@
 // Post: Constructs a Rect object with isVisible set to false, canPass set to true, and object set to NULL
 Rect::Rect()
 {
+	this->beSelect = false;
 	this->isVisible = false;
 	this->canPass = true;
 	this->object = NULL;
@@ -17,7 +18,27 @@ Rect::Rect()
 // Post: Returns a pair consisting of the icon character and its associated color code
 std::pair<char, int> Rect::getIcon()
 {
-	if (isVisible == false) 
+	if (beSelect)
+	{
+		char ret;
+		if (isVisible == false)
+		{
+			ret = ' ';
+		}
+		else if (canPass == false)
+		{
+			ret = '#';
+		}
+		else if (object == NULL)
+		{
+			ret = '.';
+		}
+		else {
+			ret = object->getIcon();
+		}
+		return std::pair<char, int>(ret, 192);
+	}
+	else if (isVisible == false) 
 	{
 		// If not visible, return space character and a color code representing fog
 		return std::pair<char, int>(' ', 119); // in war of fog
@@ -35,6 +56,10 @@ std::pair<char, int> Rect::getIcon()
 	else 
 	{
 		// If an object is present, return its icon and a default color code
+		if (beSelect)
+		{
+			return std::pair<char, int>(object->getIcon(), 192);
+		}
 		return std::pair<char, int>(object->getIcon(), 96); // have something
 	}
 }
@@ -90,4 +115,14 @@ bool Rect::getCanPass()
 Object* Rect::getObject() 
 {
 	return this->object;
+}
+
+void Rect::setBeSelect(bool b)
+{
+	this->beSelect = b;
+}
+
+bool  Rect::getBeSelect()
+{
+	return this->beSelect;
 }

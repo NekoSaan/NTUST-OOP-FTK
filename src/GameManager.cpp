@@ -5,7 +5,7 @@
 #include "Role.h"
 #include "Shop.h"
 #include "ChestEvent.h"
-#include "SpringEvent.h"
+//#include "SpringEvent.h"
 #include "Weapon.h"
 #include "Armor.h"
 #include "Accessory.h"
@@ -111,7 +111,7 @@ void GameManager::setMap()
 
 	//set event
 	gameBoard[23][69].setObject(new ChestEvent());
-	gameBoard[22][69].setObject(new SpringEvent());
+	//gameBoard[22][69].setObject(new SpringEvent());
 
 	//set enemy
 	gameBoard[27][72].setObject(new Enemy());
@@ -614,11 +614,16 @@ void GameManager::outputGameBoard()
 			showBoard[row][col].second = icon.second;
 		}
 	}
-
 	showBoard[pos.first][pos.second].second = 108;
+	outputShowBoard(showBoard, icon);
+}
+
+void GameManager::outputShowBoard(std::vector<std::vector<std::pair<char, int>>>& showBoard, char icon)
+{
+	std::pair<int, int> pos;
 
 	// The loop check each board need to be show
-	for (int i = 0; i < roles.size(); i++) 
+	for (int i = 0; i < roles.size(); i++)
 	{
 		pos = roles[i]->getPos();
 		showBoard[pos.first][pos.second].first = icon;
@@ -631,14 +636,14 @@ void GameManager::outputGameBoard()
 	int marginRight = cameraX + cameraWidth / 2;
 
 	// The output board
-	for (int row = 0; row < cameraHeight + 2; row += 1) 
+	for (int row = 0; row < cameraHeight + 2; row += 1)
 	{
 		setCursor(row, 0);
 		std::cout << "|";
 
 		for (int col = marginLeft; col < marginRight; col += 1)
 		{
-			if (row == 0 || row == cameraHeight + 1) 
+			if (row == 0 || row == cameraHeight + 1)
 			{
 				std::cout << "-";
 			}

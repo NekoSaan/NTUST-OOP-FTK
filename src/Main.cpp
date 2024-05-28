@@ -5,8 +5,9 @@
 #include <string>
 #include "GameManager.h"
 #include "Backpack.h"
-#include"Combat.h"
-#include"Enemy.h"
+#include "Combat.h"
+#include "Enemy.h"
+#include "TeleportScroll.h"
 using namespace std;
 
 // Define input command
@@ -75,7 +76,6 @@ int main()
 
 	do
 	{
-
 		// Compute the time elapsed since last frame
 		double timeFrame = (endT - startT) / CLOCKS_PER_SEC;
 
@@ -87,7 +87,6 @@ int main()
 		}
 
 		
-		
 		vector<Entity*> roles;
 		roles.push_back(gameManager->getRole(0));
 		roles.push_back(gameManager->getRole(1));
@@ -97,6 +96,7 @@ int main()
 		gameManager->outputGameBoard();
 		gameManager->setInformation();
 		gameManager->setPlayerInformation(roles.size(),roles);
+
 		// Update key state
 		keyUpdate(gKeyState, player);
 		endT = clock(); // Update end time

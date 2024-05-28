@@ -53,6 +53,9 @@ set(project_SRC_LIST
 
     ${PROJECT_SOURCE_DIR}/src/Accessory.h
     ${PROJECT_SOURCE_DIR}/src/accessory.cpp
+
+    ${PROJECT_SOURCE_DIR}/src/TeleportScroll.h
+    ${PROJECT_SOURCE_DIR}/src/TeleportScroll.cpp
 )
 
 add_executable(project ${project_SRC_LIST})

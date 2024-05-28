@@ -35,10 +35,13 @@ public:
     Object* getObject();
 
     
+    void setBeSelect(bool b);
+    bool getBeSelect();
 
 private:
     bool isVisible; // Visibility status of the Rect
     bool canPass;   // Passability status of the Rect
+    bool beSelect;
 
     Object* object; // Object associated with the Rect
 };
