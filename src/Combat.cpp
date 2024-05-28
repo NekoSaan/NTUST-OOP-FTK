@@ -56,6 +56,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	if (Action(actor, role, enemy) == 1) {
 		auto it = std::find(role.begin(), role.end(), actor);
 		if (it != role.end()) {
+			(*it)->actions = 0;
 			role.erase(it);
 		}
 	}
@@ -65,6 +66,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 		if ((*it)->getHp() <= 0) {
 			(*it)->actions = 0;
 			(*it)->weapon->setCD(0);
+			(*it)->setHp(0);
 			it = role.erase(it);
 		}
 		else {
