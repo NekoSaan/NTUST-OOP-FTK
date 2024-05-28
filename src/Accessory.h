@@ -8,6 +8,7 @@ private:
 	int speed;							// get speed up
 	int maxFocus;						// get inc focus
 	std::string activeSkill = "NULL";	// Active skill associated with the weapon
+	std::string passiveSkill = "NULL";	// passive skill associated with the weapon
 
 public:
 	// Constructor
