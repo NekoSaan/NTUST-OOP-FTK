@@ -9,6 +9,7 @@ class Role : public Entity, public Object
 {
 private:
     int movementPoint;
+    pair<int, int> lastPos; //y, x
 
 public:
     // Constructor for Role class
@@ -16,6 +17,7 @@ public:
 
     // Move the role to a new position on the game board and trigger any interactions with objects on the new position
     void move(int y, int x);
+    void moveTolastPos();
 
     void gainHealth(int);
     void gainFocus(int);
