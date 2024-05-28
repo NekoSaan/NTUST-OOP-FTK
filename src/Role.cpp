@@ -113,17 +113,17 @@ int selectTarget(const std::vector<Entity*>& role, const std::vector<Entity*>& e
 
 	int selectedIndex = 0;
 	while (true) {
-		gameManager->battleScreen(role, enemy, { "" }, { "" });
+		gameManager->battleScreen( role,enemy, { "" }, { "" });
 		cout << "請選擇一個目標：\n";
 		for (size_t i = 0; i < enemy.size(); ++i) {
 			if (i == selectedIndex) {
-				cout << "> 目標 " << i + 1 << endl; // 當前選中的目標
+				cout << "> 目標 " << i+1  << endl; // 當前選中的目標
 			}
 			else {
-				cout << "  目標 " << i + 1 << endl;
+				cout << "  目標 " << i +1 << endl;
 			}
 		}
-		char c = _getch(); 
+		char c = getch(); 
 
 		if (c == 'w' || c == 'W') {
 			selectedIndex = (selectedIndex - 1 + enemy.size()) % enemy.size();
@@ -143,11 +143,12 @@ int selectTarget(const std::vector<Entity*>& role, const std::vector<Entity*>& e
 int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	GameManager* gameManager = GameManager::getInstance();
 	int selectedOption = 0;
-	int numOptions = 3;  // Number of options in the menu
-
+	int numOptions = 2;  // Number of options in the menu
+	if(weapon->getActiveSkill() != "NULL")
+			numOptions++;
 	while (true) {
 		gameManager->battleScreen(role, enemy, { "" }, { " selct your Action\n" });
-
+		
 		// Display menu with highlighted selected option
 		for (int i = 0; i < numOptions; ++i) {
 			if (i == selectedOption) {
@@ -161,11 +162,13 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 			case 0:
 				std::cout << "Normal Attack\n";
 				break;
+			
 			case 1:
-				std::cout << weapon->getActiveSkill()<<" cd:"<< weapon->getCD()<< std::endl;
+				std::cout << "Flee\n";
 				break;
 			case 2:
-				std::cout << "Flee\n";
+				if(weapon->getActiveSkill()!="NULL")
+					std::cout << weapon->getActiveSkill()<<" cd:"<< weapon->getCD()<< std::endl;
 				break;
 			}
 		}
@@ -185,12 +188,12 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				normalAttack(role, enemy);
 				break;
 			case 1:
-				skillAttack(role, enemy);
-				break;
-			case 2:
 				if (Flee() == 1) {
 					return 1;
 				}
+				break;
+			case 2:
+				skillAttack(role, enemy);
 				break;
 			}
 			break;  // Exit loop after selection made
@@ -269,7 +272,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 	}
 	else if (weapon->getActiveSkill() == "SpeedUp")
 	{
-		int targetIndex = selectTarget(role, role);
+		int targetIndex = selectTarget(enemy, role);
 		int n = useFocus(2, role, enemy);
 
 		if (dice(n, 2, getHitRate()) == 2)

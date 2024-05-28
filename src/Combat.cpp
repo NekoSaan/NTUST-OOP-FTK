@@ -57,6 +57,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 		auto it = std::find(role.begin(), role.end(), actor);
 		if (it != role.end()) {
 			(*it)->actions = 0;
+			(*it)->buff.clear();
 			role.erase(it);
 		}
 	}

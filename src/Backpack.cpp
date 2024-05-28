@@ -1,5 +1,6 @@
 #include "Backpack.h"
 #include "Items.h"
+#include "Weapon.h"
 #include "GameManager.h"
 #include "Role.h"
 
@@ -15,6 +16,8 @@ BackPack::BackPack(void) : money(600)
 	{
 		obtainItem(new Item("Consumable", ITEMID(i)));
 	}
+
+	obtainItem(new Weapon("Weapon", ITEMID::WoodenSword));
 }
 
 // Intent: Add an item to the inventory
