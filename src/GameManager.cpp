@@ -106,7 +106,7 @@ void GameManager::setMap()
 	}
 
 	//set shop
-	gameBoard[15][65].setObject(new Shop());
+	gameBoard[25][69].setObject(new Shop());
 
 	//set event
 	gameBoard[21][65].setObject(new ChestEvent());
@@ -148,12 +148,14 @@ Role* GameManager::getCurrentRole()
 void GameManager::nextRole() {
 	currentRole->gainHealth(currentRole->getMovementPoint());
 	int roleIndex = 0;
+
 	for (int i = 0; i < 3; i++) {
 		if (currentRole == roles[i]) {
 			roleIndex = i;
 			break;
 		}
 	}
+
 	roleIndex = (roleIndex + 1) % 3;
 	currentRole = roles[roleIndex];
 	currentRole->setMovementPoint();
@@ -192,6 +194,7 @@ bool GameManager::canSee(std::pair<int, int> current, std::pair<int, int> answer
 			return false;
 		}
 	}
+
 	return true;
 }
 
@@ -276,6 +279,7 @@ std::vector<std::string> GameManager::normalInformation()
 			seperateLine += "Helper";
 			continue;
 		}
+
 		seperateLine += "_";
 	}
 
@@ -330,6 +334,13 @@ std::vector<std::string> GameManager::backpackInformation()
 // Post: Returns a vector of strings containing information about the interactive object, including available choices and page details.
 std::vector<std::string> GameManager::interactiveInformation()
 {
+	string seperateLine = "";
+
+	for (int i = 0; i < windowWidth - cameraWidth - 2; i++)
+	{
+		seperateLine += "_";
+	}
+
 	// Get all available choices from the interactive object
 	std::vector<std::string> choose = interactiveObject->getAllChoose();
 
@@ -344,7 +355,7 @@ std::vector<std::string> GameManager::interactiveInformation()
 	// Add information about the interactive object and page number
 	information.push_back(interactiveObject->getTag());
 	information.push_back("Your money: $" + std::to_string(bag.getMoney()));
-	information.push_back("------------");
+	information.push_back(seperateLine);
 
 	// Description
 	information.push_back("Description:");
@@ -352,7 +363,7 @@ std::vector<std::string> GameManager::interactiveInformation()
 	for (int i = 0; i < description.size(); i++) {
 		information.push_back(description[i]);
 	}
-	information.push_back("------------");
+	information.push_back(seperateLine);
 	information.push_back("(Page: " + std::to_string(currentPage + 1) + "/" + std::to_string(maxPage + 1) + ")");
 
 	// Display available choices for the current page
@@ -407,10 +418,13 @@ void GameManager::setPlayerInformation(int playerSize,vector<Entity*>player)
 		info.push_back("Weapon: " + roles[i]->weapon->getName());
 		info.push_back("Armor: " + roles[i]->armor->getName());
 		info.push_back("Accessory: " + roles[i]->acc->getName());
-		string buff;
+
+		string buff = "";
+
 		for (int j = 0; j < roles[i]->buff.size(); j++) {
 			buff += roles[i]->buff[j];
 		}
+
 		info.push_back("Buff: " + buff);
 
 		outputPlayerBoard(info, i);
@@ -422,33 +436,33 @@ void GameManager::setPlayerInformation(int playerSize,vector<Entity*>player)
 // Post: Displays the player board to the console
 void GameManager::outputPlayerBoard(std::vector<std::string>& information, int playerPointer)
 {
+	// filled in empty space
+	setCursor(windowHeight / 3 * 2 - 2, 0);
+
+	for (int col = 0; col < windowWidth; col++) {
+		std::cout << ' ';
+	}
+
 	// The board information
-	for (int row = -2; row < windowHeight / 3; row += 1)
+	for (int row = 0; row < windowHeight / 3 + 1; row += 1)
 	{
 		// The row start postion
-		setCursor(windowHeight / 3 * 2 + row, windowWidth / 3 * playerPointer + 2);
-
-		// filled in empty space
-		if (row < 0) {
-			for (int col = 0; col < windowWidth / 4 + 5; col++) {
-				std::cout << ' ';
-			}
-			continue;
-		}
+		setCursor(windowHeight / 3 * 2 + row - 1, windowWidth / 3 * playerPointer + 2);
 
 		std::cout << "|";
 
 		for (int col = 0; col < windowWidth / 4 + 5; col += 1)
 		{
-			std::cout << ((row == 0 || row == windowHeight / 3 - 1) ? "-" : " ");
+			std::cout << ((row == 0 || row == windowHeight / 3) ? "-" : " ");
 		}
 
 		// The row end position
 		std::cout << "|";
 
 		// Print each information in enemy board
-		setCursor(windowHeight / 3 * 2 + row, windowWidth / 3 * playerPointer + 3);
-		if (row > 0 && row < windowHeight / 3 - 1 && row - 1 < information.size())
+		setCursor(windowHeight / 3 * 2 + row - 1, windowWidth / 3 * playerPointer + 3);
+
+		if (row > 0 && row < windowHeight / 3 && row - 1 < information.size())
 		{
 			std::cout << information[row - 1];
 		}
@@ -490,13 +504,15 @@ void GameManager::setEnemyInformation(int playerSize, vector<Entity*> enemys)
 		info.push_back("Weapon: " + enemys[i]->weapon->getName());
 		info.push_back("Armor: " + enemys[i]->armor->getName());
 		info.push_back("Accessory: " + enemys[i]->acc->getName());
+
 		string buff;
+
 		for (int j = 0; j < enemys[i]->buff.size(); j++) {
 			buff += enemys[i]->buff[j];
 		}
-		info.push_back("Buff: "+buff);
-		
 
+		info.push_back("Buff: " + buff);
+		
 		outputEnemyBoard(info, i);
 	}
 }
@@ -507,7 +523,7 @@ void GameManager::setEnemyInformation(int playerSize, vector<Entity*> enemys)
 void GameManager::outputEnemyBoard(std::vector<std::string>& information, int playerPointer)
 {
 	// The board information
-	for (int row = 0; row < windowHeight / 3; row += 1)
+	for (int row = 0; row < windowHeight / 3 + 1; row += 1)
 	{
 		// The row start postion
 		setCursor(row, windowWidth / 3 * playerPointer + 2);
@@ -515,7 +531,7 @@ void GameManager::outputEnemyBoard(std::vector<std::string>& information, int pl
 
 		for (int col = 0; col < windowWidth / 4 + 5; col += 1)
 		{
-			std::cout << ((row == 0 || row == windowHeight / 3 - 1) ? "-" : " ");
+			std::cout << ((row == 0 || row == windowHeight / 3) ? "-" : " ");
 		}
 
 		// The row end position
@@ -523,7 +539,8 @@ void GameManager::outputEnemyBoard(std::vector<std::string>& information, int pl
 
 		// Print each information in enemy board
 		setCursor(row, windowWidth / 3 * playerPointer + 3);
-		if (row > 0 && row < windowHeight / 3 - 1 && row - 1 < information.size())
+
+		if (row > 0 && row < windowHeight / 3 && row - 1 < information.size())
 		{
 			std::cout << information[row - 1];
 		}
@@ -541,15 +558,16 @@ void GameManager::battleScreen(std::vector<Entity*> player, std::vector<Entity*>
 	setEnemyInformation(enemy.size(), enemy);
 	
 	// The choose board display
-	for (int row = 0; row < windowHeight / 3; row += 1)
+	for (int row = 0; row < windowHeight / 3 - 2; row += 1)
 	{
-		setCursor(row + windowHeight / 3, 2);
+		setCursor(row + windowHeight / 3 + 1, 2);
 		std::cout << "|";
 
 		for (int col = 0; col < windowWidth - 5; col += 1)
 		{
-			std::cout << ((row == 0 || row == windowHeight / 3 - 1) ? "-" : " ");
+			std::cout << ((row == 0 || row == windowHeight / 3 - 3) ? "-" : " ");
 		}
+
 		std::cout << "|";
 	}
 
@@ -557,9 +575,9 @@ void GameManager::battleScreen(std::vector<Entity*> player, std::vector<Entity*>
 	int chocie = 0;
 
 	// The description information
-	for (int i = 0; i < data.size(); i += 1)
+	for (int i = 0; i < data.size(); i++)
 	{
-		setCursor(windowHeight / 3 + i + 1, cameraX / 2);
+		setCursor(windowHeight / 3 + i + 2, cameraX / 2);
 		cout << data[i];
 	}	
 }

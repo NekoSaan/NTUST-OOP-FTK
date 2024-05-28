@@ -13,6 +13,19 @@ Enemy::Enemy() : Entity() {
 	this->tag = TAG_ENEMY;
 	this->icon = 'E';
 	this->chosenIndex = 0;
+
+	int randWeapon = rand() % 200 + 1;
+
+	if (randWeapon < 100) {
+		randWeapon = rand() % 5 + ITEMID::WoodenSword;
+		weapon = new Weapon("Weapon", ITEMID(randWeapon));
+	}
+	else {
+		weapon = new Weapon("Empty", ITEMID::Invalid);
+	}
+	
+	armor = new Armor("Empty", ITEMID::Invalid);
+	acc = new Accessory("Empty", ITEMID::Invalid);
 };
 
 void Enemy::combatSupport(Role* role) {

@@ -10,11 +10,12 @@ private:
 	std::string activeSkill = "NULL";	// Active skill associated with the weapon
 
 public:
+	// Constructor
 	Accessory(std::string, ITEMID);
 
-	int getMDefense(void);
-	int getSpeed(void);
-	int getMaxFocus(void);
+	int getMDefense(void) const;
+	int getSpeed(void) const;
+	int getMaxFocus(void) const;
 
 	void use(Role*) override;
 };

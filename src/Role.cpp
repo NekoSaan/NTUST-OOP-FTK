@@ -7,7 +7,9 @@
 #include "Dice.h"
 
 Role::Role(void) : Entity::Entity() {
-
+	weapon = new Weapon("Empty", ITEMID::Invalid);
+	armor = new Armor("Empty", ITEMID::Invalid);
+	acc = new Accessory("Empty", ITEMID::Invalid);
 };
 
 // Intent: Move the role to a new position on the game board and trigger any interactions with objects on the new position

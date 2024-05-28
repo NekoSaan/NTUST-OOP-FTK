@@ -12,7 +12,6 @@
 //		 specified ranges, initializes focus, and creates a default weapon
 Entity::Entity(void)
 {
-	
 	setVitality(rand() % 15 + 30);  // random value between [30, 45)
 	setMaxFocus(3);					// initialize to 3, fixed
 	setFocus(3);					// initialize to 3, fixed
@@ -24,19 +23,6 @@ Entity::Entity(void)
 	setMDefense(rand() % 21);		// random value between [0, 20]
 	setHp(getVitality());
 	actions = 0;
-
-	int randWeapon = rand() % 200 + 1;
-
-	if (randWeapon < 100) {
-		randWeapon = rand() % 5; // number of weapons
-		weapon = new Weapon("Weapon", ITEMID(randWeapon + ITEMID::WoodenSword));
-	}
-	else {
-		weapon = new Weapon("Empty", ITEMID::Invalid);
-	}
-
-	armor = new Armor("Empty", ITEMID::Invalid);
-	acc = new Accessory("Empty", ITEMID::Invalid);
 }
 
 // Intent: Set the vitality of the entity

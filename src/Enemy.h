@@ -9,7 +9,6 @@ private:
 	void combatSupport(Role* role); //find enemy and role around, then start combat
 
 public:
-	
 	Enemy();
 
 	virtual int selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy);
