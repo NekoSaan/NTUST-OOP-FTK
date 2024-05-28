@@ -5,6 +5,7 @@
 #include "Role.h"
 #include "Shop.h"
 #include "ChestEvent.h"
+#include "SpringEvent.h"
 #include "Weapon.h"
 #include "Armor.h"
 #include "Accessory.h"
@@ -109,7 +110,8 @@ void GameManager::setMap()
 	gameBoard[25][69].setObject(new Shop());
 
 	//set event
-	gameBoard[21][65].setObject(new ChestEvent());
+	gameBoard[23][69].setObject(new ChestEvent());
+	gameBoard[22][69].setObject(new SpringEvent());
 
 	//set enemy
 	gameBoard[27][72].setObject(new Enemy());
@@ -272,9 +274,9 @@ std::vector<std::string> GameManager::normalInformation()
 
 	std::string seperateLine = "";
 
-	for (int i = 1; i < windowWidth - cameraWidth - 6; i++)
+	for (int i = 1; i < windowWidth - cameraWidth - 7; i++)
 	{
-		if (i == (windowWidth - cameraWidth - 6) / 2)
+		if (i == (windowWidth - cameraWidth - 7) / 2)
 		{
 			seperateLine += "Helper";
 			continue;
@@ -336,7 +338,7 @@ std::vector<std::string> GameManager::interactiveInformation()
 {
 	string seperateLine = "";
 
-	for (int i = 0; i < windowWidth - cameraWidth - 2; i++)
+	for (int i = 0; i < windowWidth - cameraWidth - 3; i++)
 	{
 		seperateLine += "_";
 	}

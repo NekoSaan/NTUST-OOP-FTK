@@ -1,6 +1,7 @@
 #ifndef _EVENT_H_
 #define _EVENT_H_
 #include "Object.h"
+
 class Object;
 class Event : public Object 
 {
@@ -13,14 +14,18 @@ public:
     void chooseActiveDown();
     vector<string> getAllChoose();
     int getChosenIndex();
-    virtual vector<string> getDescription() = 0;
+    vector<string> getDescription();
 
+    
 protected:
     int usedFocus;
     int diceNum;
+    int diceResult;
     int chosenIndex;
     bool hasActive;
+    vector<string> description;
 
+    virtual void updateDescription() = 0;
     virtual void startEvent(Role* role) = 0;
 };
 
