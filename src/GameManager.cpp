@@ -436,13 +436,6 @@ void GameManager::setPlayerInformation(int playerSize,vector<Entity*>player)
 // Post: Displays the player board to the console
 void GameManager::outputPlayerBoard(std::vector<std::string>& information, int playerPointer)
 {
-	// filled in empty space
-	setCursor(windowHeight / 3 * 2 - 2, 0);
-
-	for (int col = 0; col < windowWidth; col++) {
-		std::cout << ' ';
-	}
-
 	// The board information
 	for (int row = 0; row < windowHeight / 3 + 1; row += 1)
 	{
@@ -666,10 +659,10 @@ void GameManager::outputInformation(std::vector<std::string>& information)
 	for (int row = 0; row < cameraHeight + 2; row += 1)
 	{
 		// Output the edge 
-		setCursor(row, cameraWidth);
+		setCursor(row, cameraWidth + 1);
 		std::cout << "|";
 
-		for (int col = 1; col < windowWidth - cameraWidth - 1; col += 1)
+		for (int col = 1; col < windowWidth - cameraWidth - 2; col += 1)
 		{
 			if (row == 0 || row == cameraHeight + 1)
 			{
@@ -682,7 +675,7 @@ void GameManager::outputInformation(std::vector<std::string>& information)
 		}
 
 		std::cout << "|";
-		setCursor(row, cameraWidth + 1);
+		setCursor(row, cameraWidth + 2);
 
 		// Print the information in board
 		if (row > 0 && row < cameraHeight + 1 && row - 1 < information.size())
