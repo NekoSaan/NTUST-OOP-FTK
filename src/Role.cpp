@@ -60,7 +60,13 @@ void Role::gainFocus(int restoreN) {
 
 void Role::setMovementPoint() {
 	int maxMovementPoint = speed / 10;
-	movementPoint = dice(1, maxMovementPoint, speed);
+	if (getPassiveSkill("Run")) {
+		movementPoint = dice(1, maxMovementPoint, speed);
+	}
+	else {
+		movementPoint = dice(0, maxMovementPoint, speed);
+	}
+	
 }
 
 int Role::getMovementPoint() {
