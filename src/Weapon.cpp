@@ -97,6 +97,11 @@ void Weapon::use(Role* role) {
 	role->weapon = this;
 }
 
+std::string Weapon::getPassiveSkill(void)
+{
+	return passiveSkill;
+}
+
 void  Weapon::setCD(int CD) {
 	cd = CD;
 }

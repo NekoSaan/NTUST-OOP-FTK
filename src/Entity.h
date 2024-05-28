@@ -62,6 +62,7 @@ public:
     // Other methods
     bool searchBuff(std::string);
     void giveBuff(std::string, int);
+    bool getPassiveSkill(std::string);
     void minusBuff();
     void removeBuff(std::string Buff);
     virtual int selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)=0;

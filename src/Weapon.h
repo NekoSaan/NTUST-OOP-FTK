@@ -11,6 +11,7 @@ private:
 	int dp;								// abbreviation of `dice pool`
 	char type;						    // Type of equipment (physical or magical)
 	std::string activeSkill = "NULL";	// Active skill associated with the weapon
+	std::string passiveSkill = "NULL";	// passive skill associated with the weapon
 	int cd;
 public:
 	// Constructor for Weapon class
@@ -34,6 +35,8 @@ public:
 	// Get the active skill of the weapon
 	std::string getActiveSkill(void);
 
+	// Get the active skill of the weapon
+	std::string getPassiveSkill(void);
 	void setCD(int CD);
 	int getCD();
 	

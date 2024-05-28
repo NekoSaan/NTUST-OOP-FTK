@@ -289,3 +289,10 @@ void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy
 {
 }
 
+
+bool  Entity::getPassiveSkill(std::string passiveSkill) {
+	if (passiveSkill == weapon->getPassiveSkill()) {
+		return 1;
+	}
+	return 0;
+}

@@ -10,6 +10,7 @@ private:
 	int mDefense;		// magical defense
 	char type;			// type of equipment
 	std::string activeSkill = "NULL";
+	std::string passiveSkill = "NULL";	
 
 public:
 	// Default Constructor
