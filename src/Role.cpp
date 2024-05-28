@@ -30,6 +30,8 @@ void Role::move(int y, int x)
 	}
 
 	// Update the role's position
+	lastPos.first = this->y;
+	lastPos.second = this->x;
 	setPos(tempPosY, tempPosX);
 	movementPoint--;
 
@@ -42,6 +44,10 @@ void Role::move(int y, int x)
 	{
 		objectOnRect->startActive();
 	}
+}
+
+void Role::moveTolastPos() {
+	setPos(lastPos.first, lastPos.second);
 }
 
 void Role::gainHealth(int healHp) {

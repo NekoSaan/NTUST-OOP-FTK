@@ -95,6 +95,7 @@ void Enemy::active(Role* role) {
 		combatSupport(role);
 		break;
 	case 1:
+		role->moveTolastPos();
 		exitActive();
 		break;
 	}
