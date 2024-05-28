@@ -1,18 +1,15 @@
-#ifndef _CHESTEVENT_H_
-#define _CHESTEVENT_H_
+#pragma once
 #include "Event.h"
 
-class ChestEvent : public Event
+class SpringEvent : public Event
 {
 private:
 	//Event virtual function
 	void startEvent(Role* role);
 
 public:
-	ChestEvent();
+	SpringEvent();
 
 	//Event virtual function
 	void updateDescription();
 };
-
-#endif _CHESTEVENT_H_

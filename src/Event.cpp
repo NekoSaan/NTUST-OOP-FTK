@@ -1,5 +1,7 @@
 #include "Event.h"
 #include "Role.h"
+#include "GameManager.h"
+#include "Rect.h"
 
 // Intent: Initializes the Event object with default values.
 // Pre: None.
@@ -22,8 +24,10 @@ void Event::active(Role* role)
     switch (chosenIndex)
     {
     case 0: // do it
-        startEvent(role);
-        usedFocus = 0;
+        if (!hasActive) {
+            startEvent(role);
+            usedFocus = 0;
+        }
         break;
     case 1: // increase focus
         usedFocus++;
@@ -36,8 +40,15 @@ void Event::active(Role* role)
         break;
     case 3: // go back
         exitActive();
-    }
 
+        if (hasActive) {
+            GameManager::gameBoard[role->getPos().first][role->getPos().second].setObject(NULL);
+            return;
+        }
+
+        break;
+    }
+    updateDescription();
 }
 
 // Intent: Move the selection cursor up.
@@ -85,4 +96,8 @@ vector<string> Event::getAllChoose()
 int Event::getChosenIndex()
 {
     return chosenIndex;
+}
+
+vector<string> Event::getDescription() {
+    return description;
 }
