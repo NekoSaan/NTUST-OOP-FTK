@@ -67,6 +67,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 			(*it)->actions = 0;
 			(*it)->weapon->setCD(0);
 			(*it)->setHp(0);
+			(*it)->buff.clear();
 			it = role.erase(it);
 		}
 		else {
@@ -91,7 +92,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 		for (Entity* x : entity) {
 			x->actions = 0;
 			x->weapon->setCD(0);
-
+			x->buff.clear();
 		}
 	}
 }
