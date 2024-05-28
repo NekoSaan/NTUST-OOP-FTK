@@ -86,11 +86,13 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 		combat(role, enemy);
 	}
 	else {
+		//exit combat
 		for (Entity* x : entity) {
 			x->actions = 0;
 			x->weapon->setCD(0);
 
 		}
+		system("CLS");
 	}
 }
 
