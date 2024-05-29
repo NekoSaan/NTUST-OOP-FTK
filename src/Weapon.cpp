@@ -14,6 +14,7 @@ Weapon::Weapon(std::string tag, ITEMID id) : Item::Item(tag, id)
 	dp = 1;
 	type = 'p';
 	cd = 0;
+	passiveSkill = "Hammer-Splash";
 	switch (id) {
 		case ITEMID::WoodenSword:
 			pAttack = 5;

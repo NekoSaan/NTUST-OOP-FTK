@@ -113,7 +113,7 @@ int selectTarget(const std::vector<Entity*>& role, const std::vector<Entity*>& e
 
 	int selectedIndex = 0;
 	while (true) {
-		gameManager->battleScreen( role,enemy, { "" }, { "" });
+		gameManager->battleScreen(role, enemy, { "" }, { "" });
 		cout << "請選擇一個目標：\n";
 		for (size_t i = 0; i < enemy.size(); ++i) {
 			if (i == selectedIndex) {
@@ -216,8 +216,26 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 		int n = useFocus(1, role, enemy);
 		int absorption = enemy[targetIndex]->getPDefense() / (getPDefense() + 50);
 		int attack = getPAttack() * dice(n, 1, getHitRate());
-		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption));
+		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption)*((enemy[targetIndex]->getPassiveSkill("Fortify") == 1)?0.9:1));
+		
+		if (getPassiveSkill("Hammer-Splash") == 1 && attack==getPAttack()) {
+			enemy[targetIndex]->giveBuff("Dizziness", 3);
+			for (int i = 0; i < enemy.size(); i++) {
+				if (i != targetIndex) {
+					enemy[i]->setHp(enemy[i]->getHp() - attack * 1-(enemy[i]->getPDefense() / (enemy[i]->getPDefense() + 50)));
+				}
+			}
+		}
 
+		if (getPassiveSkill("Destroy") == 1) {
+			int index = rand() % 3;
+			switch (index) {
+			case(0):
+				enemy[targetIndex]->weapon;
+				break;
+				}
+			}
+		
 	}
 	else {
 		int n = useFocus(1,role, enemy);
@@ -247,8 +265,10 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 		if (dice(n, 1, HitRate) == 1)
 		{
 			enemy[targetIndex]->giveBuff("Angry", 3);
+			
 		}
 		weapon->setCD(3);
+		
 	}
 	else if(weapon->getActiveSkill() == "Shock - Blast"){
 		int n = useFocus(3, role, enemy);
@@ -258,6 +278,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 			enemy[i]->setHp(enemy[i]->getHp() - attack/2 * (1 - absorption));
 		}
 		weapon->setCD(2);
+		
     }
 	else if (weapon->getActiveSkill() == "Heal") {
 		
@@ -328,3 +349,4 @@ int Role::useFocus(int MaxFocus,std::vector<Entity* > role, std::vector<Entity* 
 int Role::Flee() {
 	return 1;
 }
+
