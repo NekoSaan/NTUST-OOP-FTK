@@ -21,7 +21,7 @@ bool compareEntities(Entity* a, Entity* b) {
 }
 int Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
 	actor->actions++;
-	if (actor->searchBuff("Ditness") == 0) {
+	if (actor->searchBuff("Dizziness") == 0) {
 		if (actor->selectAction(role, enemy) == 1) {
 			return 1;
 		}

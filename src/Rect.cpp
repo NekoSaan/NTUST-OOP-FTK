@@ -11,6 +11,7 @@ Rect::Rect()
 	this->isVisible = false;
 	this->canPass = true;
 	this->object = NULL;
+	die = 0;
 }
 
 // Intent: Get the icon and color code representing the Rect's appearance

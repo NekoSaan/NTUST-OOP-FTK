@@ -631,6 +631,8 @@ void GameManager::outputGameBoard()
 	{
 		for (int col = 0; col < mapWidth; col += 1)
 		{
+			//if (gameBoard[row][col].die == 1)
+				//gameBoard[row][col].setObject(NULL);
 			// If the gameboard get isn't visible
 			if (!gameBoard[row][col].getIsVisible())
 			{

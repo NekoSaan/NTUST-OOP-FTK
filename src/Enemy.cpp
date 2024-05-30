@@ -31,7 +31,7 @@ Enemy::Enemy() : Entity() {
 void Enemy::combatSupport(Role* role) {
 	GameManager* gameManager = GameManager::getInstance();
 	vector<Entity*> enemies;
-	std::vector<std::pair<int, int>> enemyRect;
+	std::vector<Rect> enemyRect;
 	vector<Entity*> roles;
 
 	enemies.push_back(this);
@@ -56,7 +56,7 @@ void Enemy::combatSupport(Role* role) {
 		Object* obj = GameManager::gameBoard[role->getPos().first + relativePos[i][0]][role->getPos().second + relativePos[i][1]].getObject();
 		if (obj == NULL) continue;
 		if (obj->getTag() == Object::TAG_ENEMY) {
-			enemyRect.push_back(obj->getPos());
+			enemyRect.push_back(GameManager::gameBoard[role->getPos().first + relativePos[i][0]][role->getPos().second + relativePos[i][1]]);
 			enemies.push_back((Enemy*)obj);
 			if (enemies.size() >= 3) break;
 		}
@@ -70,7 +70,7 @@ void Enemy::combatSupport(Role* role) {
 	combat(roles, enemies);
 	for (int i = 0; i < enemies.size(); i++) {
 		if (enemies[i]->getHp() <= 0) {
-			GameManager::gameBoard[enemyRect[i].first][enemyRect[i].second].setObject(NULL);
+			enemyRect[i].getIsVisible();
 		}
 	}
 	
