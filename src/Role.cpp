@@ -186,7 +186,7 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 			combatList.push_back(action);
 		}
 
-		gameManager->battleScreen(role, enemy, combatList, { "" });
+		gameManager->battleScreen(role, enemy, combatList, { "attacker: "+getName(),sort });
 
 		char input = getch();
 

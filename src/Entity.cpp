@@ -24,6 +24,7 @@ Entity::Entity(void)
 	setHp(getVitality());
 	actions = 0;
 	name = "";
+	sort = " ";
 }
 
 // Intent: Set the vitality of the entity

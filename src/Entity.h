@@ -32,7 +32,7 @@ public:
     int actions;                        // Number of actions
     std::vector<std::string> buff;      // Status effects
     std::vector<int> buffTime;          // Status effects duration
-
+    std::string sort;
     // Constructor
     Entity(void);
 

@@ -42,11 +42,16 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 		entity.push_back(x);
 	}
 	std::sort(entity.begin(), entity.end(), compareEntities);
-
+	string sort;
+	for (int i = 0; i < entity.size(); i++) {
+		sort += entity[i]->getName();
+		if (i != entity.size() - 1)
+			sort += "<-";
+	}
 	// Now entity vector is sorted based on the defined criteria
 	// The first element will be the entity with the highest priority
 	Entity* actor = entity[0];
-	
+	actor->sort = sort;
 	if (Action(actor, role, enemy) == 1) {
 		auto it = std::find(role.begin(), role.end(), actor);
 		if (it != role.end()) {
