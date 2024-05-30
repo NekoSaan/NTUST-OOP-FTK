@@ -112,17 +112,22 @@ int selectTarget(const std::vector<Entity*>& role, const std::vector<Entity*>& e
 	GameManager* gameManager = GameManager::getInstance();
 
 	int selectedIndex = 0;
+
 	while (true) {
-		gameManager->battleScreen(role, enemy, { "" }, { "" });
-		cout << "請選擇一個目標：\n";
+		vector<string> combatList, combatInfo;
+		combatList.push_back("請選擇一個目標：");
+
 		for (size_t i = 0; i < enemy.size(); ++i) {
 			if (i == selectedIndex) {
-				cout << "> 目標 " << i+1  << endl; // 當前選中的目標
+				combatList.push_back("> 目標 " + to_string(i + 1));
 			}
 			else {
-				cout << "  目標 " << i +1 << endl;
+				combatList.push_back("  目標 " + to_string(i + 1));
 			}
 		}
+
+		gameManager->battleScreen(role, enemy, combatList, { "" });
+
 		char c = getch(); 
 
 		if (c == 'w' || c == 'W') {
@@ -144,34 +149,44 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	GameManager* gameManager = GameManager::getInstance();
 	int selectedOption = 0;
 	int numOptions = 2;  // Number of options in the menu
-	if(weapon->getActiveSkill() != "NULL")
-			numOptions++;
+
+	if (weapon->getActiveSkill() != "NULL") {
+		numOptions++;
+	}
+
 	while (true) {
-		gameManager->battleScreen(role, enemy, { "" }, { " selct your Action\n" });
+		vector<string> combatList, combatInfo;
+		combatList.push_back("Select your action");
 		
 		// Display menu with highlighted selected option
 		for (int i = 0; i < numOptions; ++i) {
+			string action = "";
+
 			if (i == selectedOption) {
-				std::cout << "-> ";
+				action += "-> ";
 			}
 			else {
-				std::cout << "   ";
+				action += "   ";
 			}
 
 			switch (i) {
 			case 0:
-				std::cout << "Normal Attack\n";
+				action += "Normal Attack";
 				break;
-			
 			case 1:
-				std::cout << "Flee\n";
+				action += "Flee";
 				break;
 			case 2:
-				if(weapon->getActiveSkill()!="NULL")
-					std::cout << weapon->getActiveSkill()<<" cd:"<< weapon->getCD()<< std::endl;
+				if (weapon->getActiveSkill() != "NULL") {
+					action += weapon->getActiveSkill() + " cd:" + to_string(weapon->getCD());
+				}
 				break;
 			}
+
+			combatList.push_back(action);
 		}
+
+		gameManager->battleScreen(role, enemy, combatList, { "" });
 
 		char input = getch();
 
@@ -310,6 +325,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 
 int Role::useFocus(int MaxFocus,std::vector<Entity* > role, std::vector<Entity* > enemy) {
 	vector<int> options;
+
 	for (int i = 0; i <= MaxFocus && i <= getFocus(); ++i) {
 		options.push_back(i);
 	}
@@ -318,18 +334,22 @@ int Role::useFocus(int MaxFocus,std::vector<Entity* > role, std::vector<Entity* 
 
 	while (true) {
 		GameManager* gameManager = GameManager::getInstance();
-		gameManager->battleScreen(role, enemy, { "" }, { " selct your Action\n" });
-		cout << "請選擇要使用的專注值：\n";
+		vector<string> combatList, combatInfo;
+		combatList.push_back("請選擇要使用的專注值：");
+
 		for (size_t i = 0; i < options.size(); ++i) {
 			if (i == selectedIndex) {
-				cout << " > " << options[i] << " 點" << endl; // 當前選中的選項
+				// current target
+				combatList.push_back(" > " + to_string(options[i]) + " 點");
 			}
 			else {
-				cout << "   " << options[i] << " 點" << endl;
+				combatList.push_back("   " + to_string(options[i]) + " 點");
 			}
 		}
 
-		char c = _getch(); // Windows上使用_getch，其他情況下使用getch
+		gameManager->battleScreen(role, enemy, combatList, { "" });
+
+		char c = _getch(); // Windows 上使用 _getch，其他情況下使用 getch
 
 		if (c == 'w' || c == 'W') {
 			selectedIndex = (selectedIndex - 1 + options.size()) % options.size();
@@ -340,6 +360,7 @@ int Role::useFocus(int MaxFocus,std::vector<Entity* > role, std::vector<Entity* 
 		else if (c == '\r') { // Enter 鍵
 			int selectedFocus = options[selectedIndex];
 			setFocus(getFocus() - selectedFocus);
+
 			return selectedFocus;
 		}
 	}

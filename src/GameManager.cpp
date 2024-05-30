@@ -388,7 +388,7 @@ std::vector<std::string> GameManager::interactiveInformation()
 // Intent: Set the information of players for display
 // Pre: None
 // Post: Sets the player information and displays it on the screen
-void GameManager::setPlayerInformation(int playerSize,vector<Entity*>player)
+void GameManager::setPlayerInformation(int playerSize, vector<Entity*>player)
 {
 	for (int i = 0; i < playerSize; i++)
 	{
@@ -566,8 +566,10 @@ void GameManager::battleScreen(std::vector<Entity*> player, std::vector<Entity*>
 		std::cout << "|";
 	}
 
-	char input;
-	int chocie = 0;
+	for (size_t i = 0; i < list.size(); i++) {
+		setCursor(windowHeight / 3 + i + 2, 4);
+		cout << list[i];
+	}
 
 	// The description information
 	for (int i = 0; i < data.size(); i++)
