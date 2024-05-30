@@ -433,8 +433,8 @@ void GameManager::setPlayerInformation(int playerSize, vector<Entity*>player)
 		char str[256];
 
 		// Name information
-		snprintf(str, sizeof(str), "Name: Player%d", i + 1);
-		info.push_back(str);
+		
+		info.push_back(player[i]->getName());
 
 		// HP and Focus information
 		snprintf(str, sizeof(str), "HP: %d/%d, Focus: %d/%d", player[i]->getHp(), player[i]->getVitality(), player[i]->getFocus(), player[i]->getMaxFocus());
@@ -511,10 +511,8 @@ void GameManager::setEnemyInformation(int playerSize, vector<Entity*> enemys)
 		vector<string> info;
 		char str[256];
 
-		// Name information
-		snprintf(str, sizeof(str), "Name: Enemy%d", i + 1);
-		info.push_back(str);
-
+		// Name informationk(enem[i]->getName()););
+		info.push_back(enemys[i]->getName());
 		// HP and Focus information
 		snprintf(str, sizeof(str), "HP: %d/%d, Focus: %d/%d", enemys[i]->getHp(), enemys[i]->getVitality(), enemys[i]->getFocus(), enemys[i]->getMaxFocus());
 		info.push_back(str);

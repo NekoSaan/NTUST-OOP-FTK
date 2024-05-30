@@ -58,7 +58,12 @@ void Enemy::combatSupport(Role* role) {
 			if (enemies.size() >= 3) break;
 		}
 	}
-
+	for (int i = 0; i < enemies.size(); i++) {
+		enemies[i]->setName("Enemy" + to_string(i));
+	}
+	for (int i = 0; i < roles.size(); i++) {
+		roles[i]->setName("Player" + to_string(i));
+	}
 	combat(roles, enemies);
 }
 
