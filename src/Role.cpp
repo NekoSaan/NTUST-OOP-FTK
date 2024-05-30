@@ -242,22 +242,31 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 			}
 		}
 
-		if (getPassiveSkill("Destroy") == 1) {
-			int index = rand() % 3;
-			switch (index) {
-			case(0):
-				enemy[targetIndex]->weapon;
-				break;
-				}
-			}
+		
 		
 	}
 	else {
 		int n = useFocus(1,role, enemy);
 		int absorption = enemy[targetIndex]->getMDefense() / (getMDefense() + 50);
 		int attack = getMAttack() * dice(n, 1, getHitRate());
-		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption));
+		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption)*((enemy[targetIndex]->getPassiveSkill("Fortify") == 1) ? 0.9 : 1));
+		if (getPassiveSkill("Hammer-Splash") == 1 && attack == getMAttack()) {
+			enemy[targetIndex]->giveBuff("Dizziness", 3);
+			for (int i = 0; i < enemy.size(); i++) {
+				if (i != targetIndex) {
+					enemy[i]->setHp(enemy[i]->getHp() - attack * 1 - (enemy[i]->getMDefense() / (enemy[i]->getMDefense() + 50)));
+				}
+			}
+		}
 	}
+	if (getPassiveSkill("Destroy") == 1) {
+		int index = rand() % 3;
+		switch (index) {
+			case(0):
+				enemy[targetIndex]->weapon;
+				break;
+				}
+			}
 }
 
 // Intent: Perform a skill attack against an enemy entity
