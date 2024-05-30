@@ -3,9 +3,22 @@
 #include "Entity.h"
 #include "GameManager.h"
 #include"Weapon.h"
+#include<algorithm>
 
 using namespace std;
 
+bool compareEntities(Entity* a, Entity* b) {
+	// Compare based on priority criteria
+	if ((a->actions + 1) * 100 / a->getSpeed() != (b->actions + 1) * 100 / b->getSpeed())
+		return ((a->actions + 1) * 100 / a->getSpeed()) < ((b->actions + 1) * 100 / b->getSpeed());
+	if (a->getSpeed() != b->getSpeed())
+		return a->getSpeed() > b->getSpeed();
+	if ((a->getPAttack() + a->getMAttack()) != (b->getPAttack() + b->getMAttack()))
+		return (a->getPAttack() + a->getMAttack()) > (b->getPAttack() + b->getMAttack());
+	if ((a->getPDefense() + a->getMDefense()) != (b->getPDefense() + b->getMDefense()))
+		return (a->getPDefense() + a->getMDefense()) > (b->getPDefense() + b->getMDefense());
+	return a->getVitality() > b->getVitality();
+}
 int Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
 	actor->actions++;
 	if (actor->searchBuff("Ditness") == 0) {
@@ -28,30 +41,11 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	for (Entity* x : enemy) {
 		entity.push_back(x);
 	}
+	std::sort(entity.begin(), entity.end(), compareEntities);
+
+	// Now entity vector is sorted based on the defined criteria
+	// The first element will be the entity with the highest priority
 	Entity* actor = entity[0];
-	for (int i = 0; i < entity.size(); i++) {
-		if ((entity[i]->actions + 1) *100/ entity[i]->getSpeed() < (actor->actions + 1) * 100 / actor->getSpeed()) {
-			actor = entity[i];
-		}
-		else if ((entity[i]->actions + 1) * 100 / entity[i]->getSpeed() == (actor->actions + 1) * 100 / actor->getSpeed()) {
-			if (entity[i]->getSpeed() > actor->getSpeed()) {
-				actor = entity[i];
-			}
-			else if (entity[i]->getSpeed() == actor->getSpeed()) {
-				if (entity[i]->getPAttack() + entity[i]->getMAttack() > actor->getPAttack() + actor->getMAttack()) {
-					actor = entity[i];
-				}
-				else if (entity[i]->getPAttack() + entity[i]->getMAttack() == actor->getPAttack() + actor->getMAttack()) {
-					if (entity[i]->getPDefense() + entity[i]->getMDefense() > actor->getPDefense() + actor->getMDefense()) {
-						actor = entity[i];
-					}
-					else if (entity[i]->getVitality() > actor->getVitality()) {
-						actor = entity[i];
-					}
-				}
-			}
-		}
-	}
 	
 	if (Action(actor, role, enemy) == 1) {
 		auto it = std::find(role.begin(), role.end(), actor);

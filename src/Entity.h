@@ -23,6 +23,7 @@ protected:
     int mDefense;       // Magical defense
     int focus;          // Current focus points
     int hp;             // Health
+    std::string name;
 
 public:
     Weapon* weapon;                     // Weapon
@@ -46,6 +47,7 @@ public:
     int getMDefense();
     int getFocus();
     int getHp();
+    std::string getName();
 
     // Setter methods
     void setVitality(int newVitality);
@@ -58,6 +60,7 @@ public:
     void setMDefense(int newMDefense);
     void setHp(int);
     void setFocus(int);
+    void setName(std::string Name);
 
     // Other methods
     bool searchBuff(std::string);
