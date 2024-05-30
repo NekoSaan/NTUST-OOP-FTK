@@ -17,7 +17,7 @@ Enemy::Enemy() : Entity() {
 	int randWeapon = rand() % 200 + 1;
 
 	if (randWeapon < 100) {
-		randWeapon = rand() % 5 + ITEMID::WoodenSword;
+		randWeapon = rand() % 5 + (int)ITEMID::WoodenSword;
 		weapon = new Weapon("Weapon", ITEMID(randWeapon));
 	}
 	else {

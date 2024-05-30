@@ -1,5 +1,8 @@
 #include "Items.h"
 #include "Role.h"
+#include "GameManager.h"
+#include "Rect.h"
+#include "Tent.h"
 
 // Intent: Retrieve the list of item names
 // Pre: None
@@ -114,6 +117,7 @@ std::string Item::getName(void)
 // \param role: use item character
 void Item::use(Role* role) 
 {
+	Rect* rect = &GameManager::gameBoard[role->getPos().first][role->getPos().second];
 	switch (id) 
 	{
 	case ITEMID::Godsbeard:
@@ -126,7 +130,8 @@ void Item::use(Role* role)
 		// teleportScene();
 		break;
 	case ITEMID::Tent:
-		// placeTent();
+		// placeTent
+		rect->setObject(new Tent(rect));
 		break;
 	default:
 		// nothing happened, invalid id

@@ -40,7 +40,7 @@ Shop::Shop()
     this->amountList[int(ITEMID::Tent)] = 2;
 
     // Every equipment have only 1 stock
-    for (int i = ITEMID::WoodenSword; i < ITEMID::Invalid; i++) {
+    for (int i = (int)ITEMID::WoodenSword; i < (int)ITEMID::Invalid; i++) {
         this->amountList[i] = 1;
     }
 
@@ -65,13 +65,13 @@ void Shop::active(Role* role) {
     if (bag.costMoney(priceList[chosenItemId])) {
         // Obtain the item from the shop and decrease its stock amount
         // Also determine the tag of item based on each item's ID
-        if (chosenItemId < ITEMID::WoodenSword) {
+        if (chosenItemId < (int)ITEMID::WoodenSword) {
             bag.obtainItem(new Item("Consumable", ITEMID(chosenItemId)));
         }
-        else if (chosenItemId < ITEMID::WoodenShield) {
+        else if (chosenItemId < (int)ITEMID::WoodenShield) {
             bag.obtainItem(new Weapon("Weapon", ITEMID(chosenItemId)));
         }
-        else if (chosenItemId < ITEMID::HolyGrail) {
+        else if (chosenItemId < (int)ITEMID::HolyGrail) {
             bag.obtainItem(new Armor("Armor", ITEMID(chosenItemId)));
         }
         else {

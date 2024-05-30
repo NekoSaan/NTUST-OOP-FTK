@@ -5,6 +5,7 @@
 const string Object::TAG_SHOP = "Shop";
 const string Object::TAG_ENEMY = "Enemy";
 const string Object::TAG_EVENT = "Event";
+const string Object::TAG_TENT = "Tent";
 
 // Intent: Construct an Object with default icon and position
 // Pre: None

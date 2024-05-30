@@ -9,6 +9,7 @@
 
 class Object;
 class Rect;
+class Tent;
 
 // The player enum, total has three player
 enum class PLAYER
@@ -55,6 +56,10 @@ private:
 	static std::vector<Role*> roles;
 	static Role* currentRole;
 	static Object* interactiveObject;
+
+	int round;
+
+	std::vector<Tent*> observerList;
 	
 	// Private constructor to initialize roles
 	GameManager();
@@ -92,6 +97,12 @@ public:
 	Object* getInteractiveObject();
 
 	void nextRole();
+
+	int getRound();
+
+	void notifyObservers();
+	void addObserver(Tent* o);
+	void removeObserver(Tent* o);
 
 	// Setter for interactive object
 	void setInteractiveObject(Object* o);

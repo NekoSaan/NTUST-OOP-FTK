@@ -10,7 +10,7 @@ class Role;
 std::vector<std::string> getItemList(void);
 
 // Enumeration to represent different types of items
-enum ITEMID {
+enum class ITEMID {
     // Consumables, stackable
     Godsbeard = 0,
     GoldenRoot,
