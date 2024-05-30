@@ -18,6 +18,7 @@ public:
     static const string TAG_SHOP;
     static const string TAG_ENEMY;
     static const string TAG_EVENT;
+    static const string TAG_TENT;
 
     // constructor
     Object();

@@ -4,8 +4,9 @@
 #include "Backpack.h"
 #include "Role.h"
 #include "Shop.h"
+#include "Tent.h"
 #include "ChestEvent.h"
-//#include "SpringEvent.h"
+#include "SpringEvent.h"
 #include "Weapon.h"
 #include "Armor.h"
 #include "Accessory.h"
@@ -68,6 +69,7 @@ GameManager::GameManager()
 
 	currentRole = roles[0];
 	interactiveObject = NULL;
+	round = 1;
 }
 
 // Intent: Set text color in the console
@@ -111,7 +113,7 @@ void GameManager::setMap()
 
 	//set event
 	gameBoard[23][69].setObject(new ChestEvent());
-	//gameBoard[22][69].setObject(new SpringEvent());
+	gameBoard[22][69].setObject(new SpringEvent());
 
 	//set enemy
 	gameBoard[27][72].setObject(new Enemy());
@@ -149,8 +151,16 @@ Role* GameManager::getCurrentRole()
 
 void GameManager::nextRole() {
 	currentRole->gainHealth(currentRole->getMovementPoint());
-	int roleIndex = 0;
 
+	//tent effect
+	Object* currentObject = gameBoard[currentRole->getPos().first][currentRole->getPos().second].getObject();
+	if (currentObject != NULL && currentObject->getTag() == Object::TAG_TENT) {
+		currentRole->gainHealth(50);
+		currentRole->gainFocus(5);
+	}
+
+	//get current role index
+	int roleIndex = 0;
 	for (int i = 0; i < 3; i++) {
 		if (currentRole == roles[i]) {
 			roleIndex = i;
@@ -161,6 +171,32 @@ void GameManager::nextRole() {
 	roleIndex = (roleIndex + 1) % 3;
 	currentRole = roles[roleIndex];
 	currentRole->setMovementPoint();
+
+	round++;
+	notifyObservers();
+}
+
+int GameManager::getRound() {
+	return round;
+}
+
+void GameManager::notifyObservers() {
+	for (int i = 0; i < observerList.size(); i++) {
+		observerList[i]->notify();
+	}
+}
+
+void GameManager::addObserver(Tent* o) {
+	observerList.push_back(o);
+}
+
+void GameManager::removeObserver(Tent* o) {
+	for (int i = 0; i < observerList.size(); i++) {
+		if (observerList[i] == o) {
+			observerList.erase(observerList.begin() + i);
+			break;
+		}
+	}
 }
 
 // Intent: Retrieve the interactive object
@@ -262,6 +298,7 @@ void GameManager::setInformation()
 std::vector<std::string> GameManager::normalInformation()
 {
 	std::vector<std::string> information;
+	information.push_back("Round: " + std::to_string(round));
 	information.push_back("Map height: " + std::to_string(mapHeight));
 	information.push_back("Map width: " + std::to_string(mapWidth));
 	information.push_back("Camera height: " + std::to_string(cameraHeight));

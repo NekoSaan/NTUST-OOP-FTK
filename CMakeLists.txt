@@ -24,6 +24,9 @@ set(project_SRC_LIST
     ${PROJECT_SOURCE_DIR}/src/ChestEvent.h
     ${PROJECT_SOURCE_DIR}/src/ChestEvent.cpp
 
+    ${PROJECT_SOURCE_DIR}/src/SpringEvent.h
+    ${PROJECT_SOURCE_DIR}/src/SpringEvent.cpp
+
     ${PROJECT_SOURCE_DIR}/src/Backpack.h
     ${PROJECT_SOURCE_DIR}/src/Backpack.cpp
 
@@ -56,6 +59,9 @@ set(project_SRC_LIST
 
     ${PROJECT_SOURCE_DIR}/src/TeleportScroll.h
     ${PROJECT_SOURCE_DIR}/src/TeleportScroll.cpp
+
+    ${PROJECT_SOURCE_DIR}/src/Tent.h
+    ${PROJECT_SOURCE_DIR}/src/Tent.cpp
 )
 
 add_executable(project ${project_SRC_LIST})
