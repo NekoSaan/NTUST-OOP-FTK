@@ -23,6 +23,7 @@ Entity::Entity(void)
 	setMDefense(rand() % 21);		// random value between [0, 20]
 	setHp(getVitality());
 	actions = 0;
+	name = "";
 }
 
 // Intent: Set the vitality of the entity
@@ -295,4 +296,12 @@ bool  Entity::getPassiveSkill(std::string passiveSkill) {
 		return 1;
 	}
 	return 0;
+}
+
+string Entity::getName() {
+	return name;
+}
+
+void Entity::setName(string Name) {
+	name=Name;
 }
