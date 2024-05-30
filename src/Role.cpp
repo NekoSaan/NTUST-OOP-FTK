@@ -188,7 +188,7 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				normalAttack(role, enemy);
 				break;
 			case 1:
-				if (Flee() == 1) {
+				if (Flee(role,enemy) == 1) {
 					return 1;
 				}
 				break;
@@ -346,7 +346,13 @@ int Role::useFocus(int MaxFocus,std::vector<Entity* > role, std::vector<Entity* 
 }
 
 
-int Role::Flee() {
-	return 1;
+int Role::Flee(std::vector<Entity* > role, std::vector<Entity* > enemy) {
+	int n = useFocus(1, role, enemy);
+	int HitRate = min(getHp() / (getVitality() + getPDefense() + getMDefense()) * getSpeed(),98);
+	if (dice(n, 1, HitRate) == 1)
+	{
+		return 1;
+	}
+	return 0;
 }
 
