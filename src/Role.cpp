@@ -191,6 +191,7 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 		else if (input == '\r') {  // '\r' is Enter key
 			if (combatAction[selectedOption] == "Normal Attack") {
 				normalAttack(role, enemy);
+				return 0;
 			}
 			else if(combatAction[selectedOption] == "Flee"){
 				if (Flee(role, enemy) == 1) {
@@ -199,6 +200,7 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 			}
 			else if (combatAction[selectedOption] == weapon->getActiveSkill()) {
 				skillAttack(role, enemy);
+				return 0;
 			}
 			else if (combatAction[selectedOption] == "Goldenroot") {
 				//use Goldenroot
@@ -231,9 +233,6 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				}
 			}
 		}
-
-		
-		
 	}
 	else {
 		int n = useFocus(1,role, enemy);
@@ -256,7 +255,7 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				enemy[targetIndex]->weapon;
 				break;
 				}
-			}
+		}
 }
 
 // Intent: Perform a skill attack against an enemy entity
