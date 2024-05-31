@@ -14,7 +14,6 @@ Weapon::Weapon(std::string tag, ITEMID id) : Item::Item(tag, id)
 	dp = 1;
 	type = 'p';
 	cd = 0;
-	passiveSkill = "Hammer-Splash";
 	switch (id) {
 		case ITEMID::WoodenSword:
 			pAttack = 5;
@@ -26,19 +25,19 @@ Weapon::Weapon(std::string tag, ITEMID id) : Item::Item(tag, id)
 			pAttack = 15;
 			hitRate = -15;
 			dp = 4;
-			activeSkill = "?"; // so how to deal with this if you write ac skill`s` as only 1 string
+			passiveSkill = "Hammer-Splash";
 			break;
 		case ITEMID::GiantHammer:
 			pAttack = 20;
 			hitRate = -15;
 			dp = 5;
-			activeSkill = "Hammer - Splash";
+			passiveSkill = "Hammer-Splash";
 			break;
 		case ITEMID::MagicWand:
 			mAttack = 10;
 			type = 'm';
 			dp = 3;
-			// ?
+			activeSkill ="Heal";
 			break;
 		case ITEMID::RitualSword:
 			mAttack = 15;
