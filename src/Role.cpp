@@ -149,15 +149,20 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	GameManager* gameManager = GameManager::getInstance();
 	int selectedOption = 0;
 	int numOptions = 2;  // Number of options in the menu
-
+	vector<string> combatAction;
+	combatAction.push_back("Normal Attack");
+	combatAction.push_back("Flee");
 	if (weapon->getActiveSkill() != "NULL") {
 		numOptions++;
+		combatAction.push_back(weapon->getActiveSkill());
 	}
-
+	/*if (getAmoutOfGold() >0) {
+		numOptions++;
+		combatAction.push_back(Goldenroot);
+	}*/
 	while (true) {
 		vector<string> combatList, combatInfo;
-		combatList.push_back("Select your action");
-		
+		combatList.push_back("Select your action");		
 		// Display menu with highlighted selected option
 		for (int i = 0; i < numOptions; ++i) {
 			string action = "";
@@ -168,21 +173,7 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 			else {
 				action += "   ";
 			}
-
-			switch (i) {
-			case 0:
-				action += "Normal Attack";
-				break;
-			case 1:
-				action += "Flee";
-				break;
-			case 2:
-				if (weapon->getActiveSkill() != "NULL") {
-					action += weapon->getActiveSkill() + " cd:" + to_string(weapon->getCD());
-				}
-				break;
-			}
-
+			action += combatAction[i];
 			combatList.push_back(action);
 		}
 
@@ -198,23 +189,22 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 			selectedOption++;
 		}
 		else if (input == '\r') {  // '\r' is Enter key
-			switch (selectedOption) {
-			case 0:
+			if (combatAction[selectedOption] == "Normal Attack") {
 				normalAttack(role, enemy);
-				break;
-			case 1:
-				if (Flee(role,enemy) == 1) {
+			}
+			else if(combatAction[selectedOption] == "Flee"){
+				if (Flee(role, enemy) == 1) {
 					return 1;
 				}
-				break;
-			case 2:
-				skillAttack(role, enemy);
-				break;
 			}
-			break;  // Exit loop after selection made
+			else if (combatAction[selectedOption] == weapon->getActiveSkill()) {
+				skillAttack(role, enemy);
+			}
+			else if (combatAction[selectedOption] == "Goldenroot") {
+				//use Goldenroot
+			}
 		}	
-	}
-	return 0;
+	}	
 }
 
 // Intent: Perform a normal attack against an enemy entity
