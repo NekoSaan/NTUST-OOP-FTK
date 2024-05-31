@@ -4,11 +4,9 @@
 #include "TeleportScroll.h"
 #include "GameManager.h"
 
-TeleportScrool::TeleportScrool(Role* role, std::string tag)
+TeleportScrool::TeleportScrool(std::string tag)
 	: Item::Item(tag, ITEMID::TeleportScroll)
 {
-	originalY = role->getPos().first;
-	originalX = role->getPos().second;
 }
 
 void TeleportScrool::use(Role* role)
@@ -16,8 +14,8 @@ void TeleportScrool::use(Role* role)
 	// Pointer to the game manager instance
 	GameManager* gameManager;
 	gameManager = GameManager::getInstance();
-	originalY = role->getPos().first;
-	originalX = role->getPos().second;
+	int originalY = role->getPos().first;
+	int originalX = role->getPos().second;
 	int y = role->getPos().first;
 	int x = role->getPos().second;
 

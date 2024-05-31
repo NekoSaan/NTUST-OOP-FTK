@@ -3,6 +3,7 @@
 #include "Weapon.h"
 #include "GameManager.h"
 #include "Role.h"
+#include "TeleportScroll.h"
 
 BackPack bag;
 
@@ -15,8 +16,8 @@ BackPack::BackPack(void) : money(600)
 	for (int i = 0; i < (int)ITEMID::WoodenSword; i++) 
 	{
 		obtainItem(new Item("Consumable", ITEMID(i)));
-	}
 
+	}
 	obtainItem(new Weapon("Weapon", ITEMID::WoodenSword));
 }
 
@@ -177,9 +178,16 @@ void BackPack::useItem(Role* curRole)
 	{
 		return;
 	}
+	
+	if (curIndex == int(ITEMID::TeleportScroll))
+	{
+		TeleportScrool temp("Consumable");
+		temp.use(curRole);
+	}
 
 	inventory[curIndex]->use(curRole);
 	inventory[curIndex]->decAmount();
+
 
 	if (inventory[curIndex]->getAmount() == 0 && inventory[curIndex]->getTag() == "Consumable") 
 	{

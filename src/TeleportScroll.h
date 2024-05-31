@@ -4,12 +4,9 @@
 
 class TeleportScrool : public Item
 {
-private:
-	int originalY, originalX;
-
 public:
 	// Constructor for Weapon class
-	TeleportScrool(Role* role, std::string);
+	TeleportScrool(std::string);
 	
 	void use(Role*) override;
 };
