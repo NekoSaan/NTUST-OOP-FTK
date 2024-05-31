@@ -104,7 +104,7 @@ void Entity::setFocus(int newFocus)
 // Post: Sets the current hit points of the entity to the specified value
 void Entity::setHp(int newHp) 
 { 
-	hp = newHp; 
+	hp = min(newHp,getVitality()); 
 }
 
 // Intent: Search for a specific buff in the entity's buffs

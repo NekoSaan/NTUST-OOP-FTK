@@ -197,6 +197,7 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				if (Flee(role, enemy) == 1) {
 					return 1;
 				}
+				return 0;
 			}
 			else if (combatAction[selectedOption] == weapon->getActiveSkill()) {
 				skillAttack(role, enemy);
