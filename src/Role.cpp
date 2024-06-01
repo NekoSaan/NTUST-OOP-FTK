@@ -119,10 +119,10 @@ int selectTarget(const std::vector<Entity*>& role, const std::vector<Entity*>& e
 
 		for (size_t i = 0; i < enemy.size(); ++i) {
 			if (i == selectedIndex) {
-				combatList.push_back("> 目標 " + to_string(i + 1));
+				combatList.push_back(">"+enemy[i]->getName());
 			}
 			else {
-				combatList.push_back("  目標 " + to_string(i + 1));
+				combatList.push_back(" " + enemy[i]->getName());
 			}
 		}
 
@@ -348,7 +348,7 @@ int Role::useFocus(int MaxFocus,std::vector<Entity* > role, std::vector<Entity* 
 
 		gameManager->battleScreen(role, enemy, combatList, { "" });
 
-		char c = _getch(); // Windows 上使用 _getch，其他情況下使用 getch
+		char c = _getch(); 
 
 		if (c == 'w' || c == 'W') {
 			selectedIndex = (selectedIndex - 1 + options.size()) % options.size();
