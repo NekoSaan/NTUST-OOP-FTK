@@ -250,13 +250,37 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 		}
 	}
 	if (getPassiveSkill("Destroy") == 1) {
-		int index = rand() % 3;
-		switch (index) {
-			case(0):
-				enemy[targetIndex]->weapon;
-				break;
+		while (1) {
+			int index = rand() % 3;
+			if (index == 0) {
+				if (weapon->getId() == 17) {
+					continue;
 				}
+				else {
+					weapon = new Weapon("Empty", ITEMID::Invalid);
+					break;
+				}	
+			}
+			else if(index == 1) {
+				if (armor->getId() == 17) {
+					continue;
+				}
+				else {
+					armor = new Armor("Empty", ITEMID::Invalid);
+					break;
+				}
+			}
+			else if (index == 2) {
+				if (armor->getId() == 17) {
+					continue;
+				}
+				else {
+					acc = new Accessory("Empty", ITEMID::Invalid);
+					break;
+				}
+			}
 		}
+	}
 }
 
 // Intent: Perform a skill attack against an enemy entity
