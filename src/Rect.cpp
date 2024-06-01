@@ -89,7 +89,7 @@ void Rect::setObject(Object* o)
 	// Delete the previous object if present
 	if (object != NULL) 
 	{
-		delete(object);
+		//delete(object);
 	}
 	object = o;
 }

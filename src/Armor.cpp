@@ -87,13 +87,13 @@ std::string Armor::getActiveSkill(void)
 
 void Armor::use(Role* role) {
 	// Because when we equip, we use the same pointer.
-	if (role->armor->getTag() == "Weapon") {
+	if (role->armor->getTag() == "Armor") {
 		role->armor->incAmount();
 	}
 	else {
 		// Not equipped.
 		delete role->armor;
-		role->weapon = nullptr;
+		role->armor = nullptr;
 	}
 
 	role->armor = this;
