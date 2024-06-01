@@ -296,7 +296,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
     }
 	else if (weapon->getActiveSkill() == "Heal") {
 		
-		int targetIndex = selectTarget(role, role);
+		int targetIndex = selectTarget(enemy, role);
 		int n = useFocus(2,role, enemy);
 
 		if (dice(n, 2, getHitRate()) == 2)
@@ -312,7 +312,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 
 		if (dice(n, 2, getHitRate()) == 2)
 		{
-			role[targetIndex]->giveBuff("SpeedUp", 3);
+			role[(targetIndex+1)%role.size()]->giveBuff("SpeedUp", 3);
 		}
 		weapon->setCD(4);
 	}
