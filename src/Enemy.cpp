@@ -257,7 +257,7 @@ void Enemy::active(Role* role) {
 		break;
 	case 1:
 		role->moveTolastPos();
-		exitActive();
+		exitActive(role);
 		break;
 	}
 }

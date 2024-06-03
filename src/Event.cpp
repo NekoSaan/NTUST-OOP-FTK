@@ -31,21 +31,13 @@ void Event::active(Role* role)
 
         break;
     case 1: // increase focus
-        usedFocus = min(diceNum, role->getFocus(), usedFocus + 1);
-
+        usedFocus = min(diceNum, min(role->getFocus(), usedFocus + 1));
         break;
     case 2: // decrease focus
         usedFocus = max(0, usedFocus - 1);
-
         break;
     case 3: // go back
-        exitActive();
-
-        if (hasActive) {
-            GameManager::gameBoard[role->getPos().first][role->getPos().second].setObject(NULL);
-            return;
-        }
-
+        exitActive(role);
         break;
     }
 
@@ -101,4 +93,11 @@ int Event::getChosenIndex()
 
 vector<string> Event::getDescription() {
     return description;
+}
+
+void Event::exitActiveEvent(Role* role) {
+    if (hasActive) {
+        GameManager::gameBoard[role->getPos().first][role->getPos().second].setObject(NULL);
+        return;
+    }
 }

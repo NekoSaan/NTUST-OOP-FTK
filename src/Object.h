@@ -37,7 +37,7 @@ public:
     void startActive();
 
     // Exit the active mode for the object
-    virtual void exitActive();
+    void exitActive(Role* role);
 
     // virtual function
     virtual void active(Role* role) = 0; // Perform the active action for the object
@@ -53,6 +53,8 @@ protected:
 
     int y;                      // Y-coordinate of the object's position
     int x;                      // X-coordinate of the object's position
+
+    virtual void exitActiveEvent(Role* role); //called when exitActive
 };
 
 #endif _OBJECT_H_

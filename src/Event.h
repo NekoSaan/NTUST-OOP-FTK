@@ -7,12 +7,12 @@ public:
     Event();
 
     // Object's virtual funtion
-    void active(Role* role);
-    void chooseActiveUP();
-    void chooseActiveDown();
-    vector<string> getAllChoose();
-    int getChosenIndex();
-    vector<string> getDescription();
+    void active(Role* role) override;
+    void chooseActiveUP() override;
+    void chooseActiveDown() override;
+    vector<string> getAllChoose() override;
+    int getChosenIndex() override;
+    vector<string> getDescription() override;
 
 protected:
     int usedFocus;
@@ -21,6 +21,8 @@ protected:
     int chosenIndex;
     bool hasActive;
     vector<string> description;
+
+    void exitActiveEvent(Role* role) override;
 
     virtual void updateDescription() = 0;
     virtual void startEvent(Role* role) = 0;

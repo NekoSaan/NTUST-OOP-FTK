@@ -23,10 +23,10 @@ void Tent::active(Role* role) {
 	switch (chosenIndex) {
 	case 0:
 		GameManager::getInstance()->nextRole();
-		exitActive();
+		exitActive(role);
 		break;
 	case 1:
-		exitActive();
+		exitActive(role);
 		break;
 	}
 }
