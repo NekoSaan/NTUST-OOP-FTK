@@ -28,15 +28,15 @@ void Event::active(Role* role)
             startEvent(role);
             usedFocus = 0;
         }
+
         break;
     case 1: // increase focus
-        usedFocus++;
-        if (usedFocus > diceNum) usedFocus = diceNum;
-        if (usedFocus > role->getFocus()) usedFocus = role->getFocus();
+        usedFocus = min(diceNum, role->getFocus(), usedFocus + 1);
+
         break;
     case 2: // decrease focus
-        usedFocus--;
-        if (usedFocus < 0) usedFocus = 0;
+        usedFocus = max(0, usedFocus - 1);
+
         break;
     case 3: // go back
         exitActive();
@@ -48,6 +48,7 @@ void Event::active(Role* role)
 
         break;
     }
+
     updateDescription();
 }
 

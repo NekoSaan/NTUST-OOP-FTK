@@ -28,17 +28,16 @@ public:
     void setPos(int, int);
 
     // getter
-    //(y, x)
+    // (y, x)
     pair<int, int> getPos();
     char getIcon();
     string getTag();
-
 
     // Start the active mode for the object
     void startActive();
 
     // Exit the active mode for the object
-    void exitActive();
+    virtual void exitActive();
 
     // virtual function
     virtual void active(Role* role) = 0; // Perform the active action for the object

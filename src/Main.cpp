@@ -32,10 +32,9 @@ const double_t GTIMELOG = 0.03;
 GameManager* gameManager;		
 
 // Function prototypes
-void keyUpdate(bool key[], bool playerKey[]);
-void update(bool key[], bool playerKey[]);
+void keyUpdate(bool key[]);
+void update(bool key[]);
 void mapStatusUpdate(bool key[]);
-void combatStatusUpdate(bool key[]);
 void backpackStatusUpdate(bool key[]);
 void interactiveStatusUpdate(bool key[]);
 
@@ -82,11 +81,10 @@ int main()
 		// Execute the game loop if enough time has elapsed
 		if (timeFrame >= GTIMELOG)
 		{
-			update(gKeyState, player);
+			update(gKeyState);
 			startT = clock(); // Reset start time
 		}
 
-		
 		vector<Entity*> roles;
 		roles.push_back(gameManager->getRole(0));
 		roles.push_back(gameManager->getRole(1));
@@ -95,10 +93,10 @@ int main()
 		// Render game board and set information
 		gameManager->outputGameBoard();
 		gameManager->setInformation();
-		gameManager->setPlayerInformation(roles.size(),roles);
+		gameManager->setPlayerInformation(roles.size(), roles);
 
 		// Update key state
-		keyUpdate(gKeyState, player);
+		keyUpdate(gKeyState);
 		endT = clock(); // Update end time
 	} while (!gKeyState[int(VALIDINPUT::EESC)]); // Continue loop until ESC key is pressed
 
@@ -109,18 +107,12 @@ int main()
 // Intent: Detect input value
 // Pre: The array key
 // Post: If key been push update that element true
-void keyUpdate(bool key[], bool playerKey[])
+void keyUpdate(bool key[])
 {
 	// Reset all elemnet false
 	for (int i = 0; i < int(VALIDINPUT::INVALID); i++)
 	{
 		key[i] = false;
-	}
-
-	// Reset all player elemnet false
-	for (int i = 0; i < int(PLAYER::INVALID); i++)
-	{
-		playerKey[i] = false;
 	}
 
 	// Input
@@ -153,15 +145,6 @@ void keyUpdate(bool key[], bool playerKey[])
 	case 'p':
 		key[int(VALIDINPUT::EP)] = true;
 		break;
-	case '1':
-		playerKey[int(PLAYER::PLAYER1)] = true;
-		break;
-	case '2':
-		playerKey[int(PLAYER::PLAYER2)] = true;
-		break;
-	case '3':
-		playerKey[int(PLAYER::PLAYER3)] = true;
-		break;
 	case 8:
 		key[int(VALIDINPUT::EBACKSPACE)] = true;
 		break;
@@ -179,16 +162,13 @@ void keyUpdate(bool key[], bool playerKey[])
 // Intent: Update output information
 // Pre: The key array
 // Post: Output new inforamtion contain hero, creature move
-void update(bool key[], bool playerKey[])
+void update(bool key[])
 {
 	// Check input wasd
 	switch (GameManager::gameStatus) 
 	{
 		case GAME_STATUS::MAP:
 			mapStatusUpdate(key);
-			break;
-		case GAME_STATUS::COMBAT:
-			combatStatusUpdate(key);
 			break;
 		case GAME_STATUS::BACKPACK:
 			backpackStatusUpdate(key);
@@ -197,8 +177,6 @@ void update(bool key[], bool playerKey[])
 			interactiveStatusUpdate(key);
 			break;
 	}
-
-	//std::cout << "invalid input\n";
 }
 
 // Intent: Update the status of the player on the map based on user input.
@@ -240,39 +218,6 @@ void mapStatusUpdate(bool key[])
 		std::cout << "Invalid Input";
 	}
 }
-
-// Intent: Update the status of the player during combat based on user input.
-// Pre: The `key` array must be initialized and contain valid input flags.
-// Post: Handles player actions during combat, such as attacking, defending, or using items, based on user input.
-void combatStatusUpdate(bool key[])
-{
-	if (key[int(VALIDINPUT::EW)])
-	{
-	}
-	else if (key[int(VALIDINPUT::ES)])
-	{
-	}
-	else if (key[int(VALIDINPUT::EA)])
-	{
-	}
-	else if (key[int(VALIDINPUT::ED)])
-	{
-	}
-	else if (key[int(VALIDINPUT::EI)])
-	{
-	}
-	else if (key[int(VALIDINPUT::EENTER)])
-	{
-	}
-	else if (key[int(VALIDINPUT::EBACKSPACE)])
-	{
-	}
-	else
-	{
-		std::cout << "Invalid Input";
-	}
-}
-
 
 // Intent: Update the status of the backpack based on user input.
 // Pre: The `key` array must be initialized and contain valid input flags. The `bag` object must be accessible.
@@ -329,7 +274,7 @@ void interactiveStatusUpdate(bool key[])
 	else if (key[int(VALIDINPUT::EBACKSPACE)])
 	{
 		// Exit from the interactive object menu
-		gameManager->getInteractiveObject()->exitActive(); 
+		gameManager->getInteractiveObject()->exitActive();
 	}
 	else
 	{

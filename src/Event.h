@@ -2,9 +2,7 @@
 #define _EVENT_H_
 #include "Object.h"
 
-class Object;
-class Event : public Object 
-{
+class Event : public Object {
 public:
     Event();
 
@@ -16,7 +14,6 @@ public:
     int getChosenIndex();
     vector<string> getDescription();
 
-    
 protected:
     int usedFocus;
     int diceNum;

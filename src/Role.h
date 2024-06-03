@@ -16,7 +16,7 @@ public:
     Role(void);
 
     // Move the role to a new position on the game board and trigger any interactions with objects on the new position
-    void move(int y, int x);
+    void move(int, int);
     void moveTolastPos();
 
     void gainHealth(int);
@@ -26,18 +26,18 @@ public:
     int getMovementPoint();
 
     // Object's virtual funtion
-    void active(Role* role);
+    void active(Role*);
     void chooseActiveUP();
     void chooseActiveDown();
     vector<string> getAllChoose();
     int getChosenIndex();
     vector<string> getDescription();
 
-    virtual int selectAction(std::vector<Entity* > role, std::vector<Entity* > enemy);
-    virtual void normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
-    virtual void skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy);
-    int useFocus(int MaxFocus, std::vector<Entity* > role, std::vector<Entity* > enemy);
-    int Flee(std::vector<Entity* > role, std::vector<Entity* > enemy);
+    virtual int selectAction(vector<Entity*>, vector<Entity*>);
+    virtual void normalAttack(vector<Entity*>, vector<Entity*>);
+    virtual void skillAttack(vector<Entity*>, vector<Entity*>);
+    int useFocus(int MaxFocus, vector<Entity*>, vector<Entity*>);
+    int Flee(vector<Entity*>, vector<Entity*>);
 };
 
 #endif _ROLE_H_

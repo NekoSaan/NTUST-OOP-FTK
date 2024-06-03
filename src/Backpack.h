@@ -20,14 +20,15 @@ public:
 
 	void obtainItem(Item*);
 
-	//some getter, maybe too more
+	// some getter, maybe too more
 	int getMoney(void);
 	int getCurIndex();
 	int getCurPage();
 	int getMaxPage();
 	int getInventorySize();
-	std::string getItemName(int i);
-	int getItemAmount(int i);
+	std::string getItemName(int);
+	int getItemAmount(int);
+	bool getItemAmtById(int);
 
 	void earnMoney(int);
 
@@ -35,9 +36,10 @@ public:
 
 	// void invMode(Role*); true
 	void invMode(void);
-	void chooseUp(); //input w
-	void chooseDown(); //input s
-	void useItem(Role*); //input enter
+	void chooseUp(); // input w
+	void chooseDown(); // input s
+	void useItem(Role*); // input enter
+	void useItemById(Role*, int); // combat use
 	void closeBag(); //input backspace
 };
 

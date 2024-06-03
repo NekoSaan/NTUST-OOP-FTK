@@ -35,25 +35,34 @@ int Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
 }
 void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	vector<Entity*> entity;
+
 	for (Entity* x : role) {
 		entity.push_back(x);
 	}
+
 	for (Entity* x : enemy) {
 		entity.push_back(x);
 	}
+
 	std::sort(entity.begin(), entity.end(), compareEntities);
 	string sort;
+
 	for (int i = 0; i < entity.size(); i++) {
 		sort += entity[i]->getName();
-		if (i != entity.size() - 1)
-			sort += "<-";
+
+		if (i != entity.size() - 1) {
+			sort += " <- ";
+		}
 	}
+
 	// Now entity vector is sorted based on the defined criteria
 	// The first element will be the entity with the highest priority
 	Entity* actor = entity[0];
 	actor->sort = sort;
+
 	if (Action(actor, role, enemy) == 1) {
 		auto it = std::find(role.begin(), role.end(), actor);
+
 		if (it != role.end()) {
 			(*it)->actions = 0;
 			(*it)->buff.clear();
@@ -74,6 +83,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 			++it;
 		}
 	}
+
 	// 移除已擊敗的敵人
 	for (auto it = enemy.begin(); it != enemy.end(); ) {
 		if ((*it)->getHp() <= 0) {
@@ -85,6 +95,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 			++it;
 		}
 	}
+
 	if (!role.empty() && !enemy.empty()) {
 		combat(role, enemy);
 	}
@@ -95,6 +106,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 			x->weapon->setCD(0);
 			x->buff.clear();
 		}
+
 		system("CLS");
 	}
 }

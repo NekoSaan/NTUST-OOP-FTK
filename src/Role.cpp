@@ -5,8 +5,9 @@
 #include "Armor.h"
 #include "Accessory.h"
 #include "Dice.h"
+#include "Backpack.h"
 
-Role::Role(void) : Entity::Entity() {
+Role::Role(void) : Entity::Entity(), movementPoint(0) {
 	weapon = new Weapon("Empty", ITEMID::Invalid);
 	armor = new Armor("Empty", ITEMID::Invalid);
 	acc = new Accessory("Empty", ITEMID::Invalid);
@@ -17,7 +18,9 @@ Role::Role(void) : Entity::Entity() {
 // Post: Updates the role's position on the game board and triggers any interactions with objects on the new position
 void Role::move(int y, int x)
 {
-	if (movementPoint <= 0) return;
+	if (movementPoint <= 0) {
+		return;
+	}
 	
 	// Calculate the new position
 	int tempPosY = this->y + y;
@@ -60,6 +63,7 @@ void Role::gainFocus(int restoreN) {
 
 void Role::setMovementPoint() {
 	int maxMovementPoint = speed / 10;
+
 	if (getPassiveSkill("Run")) {
 		movementPoint = dice(1, maxMovementPoint, speed);
 	}
@@ -69,37 +73,23 @@ void Role::setMovementPoint() {
 	
 }
 
-int Role::getMovementPoint() {
-	return movementPoint;
-}
+int Role::getMovementPoint() { return movementPoint; }
 
-void Role::active(Role* role) 
-{
-}
+void Role::active(Role* role) {};
 
-void Role::chooseActiveUP() 
-{
-}
+void Role::chooseActiveUP() {};
 
-void Role::chooseActiveDown() 
-{
-}
+void Role::chooseActiveDown() {};
 
 // Intent: Get all possible choices for the role's actions
 // Pre: None
 // Post: Returns a vector of strings representing all possible choices for the role's actions
-vector<string> Role::getAllChoose() 
-{
-	return vector<string>();
-}
+vector<string> Role::getAllChoose() { return vector<string>(); }
 
 // Intent: Get the index of the chosen action
 // Pre: None
 // Post: Returns the index of the chosen action
-int Role::getChosenIndex() 
-{
-	return 0;
-}
+int Role::getChosenIndex() { return 0; }
 
 vector<string> Role::getDescription() {
 	vector<string> description;
@@ -119,7 +109,7 @@ int selectTarget(const std::vector<Entity*>& role, const std::vector<Entity*>& e
 
 		for (size_t i = 0; i < enemy.size(); ++i) {
 			if (i == selectedIndex) {
-				combatList.push_back(">"+enemy[i]->getName());
+				combatList.push_back(">" + enemy[i]->getName());
 			}
 			else {
 				combatList.push_back(" " + enemy[i]->getName());
@@ -152,17 +142,27 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	vector<string> combatAction;
 	combatAction.push_back("Normal Attack");
 	combatAction.push_back("Flee");
+
 	if (weapon->getActiveSkill() != "NULL") {
 		numOptions++;
 		combatAction.push_back(weapon->getActiveSkill());
 	}
-	/*if (getAmoutOfGold() >0) {
+
+	if (bag.getItemAmtById((int)ITEMID::Godsbeard)) {
 		numOptions++;
-		combatAction.push_back(Goldenroot);
-	}*/
+		combatAction.push_back("Godsbeard");
+	}
+
+	if (bag.getItemAmtById((int)ITEMID::GoldenRoot)) {
+		numOptions++;
+		combatAction.push_back("GoldenRoot");
+	}
+
 	while (true) {
 		vector<string> combatList, combatInfo;
-		combatList.push_back("Select your action");		
+		combatInfo = { "Current Player: " + getName(), sort };
+		combatList.push_back("Select your action");
+
 		// Display menu with highlighted selected option
 		for (int i = 0; i < numOptions; ++i) {
 			string action = "";
@@ -173,12 +173,12 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 			else {
 				action += "   ";
 			}
+
 			action += combatAction[i];
 			combatList.push_back(action);
 		}
 
-		gameManager->battleScreen(role, enemy, combatList, { "attacker: "+getName(),sort });
-
+		gameManager->battleScreen(role, enemy, combatList, combatInfo);
 		char input = getch();
 
 		// Handle arrow keys for navigation
@@ -194,17 +194,19 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 				return 0;
 			}
 			else if(combatAction[selectedOption] == "Flee"){
-				if (Flee(role, enemy) == 1) {
-					return 1;
-				}
-				return 0;
+				return Flee(role, enemy);
 			}
 			else if (combatAction[selectedOption] == weapon->getActiveSkill()) {
 				skillAttack(role, enemy);
 				return 0;
 			}
-			else if (combatAction[selectedOption] == "Goldenroot") {
-				//use Goldenroot
+			else if (combatAction[selectedOption] == "Godsbeard") {
+				bag.useItemById(this, (int)ITEMID::Godsbeard);
+				return 0;
+			}
+			else if (combatAction[selectedOption] == "GoldenRoot") {
+				bag.useItemById(this, (int)ITEMID::GoldenRoot);
+				return 0;
 			}
 		}	
 	}	
@@ -214,8 +216,6 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 // Pre: role and enemy must be non-empty vectors of Entity pointers
 // Post: Performs a normal attack against an enemy entity
 void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
-	
-
 	int targetIndex = selectTarget(role, enemy);
 	GameManager* gameManager = GameManager::getInstance();
 	gameManager->battleScreen(role, enemy, { "" }, { "" });
@@ -228,6 +228,7 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 		
 		if (getPassiveSkill("Hammer-Splash") == 1 && attack==getPAttack()) {
 			enemy[targetIndex]->giveBuff("Dizziness", 3);
+
 			for (int i = 0; i < enemy.size(); i++) {
 				if (i != targetIndex) {
 					enemy[i]->setHp(enemy[i]->getHp() - attack * 1-(enemy[i]->getPDefense() / (enemy[i]->getPDefense() + 50)));
@@ -240,8 +241,10 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 		int absorption = enemy[targetIndex]->getMDefense() / (getMDefense() + 50);
 		int attack = getMAttack() * dice(n, 1, getHitRate());
 		enemy[targetIndex]->setHp(enemy[targetIndex]->getHp() - attack * (1 - absorption)*((enemy[targetIndex]->getPassiveSkill("Fortify") == 1) ? 0.9 : 1));
+		
 		if (getPassiveSkill("Hammer-Splash") == 1 && attack == getMAttack()) {
 			enemy[targetIndex]->giveBuff("Dizziness", 3);
+			
 			for (int i = 0; i < enemy.size(); i++) {
 				if (i != targetIndex) {
 					enemy[i]->setHp(enemy[i]->getHp() - attack * 1 - (enemy[i]->getMDefense() / (enemy[i]->getMDefense() + 50)));
@@ -252,6 +255,7 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	if (getPassiveSkill("Destroy") == 1) {
 		while (1) {
 			int index = rand() % 3;
+			
 			if (index == 0) {
 				if (weapon->getId() == 17) {
 					continue;
@@ -290,6 +294,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 {
 	GameManager* gameManager = GameManager::getInstance();
 	gameManager->battleScreen(role, enemy, { "" }, { "select target(input number)" });
+	
 	if (weapon->getCD() > 0) {
 		selectAction(role, enemy);
 	}
@@ -305,21 +310,22 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 			enemy[targetIndex]->giveBuff("Angry", 3);
 			
 		}
-		weapon->setCD(3);
 		
+		weapon->setCD(3);
 	}
 	else if(weapon->getActiveSkill() == "Shock - Blast"){
 		int n = useFocus(3, role, enemy);
+		
 		for (int i = 0; i < enemy.size(); i++) {
 			int absorption = enemy[i]->getMDefense() / (getMDefense() + 50);
 			int attack = getMAttack() * dice(n, 3, getHitRate()-5);
 			enemy[i]->setHp(enemy[i]->getHp() - attack/2 * (1 - absorption));
 		}
+
 		weapon->setCD(2);
 		
     }
 	else if (weapon->getActiveSkill() == "Heal") {
-		
 		int targetIndex = selectTarget(enemy, role);
 		int n = useFocus(2,role, enemy);
 
@@ -327,17 +333,18 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 		{
 			role[targetIndex]->setHp(role[targetIndex]->getHp() + getMAttack() * 3 / 2);
 		}
+
 		weapon->setCD(2);
 	}
-	else if (weapon->getActiveSkill() == "SpeedUp")
-	{
+	else if (weapon->getActiveSkill() == "SpeedUp") {
 		int targetIndex = selectTarget(enemy, role);
 		int n = useFocus(2, role, enemy);
 
 		if (dice(n, 2, getHitRate()) == 2)
 		{
-			role[(targetIndex+1)%role.size()]->giveBuff("SpeedUp", 3);
+			role[(targetIndex + 1) % role.size()]->giveBuff("SpeedUp", 3);
 		}
+
 		weapon->setCD(4);
 	}
 	else {
@@ -392,11 +399,13 @@ int Role::useFocus(int MaxFocus,std::vector<Entity* > role, std::vector<Entity* 
 
 int Role::Flee(std::vector<Entity* > role, std::vector<Entity* > enemy) {
 	int n = useFocus(1, role, enemy);
-	int HitRate = min(getHp() / (getVitality() + getPDefense() + getMDefense()) * getSpeed(),98);
+	int HitRate = min(getHp() / (getVitality() + getPDefense() + getMDefense()) * getSpeed(), 98);
+	
 	if (dice(n, 1, HitRate) == 1)
 	{
 		return 1;
 	}
+
 	return 0;
 }
 

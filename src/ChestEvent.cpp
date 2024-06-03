@@ -12,7 +12,7 @@ ChestEvent::ChestEvent()
 	this->icon = '?';
 	this->tag = TAG_EVENT;
 
-	//init description
+	// init description
 	this->description.push_back("Do you want to open the chest ?");
 	this->description.push_back("hit 3 get $100 (" + formatProbability(getExpectProbability(usedFocus, diceNum, 3, 50)) + ")");
 	this->description.push_back("hit 2 get $20 (" + formatProbability(getExpectProbability(usedFocus, diceNum, 2, 50)) + ")");
@@ -53,11 +53,12 @@ void ChestEvent::updateDescription() {
 	}
 }
 
-//Event virtual function
+// Event virtual function
 void ChestEvent::startEvent(Role* role)
 {
 	diceResult = dice(usedFocus, diceNum, 50);
 	role->setFocus(role->getFocus() - usedFocus);
+
 	switch (diceResult)
 	{
 	case 3:
@@ -72,5 +73,6 @@ void ChestEvent::startEvent(Role* role)
 	case 0:
 		role->setHp(role->getHp() - 10);
 	}
+
 	hasActive = true;
 }

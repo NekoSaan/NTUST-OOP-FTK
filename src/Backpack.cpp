@@ -18,6 +18,7 @@ BackPack::BackPack(void) : money(600)
 		obtainItem(new Item("Consumable", ITEMID(i)));
 
 	}
+
 	obtainItem(new Weapon("Weapon", ITEMID::WoodenSword));
 }
 
@@ -92,9 +93,19 @@ std::string BackPack::getItemName(int i) { return inventory[i]->getName(); }
 // Intent: Get the amount of the item at the specified index in the inventory
 // Pre: i must be a valid index within the inventory range
 // Post: Returns the amount of the item at the specified index in the inventory
-int BackPack::getItemAmount(int i) 
-{
-	return inventory[i]->getAmount();
+int BackPack::getItemAmount(int i) { return inventory[i]->getAmount(); }
+
+// Intent: Get the amount of the item with specified id in the inventory
+// Pre: id must be a valid option in ITEMID
+// Post: Returns the amount of the item at with specified id in the inv
+bool BackPack::getItemAmtById(int id) {
+	for (size_t i = 0; i < inventory.size(); i++) {
+		if (inventory[i]->getId() == id) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 // Intent: Earn money and add it to the current money amount
@@ -188,7 +199,6 @@ void BackPack::useItem(Role* curRole)
 	inventory[curIndex]->use(curRole);
 	inventory[curIndex]->decAmount();
 
-
 	if (inventory[curIndex]->getAmount() == 0 && inventory[curIndex]->getTag() == "Consumable") 
 	{
 		delete inventory[curIndex];
@@ -196,6 +206,23 @@ void BackPack::useItem(Role* curRole)
 		inventory.erase(inventory.begin() + curIndex);
 
 		curIndex = (curIndex - 1 < 0) ? 0 : curIndex - 1;
+	}
+}
+
+void BackPack::useItemById(Role* role, int id) {
+	for (size_t i = 0; i < inventory.size(); i++) {
+		if (inventory[i]->getId() == id) {
+			inventory[i]->use(role);
+			inventory[i]->decAmount();
+
+			if (inventory[i]->getAmount() == 0) {
+				delete inventory[i];
+				inventory[i] = nullptr;
+				inventory.erase(inventory.begin() + i);
+			}
+
+			return;
+		}
 	}
 }
 

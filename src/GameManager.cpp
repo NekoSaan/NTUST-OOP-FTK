@@ -65,6 +65,7 @@ GameManager::GameManager()
 	for (int i = 0; i < 3; i++)
 	{
 		this->roles.push_back(new Role());
+		roles[i]->setName("Player " + to_string(i + 1));
 	}
 
 	currentRole = roles[0];
@@ -152,15 +153,17 @@ Role* GameManager::getCurrentRole()
 void GameManager::nextRole() {
 	currentRole->gainHealth(currentRole->getMovementPoint());
 
-	//tent effect
+	// tent effect
 	Object* currentObject = gameBoard[currentRole->getPos().first][currentRole->getPos().second].getObject();
+	
 	if (currentObject != NULL && currentObject->getTag() == Object::TAG_TENT) {
 		currentRole->gainHealth(50);
 		currentRole->gainFocus(5);
 	}
 
-	//get current role index
+	// get current role index
 	int roleIndex = 0;
+
 	for (int i = 0; i < 3; i++) {
 		if (currentRole == roles[i]) {
 			roleIndex = i;
@@ -399,9 +402,11 @@ std::vector<std::string> GameManager::interactiveInformation()
 	// Description
 	information.push_back("Description:");
 	vector<string> description = interactiveObject->getDescription();
+
 	for (int i = 0; i < description.size(); i++) {
 		information.push_back(description[i]);
 	}
+
 	information.push_back(seperateLine);
 	information.push_back("(Page: " + std::to_string(currentPage + 1) + "/" + std::to_string(maxPage + 1) + ")");
 
@@ -433,8 +438,7 @@ void GameManager::setPlayerInformation(int playerSize, vector<Entity*>player)
 		char str[256];
 
 		// Name information
-		
-		info.push_back(player[i]->getName());
+		info.push_back("Name: " + player[i]->getName());
 
 		// HP and Focus information
 		snprintf(str, sizeof(str), "HP: %d/%d, Focus: %d/%d", player[i]->getHp(), player[i]->getVitality(), player[i]->getFocus(), player[i]->getMaxFocus());
@@ -512,7 +516,8 @@ void GameManager::setEnemyInformation(int playerSize, vector<Entity*> enemys)
 		char str[256];
 
 		// Name informationk(enem[i]->getName()););
-		info.push_back(enemys[i]->getName());
+		info.push_back("Name: " + enemys[i]->getName());
+
 		// HP and Focus information
 		snprintf(str, sizeof(str), "HP: %d/%d, Focus: %d/%d", enemys[i]->getHp(), enemys[i]->getVitality(), enemys[i]->getFocus(), enemys[i]->getMaxFocus());
 		info.push_back(str);
@@ -631,8 +636,10 @@ void GameManager::outputGameBoard()
 	{
 		for (int col = 0; col < mapWidth; col += 1)
 		{
-			if (gameBoard[row][col].die == 1)
+			if (gameBoard[row][col].die == 1) {
 				gameBoard[row][col].setObject(NULL);
+			}
+
 			// If the gameboard get isn't visible
 			if (!gameBoard[row][col].getIsVisible())
 			{
