@@ -274,7 +274,7 @@ void interactiveStatusUpdate(bool key[])
 	else if (key[int(VALIDINPUT::EBACKSPACE)])
 	{
 		// Exit from the interactive object menu
-		gameManager->getInteractiveObject()->exitActive();
+		gameManager->getInteractiveObject()->exitActive(gameManager->getCurrentRole());
 	}
 	else
 	{

@@ -13,12 +13,7 @@ ChestEvent::ChestEvent()
 	this->tag = TAG_EVENT;
 
 	// init description
-	this->description.push_back("Do you want to open the chest ?");
-	this->description.push_back("hit 3 get $100 (" + formatProbability(getExpectProbability(usedFocus, diceNum, 3, 50)) + ")");
-	this->description.push_back("hit 2 get $20 (" + formatProbability(getExpectProbability(usedFocus, diceNum, 2, 50)) + ")");
-	this->description.push_back("hit 1 get $5 (" + formatProbability(getExpectProbability(usedFocus, diceNum, 1, 50)) + ")");
-	this->description.push_back("hit 0 get 10 damage (" + formatProbability(getExpectProbability(usedFocus, diceNum, 0, 50)) + ")");
-	this->description.push_back("Used focus: " + to_string(usedFocus));
+	updateDescription();
 }
 
 void ChestEvent::updateDescription() {

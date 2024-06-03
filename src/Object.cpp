@@ -76,8 +76,13 @@ void Object::startActive()
 // Intent: Exit the active state of the object
 // Pre: None
 // Post: Sets the game status back to map and clears the current interactive object
-void Object::exitActive() 
+void Object::exitActive(Role* role)
 {
 	GameManager::gameStatus = GAME_STATUS::MAP;
 	GameManager::getInstance()->setInteractiveObject(NULL);
+	exitActiveEvent(role);
+}
+
+void Object::exitActiveEvent(Role* role) {
+
 }

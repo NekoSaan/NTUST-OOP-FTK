@@ -13,13 +13,7 @@ SpringEvent::SpringEvent()
 	this->tag = TAG_EVENT;
 
 	//init description
-	this->description.push_back("Do you want to drink the spring?");
-	this->description.push_back("hit 4 heel 20 HP (" + formatProbability(getExpectProbability(usedFocus, diceNum, 4, 60)) + ")");
-	this->description.push_back("hit 3 heel 10 HP (" + formatProbability(getExpectProbability(usedFocus, diceNum, 3, 60)) + ")");
-	this->description.push_back("hit 2 heel 5 HP (" + formatProbability(getExpectProbability(usedFocus, diceNum, 2, 60)) + ")");
-	this->description.push_back("hit 1 nothing (" + formatProbability(getExpectProbability(usedFocus, diceNum, 1, 60)) + ")");
-	this->description.push_back("hit 0 get 10 damage (" + formatProbability(getExpectProbability(usedFocus, diceNum, 0, 60)) + ")");
-	this->description.push_back("Used focus: " + to_string(usedFocus));
+	updateDescription();
 }
 
 void SpringEvent::updateDescription() {
