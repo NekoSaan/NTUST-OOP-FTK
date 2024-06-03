@@ -8,7 +8,8 @@
 #include "Backpack.h"
 
 Role::Role(void) : Entity::Entity(), movementPoint(0) {
-	weapon = new Weapon("Empty", ITEMID::Invalid);
+	weapon = new Weapon("Weapon", ITEMID::RitualSword);
+	//weapon = new Weapon("Empty", ITEMID::Invalid);
 	armor = new Armor("Empty", ITEMID::Invalid);
 	acc = new Accessory("Empty", ITEMID::Invalid);
 };
@@ -252,34 +253,34 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 			}
 		}
 	}
+
 	if (getPassiveSkill("Destroy") == 1) {
-		while (1) {
+		while (!(enemy[targetIndex]->weapon->getId() == 17&& enemy[targetIndex]->armor->getId() == 17&& enemy[targetIndex]->acc->getId() == 17)) {
 			int index = rand() % 3;
-			
 			if (index == 0) {
-				if (weapon->getId() == 17) {
+				if (enemy[targetIndex]->weapon->getId() == 17) {
 					continue;
 				}
 				else {
-					weapon = new Weapon("Empty", ITEMID::Invalid);
+					enemy[targetIndex]->weapon = new Weapon("Empty", ITEMID::Invalid);
 					break;
 				}	
 			}
 			else if(index == 1) {
-				if (armor->getId() == 17) {
+				if (enemy[targetIndex]->armor->getId() == 17) {
 					continue;
 				}
 				else {
-					armor = new Armor("Empty", ITEMID::Invalid);
+					enemy[targetIndex]->armor = new Armor("Empty", ITEMID::Invalid);
 					break;
 				}
 			}
 			else if (index == 2) {
-				if (armor->getId() == 17) {
+				if (enemy[targetIndex]->acc->getId() == 17) {
 					continue;
 				}
 				else {
-					acc = new Accessory("Empty", ITEMID::Invalid);
+					enemy[targetIndex]->acc = new Accessory("Empty", ITEMID::Invalid);
 					break;
 				}
 			}

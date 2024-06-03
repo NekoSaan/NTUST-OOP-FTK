@@ -23,7 +23,6 @@ Enemy::Enemy() : Entity() {
 	else {
 		weapon = new Weapon("Empty", ITEMID::Invalid);
 	}
-	
 	armor = new Armor("Empty", ITEMID::Invalid);
 	acc = new Accessory("Empty", ITEMID::Invalid);
 };
@@ -151,12 +150,35 @@ void Enemy::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) 
 		}
 	}
 	if (getPassiveSkill("Destroy") == 1) {
-		int index = rand() % 3;
-
-		switch (index) {
-		case 0:
-			role[targetIndex]->weapon;
-			break;
+		while (!(role[targetIndex]->weapon->getId() == 17 && role[targetIndex]->armor->getId() == 17 && role[targetIndex]->acc->getId() == 17)) {
+			int index = rand() % 3;
+			if (index == 0) {
+				if (role[targetIndex]->weapon->getId() == 17) {
+					continue;
+				}
+				else {
+					role[targetIndex]->weapon = new Weapon("Empty", ITEMID::Invalid);
+					break;
+				}
+			}
+			else if (index == 1) {
+				if (role[targetIndex]->armor->getId() == 17) {
+					continue;
+				}
+				else {
+					role[targetIndex]->armor = new Armor("Empty", ITEMID::Invalid);
+					break;
+				}
+			}
+			else if (index == 2) {
+				if (role[targetIndex]->armor->getId() == 17) {
+					continue;
+				}
+				else {
+					role[targetIndex]->acc = new Accessory("Empty", ITEMID::Invalid);
+					break;
+				}
+			}
 		}
 	}
 }

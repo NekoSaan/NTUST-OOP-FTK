@@ -25,6 +25,7 @@ Weapon::Weapon(std::string tag, ITEMID id) : Item::Item(tag, id)
 			pAttack = 15;
 			hitRate = -15;
 			dp = 4;
+			activeSkill = "Provoke";
 			passiveSkill = "Hammer-Splash";
 			break;
 		case ITEMID::GiantHammer:
@@ -42,7 +43,7 @@ Weapon::Weapon(std::string tag, ITEMID id) : Item::Item(tag, id)
 		case ITEMID::RitualSword:
 			mAttack = 15;
 			type = 'm';
-			activeSkill = "Shock - Blast";
+			passiveSkill = "Destroy";
 			break;
 		default:
 			// empty, invalid, bug.

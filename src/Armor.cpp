@@ -14,16 +14,16 @@ Armor::Armor(std::string tag, ITEMID id)
 	switch (id) {
 		case ITEMID::WoodenShield:
 			pDefense = 10;
-			activeSkill = "Provoke";
+			activeSkill = "Destory";
 			break;
 		case ITEMID::PlateArmor:
 			pDefense = 20;
 			speed = -10;
-			activeSkill = "Fortify";
+			passiveSkill = "Fortify";
 			break;
 		case ITEMID::LeatherArmor:
 			pDefense = 5;
-			activeSkill = "Fortify";
+			passiveSkill = "Fortify";
 			break;
 		case ITEMID::Robe:
 			mDefense = 10;
