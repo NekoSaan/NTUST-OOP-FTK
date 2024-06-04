@@ -262,7 +262,6 @@ void Enemy::active(Role* role) {
 		combatSupport(role);
 		break;
 	case 1:
-		role->moveTolastPos();
 		exitActive(role);
 		break;
 	}
@@ -306,4 +305,8 @@ vector<string> Enemy::getDescription() {
 
 int Enemy::selectTarget(std::vector<Entity* > role, std::vector<Entity* > enemy) {
 	return rand() % role.size();
+}
+
+void Enemy::exitActiveEvent(Role* role) {
+	role->moveTolastPos();
 }
