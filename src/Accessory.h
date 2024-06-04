@@ -4,20 +4,27 @@
 
 class Accessory : public Item {
 private:
-	int mDefense;						// get magical defense
-	int speed;							// get speed up
-	int maxFocus;						// get inc focus
-	std::string activeSkill = "NULL";	// Active skill associated with the weapon
-	std::string passiveSkill = "NULL";	// passive skill associated with the weapon
+	int mDefense;	// get magical defense
+	int speed;		// get speed up
+	int maxFocus;	// get inc focus
+	std::string passiveSkill = "NULL";
 
 public:
-	// Constructor
+	// Assign Constructor
 	Accessory(std::string, ITEMID);
 
+	// Get magical defense
 	int getMDefense(void) const;
+
+	// Get speed
 	int getSpeed(void) const;
+
+	// Get max focus
 	int getMaxFocus(void) const;
 
+	std::string getPassiveSkill(void) const;
+	  
+	// Equipment equip by role
 	void use(Role*) override;
 };
 

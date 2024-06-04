@@ -430,7 +430,7 @@ std::vector<std::string> GameManager::interactiveInformation()
 // Intent: Set the information of players for display
 // Pre: None
 // Post: Sets the player information and displays it on the screen
-void GameManager::setPlayerInformation(int playerSize, vector<Entity*>player)
+void GameManager::setPlayerInformation(int playerSize, vector<Entity*> player)
 {
 	for (int i = 0; i < playerSize; i++)
 	{
@@ -458,14 +458,14 @@ void GameManager::setPlayerInformation(int playerSize, vector<Entity*>player)
 
 		// Weapon information
 		//snprintf(str, sizeof(str), "Weapon: %p", roles[i]->getWeaponName());
-		info.push_back("Weapon: " + roles[i]->weapon->getName());
-		info.push_back("Armor: " + roles[i]->armor->getName());
-		info.push_back("Accessory: " + roles[i]->acc->getName());
+		info.push_back("Weapon: " + player[i]->weapon->getName());
+		info.push_back("Armor: " + player[i]->armor->getName());
+		info.push_back("Accessory: " + player[i]->acc->getName());
 
 		string buff = "";
 
-		for (int j = 0; j < roles[i]->buff.size(); j++) {
-			buff += roles[i]->buff[j];
+		for (int j = 0; j < player[i]->buff.size(); j++) {
+			buff += player[i]->buff[j] + " ";
 		}
 
 		info.push_back("Buff: " + buff);
@@ -543,7 +543,7 @@ void GameManager::setEnemyInformation(int playerSize, vector<Entity*> enemys)
 		string buff;
 
 		for (int j = 0; j < enemys[i]->buff.size(); j++) {
-			buff += enemys[i]->buff[j];
+			buff += enemys[i]->buff[j] + " ";
 		}
 
 		info.push_back("Buff: " + buff);

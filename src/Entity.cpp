@@ -200,7 +200,7 @@ int Entity::getSpeed()
 // Post: Returns the effective hit rate of the entity
 int Entity::getHitRate() 
 { 
-	int HitRate = hitRate + weapon->getHitRate() - (searchBuff("Angle") ? 30 : 0);
+	int HitRate = hitRate + weapon->getHitRate() - (searchBuff("Angry") ? 30 : 0);
 
 	return std::min(100, HitRate);
 }
@@ -274,29 +274,24 @@ int Entity::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy)
 	{
 		return 1;
 	}
+
 	return 0;
 }
 
 // Intent: Perform a normal attack against an enemy entity
 // Pre: role and enemy must be non-empty vectors of Entity pointers
 // Post: Performs a normal attack against an enemy entity
-void Entity::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) 
-{
-}
+void Entity::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {};
 
 // Intent: Perform a skill attack against an enemy entity
 // Pre: role and enemy must be non-empty vectors of Entity pointers
 // Post: Performs a skill attack against an enemy entity
-void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) 
-{
-}
+void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {};
 
-
-bool  Entity::getPassiveSkill(std::string passiveSkill) {
-	if (passiveSkill == weapon->getPassiveSkill()) {
-		return 1;
-	}
-	return 0;
+bool Entity::getPassiveSkill(std::string passiveSkill) {
+	return (passiveSkill == weapon->getPassiveSkill() || 
+			passiveSkill == armor->getPassiveSkill()  || 
+			passiveSkill == acc->getPassiveSkill());
 }
 
 string Entity::getName() {

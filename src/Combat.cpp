@@ -21,16 +21,19 @@ bool compareEntities(Entity* a, Entity* b) {
 }
 int Action(Entity* actor, vector<Entity*>role, vector<Entity*>enemy) {
 	actor->actions++;
+
 	if (actor->searchBuff("Dizziness") == 0) {
 		if (actor->selectAction(role, enemy) == 1) {
 			return 1;
 		}
 	}
+
 	if (actor->searchBuff("Poisoned") == 1) {
 		actor->setHp(max(actor->getHp() / 10, 1));
 	}
+
 	actor->minusBuff();
-	actor->weapon->setCD(max(actor->weapon->getCD()-1, 0));
+	actor->weapon->setCD(max(actor->weapon->getCD() - 1, 0));
 	return 0;
 }
 void combat(vector<Entity*> role, vector<Entity*> enemy) {
@@ -59,6 +62,7 @@ void combat(vector<Entity*> role, vector<Entity*> enemy) {
 	// The first element will be the entity with the highest priority
 	Entity* actor = entity[0];
 	actor->sort = sort;
+	//actor->giveBuff("Dizziness", 1);
 
 	if (Action(actor, role, enemy) == 1) {
 		auto it = std::find(role.begin(), role.end(), actor);

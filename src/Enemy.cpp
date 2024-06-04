@@ -4,6 +4,7 @@
 #include "Armor.h"
 #include "Accessory.h"
 #include "GameManager.h"
+#include "Backpack.h"
 #include "Rect.h"
 #include "Combat.h"
 #include <conio.h>
@@ -16,13 +17,14 @@ Enemy::Enemy() : Entity() {
 
 	int randWeapon = rand() % 200 + 1;
 
-	if (randWeapon < 100) {
+	if (randWeapon < 0) {
 		randWeapon = rand() % 5 + (int)ITEMID::WoodenSword;
 		weapon = new Weapon("Weapon", ITEMID(randWeapon));
 	}
 	else {
 		weapon = new Weapon("Empty", ITEMID::Invalid);
 	}
+
 	armor = new Armor("Empty", ITEMID::Invalid);
 	acc = new Accessory("Empty", ITEMID::Invalid);
 };
@@ -152,11 +154,13 @@ void Enemy::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) 
 	if (getPassiveSkill("Destroy") == 1) {
 		while (!(role[targetIndex]->weapon->getId() == 17 && role[targetIndex]->armor->getId() == 17 && role[targetIndex]->acc->getId() == 17)) {
 			int index = rand() % 3;
+
 			if (index == 0) {
 				if (role[targetIndex]->weapon->getId() == 17) {
 					continue;
 				}
 				else {
+					bag.deleteItemById(role[targetIndex]->weapon->getId());
 					role[targetIndex]->weapon = new Weapon("Empty", ITEMID::Invalid);
 					break;
 				}
@@ -166,6 +170,7 @@ void Enemy::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) 
 					continue;
 				}
 				else {
+					bag.deleteItemById(role[targetIndex]->armor->getId());
 					role[targetIndex]->armor = new Armor("Empty", ITEMID::Invalid);
 					break;
 				}
@@ -175,6 +180,7 @@ void Enemy::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) 
 					continue;
 				}
 				else {
+					bag.deleteItemById(role[targetIndex]->acc->getId());
 					role[targetIndex]->acc = new Accessory("Empty", ITEMID::Invalid);
 					break;
 				}

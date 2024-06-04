@@ -9,7 +9,6 @@ private:
 	int pDefense;		// physical defense
 	int mDefense;		// magical defense
 	char type;			// type of equipment
-	std::string activeSkill = "NULL";
 	std::string passiveSkill = "NULL";	
 
 public:
@@ -17,12 +16,12 @@ public:
 	Armor(std::string, ITEMID);
 
 	// Getter
-	int getVitality(void);
+	int getVitality(void); 
 	int getSpeed(void);
 	int getPDefense(void);
 	int getMDefense(void);
 	char getType(void);
-	std::string getActiveSkill(void);
+	std::string getPassiveSkill(void);
 
 	void use(Role*) override;
 };

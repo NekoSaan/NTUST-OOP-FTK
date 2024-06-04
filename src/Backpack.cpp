@@ -15,11 +15,21 @@ BackPack::BackPack(void) : money(600)
 	// Initial Supplies or nothing
 	for (int i = 0; i < (int)ITEMID::WoodenSword; i++) 
 	{
-		obtainItem(new Item("Consumable", ITEMID(i)));
+		if (i == (int)ITEMID::TeleportScroll) {
+			for (size_t j = 0; j < 10; j++) {
+				obtainItem(new Item("Consumable", ITEMID(i)));
+			}
 
+			continue;
+		}
+
+		obtainItem(new Item("Consumable", ITEMID(i)));
 	}
 
 	obtainItem(new Weapon("Weapon", ITEMID::WoodenSword));
+	obtainItem(new Weapon("Weapon", ITEMID::MagicWand));
+	obtainItem(new Weapon("Weapon", ITEMID::Hammer));
+	obtainItem(new Weapon("Weapon", ITEMID::RitualSword));
 }
 
 // Intent: Add an item to the inventory
@@ -221,6 +231,15 @@ void BackPack::useItemById(Role* role, int id) {
 				inventory.erase(inventory.begin() + i);
 			}
 
+			return;
+		}
+	}
+}
+
+void BackPack::deleteItemById(int id) {
+	for (size_t i = 0; i < inventory.size(); i++) {
+		if (inventory[i]->getId() == id) {
+			inventory.erase(inventory.begin() + i);
 			return;
 		}
 	}

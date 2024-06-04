@@ -2,9 +2,12 @@
 #include "Role.h"
 #include "Backpack.h"
 
-Armor::Armor(std::string tag, ITEMID id)
-	: Item::Item(tag, id) 
-{
+// Intent: Construct a armor with tag & id.
+// Pre: tag & id of armor.
+// Post: A new armor item be created in game.
+// \param tag: tag of item, for recgonize type of items.
+// \param id: id of item, to recgonize which item it is.
+Armor::Armor(std::string tag, ITEMID id) : Item::Item(tag, id) {
 	vitality = 0;
 	speed = 0;
 	pDefense = 0;
@@ -14,7 +17,6 @@ Armor::Armor(std::string tag, ITEMID id)
 	switch (id) {
 		case ITEMID::WoodenShield:
 			pDefense = 10;
-			activeSkill = "Destory";
 			break;
 		case ITEMID::PlateArmor:
 			pDefense = 20;
@@ -52,7 +54,6 @@ int Armor::getSpeed(void)
 	return speed;
 }
 
-
 // Intent: Get the physical defense attribute of the weapon
 // Pre: None
 // Post: Returns the physical defense attribute of the weapon
@@ -80,14 +81,19 @@ char Armor::getType(void)
 // Intent: Get the active skill of the weapon
 // Pre: None
 // Post: Returns the active skill of the weapon
-std::string Armor::getActiveSkill(void)
+std::string Armor::getPassiveSkill(void)
 {
-	return activeSkill;
+	return passiveSkill;
 }
 
+// Intent: Let role equip the equipment.
+// Pre: Target role who want to equip.
+// Post: The target role equipped the item/equipment.
+// \param role*: Pointer of role.
 void Armor::use(Role* role) {
 	// Because when we equip, we use the same pointer.
 	if (role->armor->getTag() == "Armor") {
+		// so we only need to increase amount of it.
 		role->armor->incAmount();
 	}
 	else {

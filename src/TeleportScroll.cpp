@@ -5,9 +5,7 @@
 #include "GameManager.h"
 
 TeleportScrool::TeleportScrool(std::string tag)
-	: Item::Item(tag, ITEMID::TeleportScroll)
-{
-}
+	: Item::Item(tag, ITEMID::TeleportScroll) {};
 
 void TeleportScrool::use(Role* role)
 {
@@ -81,7 +79,7 @@ void TeleportScrool::use(Role* role)
 		}
 
 		gameManager->outputShowBoard(showBoard, icon);
-		
+
 		input = _getch();
 		gameManager->gameBoard[y][x].setBeSelect(false);
 
@@ -105,6 +103,12 @@ void TeleportScrool::use(Role* role)
 			xAdd += 1;
 			break;
 		}
+
+		if (y + yAdd >= gameManager->mapHeight || y + yAdd < 0 || x + xAdd >= gameManager->mapWidth || x + xAdd < 0)
+		{
+			continue;
+		}
+
 		if (gameManager->gameBoard[y + yAdd][x + xAdd].getIsVisible() && gameManager->gameBoard[y + yAdd][x + xAdd].getIcon().first == '.')
 		{
 			y += yAdd;

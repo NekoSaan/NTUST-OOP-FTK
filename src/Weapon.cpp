@@ -14,6 +14,7 @@ Weapon::Weapon(std::string tag, ITEMID id) : Item::Item(tag, id)
 	dp = 1;
 	type = 'p';
 	cd = 0;
+
 	switch (id) {
 		case ITEMID::WoodenSword:
 			pAttack = 5;
@@ -38,11 +39,12 @@ Weapon::Weapon(std::string tag, ITEMID id) : Item::Item(tag, id)
 			mAttack = 10;
 			type = 'm';
 			dp = 3;
-			activeSkill ="Heal";
+			activeSkill = "Heal";
 			break;
 		case ITEMID::RitualSword:
 			mAttack = 15;
 			type = 'm';
+			activeSkill = "Shock - Blast";
 			passiveSkill = "Destroy";
 			break;
 		default:

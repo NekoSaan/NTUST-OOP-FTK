@@ -8,8 +8,7 @@
 #include "Backpack.h"
 
 Role::Role(void) : Entity::Entity(), movementPoint(0) {
-	weapon = new Weapon("Weapon", ITEMID::RitualSword);
-	//weapon = new Weapon("Empty", ITEMID::Invalid);
+	weapon = new Weapon("Empty", ITEMID::Invalid);
 	armor = new Armor("Empty", ITEMID::Invalid);
 	acc = new Accessory("Empty", ITEMID::Invalid);
 };
@@ -110,10 +109,10 @@ int selectTarget(const std::vector<Entity*>& role, const std::vector<Entity*>& e
 
 		for (size_t i = 0; i < enemy.size(); ++i) {
 			if (i == selectedIndex) {
-				combatList.push_back(">" + enemy[i]->getName());
+				combatList.push_back("> " + enemy[i]->getName());
 			}
 			else {
-				combatList.push_back(" " + enemy[i]->getName());
+				combatList.push_back("  " + enemy[i]->getName());
 			}
 		}
 
@@ -140,13 +139,14 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	GameManager* gameManager = GameManager::getInstance();
 	int selectedOption = 0;
 	int numOptions = 2;  // Number of options in the menu
-	vector<string> combatAction;
+	vector<string> combatAction, combatInfo = { "Current Player: " + getName(), sort };
 	combatAction.push_back("Normal Attack");
 	combatAction.push_back("Flee");
 
 	if (weapon->getActiveSkill() != "NULL") {
 		numOptions++;
 		combatAction.push_back(weapon->getActiveSkill());
+		combatInfo.push_back(weapon->getActiveSkill() + ", CD: " + to_string(weapon->getCD()));
 	}
 
 	if (bag.getItemAmtById((int)ITEMID::Godsbeard)) {
@@ -160,8 +160,7 @@ int Role::selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	}
 
 	while (true) {
-		vector<string> combatList, combatInfo;
-		combatInfo = { "Current Player: " + getName(), sort };
+		vector<string> combatList;
 		combatList.push_back("Select your action");
 
 		// Display menu with highlighted selected option
@@ -255,8 +254,9 @@ void Role::normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy) {
 	}
 
 	if (getPassiveSkill("Destroy") == 1) {
-		while (!(enemy[targetIndex]->weapon->getId() == 17&& enemy[targetIndex]->armor->getId() == 17&& enemy[targetIndex]->acc->getId() == 17)) {
+		while (!(enemy[targetIndex]->weapon->getId() == 17 && enemy[targetIndex]->armor->getId() == 17 && enemy[targetIndex]->acc->getId() == 17)) {
 			int index = rand() % 3;
+
 			if (index == 0) {
 				if (enemy[targetIndex]->weapon->getId() == 17) {
 					continue;
@@ -343,7 +343,7 @@ void Role::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy)
 
 		if (dice(n, 2, getHitRate()) == 2)
 		{
-			role[(targetIndex + 1) % role.size()]->giveBuff("SpeedUp", 3);
+			role[targetIndex]->giveBuff("SpeedUp", 3);
 		}
 
 		weapon->setCD(4);

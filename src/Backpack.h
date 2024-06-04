@@ -40,6 +40,7 @@ public:
 	void chooseDown(); // input s
 	void useItem(Role*); // input enter
 	void useItemById(Role*, int); // combat use
+	void deleteItemById(int);
 	void closeBag(); //input backspace
 };
 
