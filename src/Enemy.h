@@ -7,6 +7,7 @@ class Enemy : public Entity, public Object {
 private:
 	int chosenIndex;
 	void combatSupport(Role* role); //find enemy and role around, then start combat
+	void exitActiveEvent(Role* role) override;
 
 public:
 	Enemy();
@@ -16,12 +17,12 @@ public:
 	virtual void skillAttack(std::vector<Entity*> role, std::vector<Entity*> enemy);
 
 	//Object's virtual function
-	void active(Role* role);
-	void chooseActiveUP();
-	void chooseActiveDown();
-	vector<string> getAllChoose();
-	int getChosenIndex();
-	vector<string> getDescription();
+	void active(Role* role) override;
+	void chooseActiveUP() override;
+	void chooseActiveDown() override;
+	vector<string> getAllChoose() override;
+	int getChosenIndex() override;
+	vector<string> getDescription() override;
 };
 
 #endif // _ENEMY_H_
