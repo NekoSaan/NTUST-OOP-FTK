@@ -2,6 +2,7 @@
 #define _ACCESSORY_H_
 #include "Items.h"
 
+// Accessory Class, inherti Item Class
 class Accessory : public Item {
 private:
 	int mDefense;	// get magical defense
@@ -22,6 +23,7 @@ public:
 	// Get max focus
 	int getMaxFocus(void) const;
 
+	// Get passive skill
 	std::string getPassiveSkill(void) const;
 	  
 	// Equipment equip by role

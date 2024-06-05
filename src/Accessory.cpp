@@ -33,9 +33,7 @@ Accessory::Accessory(std::string tag, ITEMID id) : Item::Item(tag, id) {
 // Intent: Get the magical defense attribute of the weapon
 // Pre: None
 // Post: Returns the magical defense attribute of the weapon
-int Accessory::getMDefense(void) const {
-	return mDefense;
-}
+int Accessory::getMDefense(void) const { return mDefense; }
 
 // Intent: Get the speed attribute of the weapon
 // Pre: None
@@ -47,6 +45,9 @@ int Accessory::getSpeed(void) const { return speed; }
 // Post: Retunrs max focus that accessory provide
 int Accessory::getMaxFocus(void) const { return maxFocus; }
 
+// Intent: Get passive skill
+// Pre: None
+// Post: Return passive skill of equipment
 std::string Accessory::getPassiveSkill(void) const { return passiveSkill; }
 
 // Intent: Let role equip the equipment.
@@ -60,7 +61,7 @@ void Accessory::use(Role* role) {
 		role->acc->incAmount();
 	}
 	else {
-		// Not equipped, delete empty `equipment`.
+		// Not equipped, delete `empty equipment`.
 		delete role->acc;
 		role->acc = nullptr;
 	}

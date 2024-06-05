@@ -3,9 +3,8 @@
 #include "Weapon.h"
 #include "GameManager.h"
 #include "Role.h"
-#include "TeleportScroll.h"
 
-BackPack bag;
+BackPack bag; // initialize
 
 // Intent: Class constructor
 // Pre: None
@@ -15,6 +14,7 @@ BackPack::BackPack(void) : money(600)
 	// Initial Supplies or nothing
 	for (int i = 0; i < (int)ITEMID::WoodenSword; i++) 
 	{
+		// Get 10 teleport for demo.
 		if (i == (int)ITEMID::TeleportScroll) {
 			for (size_t j = 0; j < 10; j++) {
 				obtainItem(new Item("Consumable", ITEMID(i)));
@@ -25,11 +25,6 @@ BackPack::BackPack(void) : money(600)
 
 		obtainItem(new Item("Consumable", ITEMID(i)));
 	}
-
-	obtainItem(new Weapon("Weapon", ITEMID::WoodenSword));
-	obtainItem(new Weapon("Weapon", ITEMID::MagicWand));
-	obtainItem(new Weapon("Weapon", ITEMID::Hammer));
-	obtainItem(new Weapon("Weapon", ITEMID::RitualSword));
 }
 
 // Intent: Add an item to the inventory
@@ -37,12 +32,14 @@ BackPack::BackPack(void) : money(600)
 // Post: Adds the item to the inventory or increments its amount if it already exists in the inventory
 void BackPack::obtainItem(Item* item) 
 {
+	// if item wasn't a consumable, directly push back it into inventory
 	if (item->getId() > (int)ITEMID::Tent) 
 	{
 		inventory.push_back(item);
 		return;
 	}
 
+	// Otherwise, try to find it in inventory to stack.
 	for (size_t i = 0; i < inventory.size(); i++) 
 	{
 		if (item->getId() == inventory[i]->getId()) 
@@ -108,7 +105,9 @@ int BackPack::getItemAmount(int i) { return inventory[i]->getAmount(); }
 // Intent: Get the amount of the item with specified id in the inventory
 // Pre: id must be a valid option in ITEMID
 // Post: Returns the amount of the item at with specified id in the inv
+// \param id: Target's id
 bool BackPack::getItemAmtById(int id) {
+	// Seach in inventory
 	for (size_t i = 0; i < inventory.size(); i++) {
 		if (inventory[i]->getId() == id) {
 			return true;
@@ -121,6 +120,7 @@ bool BackPack::getItemAmtById(int id) {
 // Intent: Earn money and add it to the current money amount
 // Pre: amt must be a non-negative value
 // Post: Adds the specified amount to the current money amount
+// \param amt: earn money amount
 void BackPack::earnMoney(int amt) 
 {
 	if (amt < 0) 
@@ -135,6 +135,7 @@ void BackPack::earnMoney(int amt)
 // Intent: Deduct money from the current money amount
 // Pre: amt must be a non-negative value and money must be greater than or equal to amt
 // Post: Deducts the specified amount from the current money amount
+// \param amt: cost money amount
 bool BackPack::costMoney(int amt) 
 {
 	if (amt < 0 || money < amt) 
@@ -152,6 +153,7 @@ bool BackPack::costMoney(int amt)
 // Post: Sets the game status to backpack mode
 void BackPack::invMode(void) 
 {
+	// init control variables
 	curIndex = 0;
 	curPage = 1;
 	maxPage = ((int)inventory.size() - 1) / 8 + 1;
@@ -199,12 +201,6 @@ void BackPack::useItem(Role* curRole)
 	{
 		return;
 	}
-	
-	if (curIndex == int(ITEMID::TeleportScroll))
-	{
-		TeleportScrool temp("Consumable");
-		temp.use(curRole);
-	}
 
 	inventory[curIndex]->use(curRole);
 	inventory[curIndex]->decAmount();
@@ -219,13 +215,19 @@ void BackPack::useItem(Role* curRole)
 	}
 }
 
+// Intent: Use item in battle, may skip some options in bag
+// Pre: target's id, who use it
+// Post: Item be used by role
+// \param role: the one who use the item
+// \param id: target item's id
 void BackPack::useItemById(Role* role, int id) {
 	for (size_t i = 0; i < inventory.size(); i++) {
 		if (inventory[i]->getId() == id) {
 			inventory[i]->use(role);
 			inventory[i]->decAmount();
 
-			if (inventory[i]->getAmount() == 0) {
+			// Delete it if empty
+			if (inventory[i]->getAmount() == 0 && inventory[i]->getTag() == "Consumable") {
 				delete inventory[i];
 				inventory[i] = nullptr;
 				inventory.erase(inventory.begin() + i);
@@ -236,6 +238,10 @@ void BackPack::useItemById(Role* role, int id) {
 	}
 }
 
+// Intent: Equipment be destroy in combat, need to remove it from bag too
+// Pre: target's id
+// Post: Item be destroyed
+// \param id: target item's id
 void BackPack::deleteItemById(int id) {
 	for (size_t i = 0; i < inventory.size(); i++) {
 		if (inventory[i]->getId() == id) {

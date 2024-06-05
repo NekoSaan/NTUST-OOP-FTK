@@ -8,12 +8,14 @@
 // \param tag: tag of item, for recgonize type of items.
 // \param id: id of item, to recgonize which item it is.
 Armor::Armor(std::string tag, ITEMID id) : Item::Item(tag, id) {
+	// init all attribute to 0, in case of getting nullptr
 	vitality = 0;
 	speed = 0;
 	pDefense = 0;
 	mDefense = 0;
 	type = 'p';
 
+	// Assign real equipment attribute by recgonize id
 	switch (id) {
 		case ITEMID::WoodenShield:
 			pDefense = 10;
@@ -97,7 +99,7 @@ void Armor::use(Role* role) {
 		role->armor->incAmount();
 	}
 	else {
-		// Not equipped.
+		// Not equipped, delete the `empty equipment`
 		delete role->armor;
 		role->armor = nullptr;
 	}

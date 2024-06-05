@@ -2,8 +2,7 @@
 #define _COMBAT_H_
 #include "Entity.h"
 
-using namespace std;
-
-void combat(vector<Entity*> role, vector<Entity*> enemy);
+// combat function to let other file call
+void combat(std::vector<Entity*> role, std::vector<Entity*> enemy);
 	
-#endif
+#endif // _COMBAT_H_

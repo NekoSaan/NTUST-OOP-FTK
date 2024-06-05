@@ -2,16 +2,18 @@
 #define _CHESTEVENT_H_
 #include "Event.h"
 
+// Chest event Class, inherti Event Class
 class ChestEvent : public Event
 {
 private:
-	//Event virtual function
+	// Event virtual function
 	void startEvent(Role* role);
 
 public:
-	ChestEvent();
+	// Default Constructor
+	ChestEvent(void);
 
-	//Event virtual function
+	// Event virtual function
 	void updateDescription();
 };
 

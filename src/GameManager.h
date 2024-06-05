@@ -7,18 +7,10 @@
 #include <conio.h>	
 #include "Role.h"
 
+// Declare Classes to let this file know they're exists
 class Object;
 class Rect;
 class Tent;
-
-// The player enum, total has three player
-enum class PLAYER
-{
-	PLAYER1 = 0,
-	PLAYER2,
-	PLAYER3,
-	INVALID,
-};
 
 // THe game status enum class
 enum class GAME_STATUS 
@@ -29,6 +21,7 @@ enum class GAME_STATUS
 	INTERACTIVE
 };
 
+// Game manager Class
 class GameManager
 {
 private:
@@ -57,7 +50,7 @@ private:
 	static Role* currentRole;
 	static Object* interactiveObject;
 
-	int round;
+	int round; // current round
 
 	std::vector<Tent*> observerList;
 	
@@ -132,4 +125,4 @@ public:
 	bool canSee(std::pair<int, int> current, std::pair<int, int> answer, std::vector<std::vector<std::pair<char, int>>>& showBoard);
 };
 
-#endif _GAMEMANAGER_H_
+#endif // _GAMEMANAGER_H_

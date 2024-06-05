@@ -3,14 +3,18 @@
 #include "Entity.h"
 #include "Object.h"
 
+// Enemy Class, multi inherti Entity Class & Object Class
 class Enemy : public Entity, public Object {
 private:
 	int chosenIndex;
-	void combatSupport(Role* role); //find enemy and role around, then start combat
+	void combatSupport(Role* role); // find enemy and role around, then start combat
 	void exitActiveEvent(Role* role) override;
 
 public:
-	Enemy();
+	// Default Constructor
+	Enemy(void);
+
+	// Combat phase control
 	int Enemy::selectTarget(std::vector<Entity* > role, std::vector<Entity* > enemy);
 	virtual int selectAction(std::vector<Entity*> role, std::vector<Entity*> enemy);
 	virtual void normalAttack(std::vector<Entity*> role, std::vector<Entity*> enemy);

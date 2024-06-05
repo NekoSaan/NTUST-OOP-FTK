@@ -3,38 +3,44 @@
 #include <string>
 #include <vector>
 
-class Item;
+// Declare Classes to let the file know there exists these two classes.
+class Item; 
 class Role;
 
+// BackPack Class, for store item that player have
 class BackPack {
 private:
+	// storage
 	int money;
 	std::vector<Item*> inventory;
 
+	// for display/use control
 	int curIndex;
 	int curPage;
 	int maxPage;
 
 public:
+	// Default Constructor
 	BackPack(void);
 
+	// Obtain item, add it to bag
 	void obtainItem(Item*);
 
-	// some getter, maybe too more
+	// some getter
 	int getMoney(void);
-	int getCurIndex();
-	int getCurPage();
-	int getMaxPage();
-	int getInventorySize();
+	int getCurIndex(void);
+	int getCurPage(void);
+	int getMaxPage(void);
+	int getInventorySize(void);
 	std::string getItemName(int);
 	int getItemAmount(int);
 	bool getItemAmtById(int);
 
+	// Money
 	void earnMoney(int);
-
 	bool costMoney(int);
 
-	// void invMode(Role*); true
+	// control/use
 	void invMode(void);
 	void chooseUp(); // input w
 	void chooseDown(); // input s
@@ -44,6 +50,7 @@ public:
 	void closeBag(); //input backspace
 };
 
-extern BackPack bag;
+// Declare a global bag to let every file use, also prevent re-defined
+extern BackPack bag; 
 
 #endif // _BACKPACK_H_

@@ -91,10 +91,16 @@ int Event::getChosenIndex()
     return chosenIndex;
 }
 
+// Intent: Get the description of the event
+// Pre: None
+// Post: Returns the description of the event as a vector of strings
 vector<string> Event::getDescription() {
     return description;
 }
 
+// Intent: Exit the active event and remove the role from the game board if the event is active
+// Pre: role must be a valid pointer to a Role object
+// Post: Removes the role from the game board if the event is active
 void Event::exitActiveEvent(Role* role) {
     if (hasActive) {
         GameManager::gameBoard[role->getPos().first][role->getPos().second].setObject(NULL);

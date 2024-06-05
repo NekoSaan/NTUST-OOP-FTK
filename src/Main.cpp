@@ -68,7 +68,6 @@ int main()
 
 	// Initialize key state arrays
 	bool gKeyState[int(VALIDINPUT::INVALID) + 1] = { false };
-	bool player[int(PLAYER::INVALID)] = { false };
 
 	double startT = clock();	// Start time for timing game loop
 	double endT = clock();		// End time for timing game loop

@@ -5,6 +5,7 @@
 #include <ctime>
 #include <vector>
 
+// Declare Classes to let this file know they are exists
 class Weapon;
 class Armor;
 class Accessory;
@@ -74,4 +75,4 @@ public:
    
 };
 
-#endif _ENTITY_H_
+#endif // _ENTITY_H_

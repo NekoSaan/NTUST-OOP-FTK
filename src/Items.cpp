@@ -2,6 +2,7 @@
 #include "Role.h"
 #include "GameManager.h"
 #include "Rect.h"
+#include "TeleportScroll.h"
 #include "Tent.h"
 
 // Intent: Retrieve the list of item names
@@ -42,6 +43,9 @@ std::vector<std::string> getItemList(void)
 	return ItemList;
 }
 
+// Intent: Constructor for the Item class initializing member variables to default values
+// Pre: None
+// Post: Initializes an Item instance with default values (tag as "Empty", id as Invalid, amount as 0)
 Item::Item(void) : tag("Empty"), id(ITEMID::Invalid), amount(0) {};
 
 // Intent: Construct an Item object with specified tag and id, initializing amount to 1
@@ -118,6 +122,8 @@ std::string Item::getName(void)
 void Item::use(Role* role) 
 {
 	Rect* rect = &GameManager::gameBoard[role->getPos().first][role->getPos().second];
+	TeleportScrool temp("Consuable");
+
 	switch (id) 
 	{
 	case ITEMID::Godsbeard:
@@ -127,10 +133,9 @@ void Item::use(Role* role)
 		role->gainFocus(3);
 		break;
 	case ITEMID::TeleportScroll:
-		// teleportScene();
+		temp.use(role);
 		break;
 	case ITEMID::Tent:
-		// placeTent
 		rect->setObject(new Tent(rect));
 		break;
 	default:

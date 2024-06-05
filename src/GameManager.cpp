@@ -150,20 +150,22 @@ Role* GameManager::getCurrentRole()
 	return currentRole;
 }
 
+// Intent: Move to the next role in the game and apply end-of-turn effects
+// Pre: currentRole must be a valid pointer to a Role object, roles must contain valid Role pointers
+// Post: Advances to the next role, applies healing and focus effects, updates the round, and notifies observers
 void GameManager::nextRole() {
+	// Heal the current role based on their movement points
 	currentRole->gainHealth(currentRole->getMovementPoint());
 
-	// tent effect
+	// Tent effect: heal and gain focus if the current position has a tent
 	Object* currentObject = gameBoard[currentRole->getPos().first][currentRole->getPos().second].getObject();
-	
 	if (currentObject != NULL && currentObject->getTag() == Object::TAG_TENT) {
 		currentRole->gainHealth(50);
 		currentRole->gainFocus(5);
 	}
 
-	// get current role index
+	// Get the index of the current role
 	int roleIndex = 0;
-
 	for (int i = 0; i < 3; i++) {
 		if (currentRole == roles[i]) {
 			roleIndex = i;
@@ -171,28 +173,42 @@ void GameManager::nextRole() {
 		}
 	}
 
+	// Move to the next role
 	roleIndex = (roleIndex + 1) % 3;
 	currentRole = roles[roleIndex];
 	currentRole->setMovementPoint();
 
+	// Increment the round counter and notify observers
 	round++;
 	notifyObservers();
 }
 
+// Intent: Get the current round number
+// Pre: None
+// Post: Returns the current round number
 int GameManager::getRound() {
 	return round;
 }
 
+// Intent: Notify all observers of changes
+// Pre: observerList must contain valid observer pointers
+// Post: Calls the notify method on each observer in the list
 void GameManager::notifyObservers() {
 	for (int i = 0; i < observerList.size(); i++) {
 		observerList[i]->notify();
 	}
 }
 
+// Intent: Add an observer to the observer list
+// Pre: o must be a valid pointer to a Tent object
+// Post: Adds the observer to the observer list
 void GameManager::addObserver(Tent* o) {
 	observerList.push_back(o);
 }
 
+// Intent: Remove an observer from the observer list
+// Pre: o must be a valid pointer to a Tent object
+// Post: Removes the observer from the observer list if found
 void GameManager::removeObserver(Tent* o) {
 	for (int i = 0; i < observerList.size(); i++) {
 		if (observerList[i] == o) {
@@ -664,6 +680,9 @@ void GameManager::outputGameBoard()
 	outputShowBoard(showBoard, icon);
 }
 
+// Intent: Update the showBoard with the role positions and display the board with a camera view
+// Pre: showBoard must be a valid 2D vector of pairs, icon must be a valid character
+// Post: Updates the showBoard with the roles' icons and prints the visible part of the board
 void GameManager::outputShowBoard(std::vector<std::vector<std::pair<char, int>>>& showBoard, char icon)
 {
 	std::pair<int, int> pos;

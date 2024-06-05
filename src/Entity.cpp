@@ -288,16 +288,25 @@ void Entity::normalAttack(std::vector<Entity* > role, std::vector<Entity* > enem
 // Post: Performs a skill attack against an enemy entity
 void Entity::skillAttack(std::vector<Entity* > role, std::vector<Entity* > enemy) {};
 
+// Intent: Check if the entity has a specific passive skill
+// Pre: passiveSkill must be a valid string
+// Post: Returns true if the passive skill matches any equipped item, false otherwise
 bool Entity::getPassiveSkill(std::string passiveSkill) {
-	return (passiveSkill == weapon->getPassiveSkill() || 
-			passiveSkill == armor->getPassiveSkill()  || 
+	return (passiveSkill == weapon->getPassiveSkill() ||
+			passiveSkill == armor->getPassiveSkill()  ||
 			passiveSkill == acc->getPassiveSkill());
 }
 
+// Intent: Get the name of the entity
+// Pre: None
+// Post: Returns the name of the entity
 string Entity::getName() {
 	return name;
 }
 
+// Intent: Set the name of the entity
+// Pre: Name must be a valid string
+// Post: Updates the name of the entity
 void Entity::setName(string Name) {
-	name=Name;
+	name = Name;
 }
